@@ -56,32 +56,6 @@ docker-compose ps
 
 </details>
 
-
-### Code Climate
-**This doesn't need to be setup for contributors on this repo. Setup only required when forking the repo.**
-
-Create a <a href="https://codeclimate.com/quality/pricing/">free code climate account</a> and add the `CODE_CLIMATE_TEST_REPORTER_ID` to your github repo settings.
-
-<details>
-<summary>Screenshot</summary>
-<img width="1114" alt="image" src="https://user-images.githubusercontent.com/98182227/160672909-f596095f-7820-4b39-9260-0582d117287d.png">
-</details>
-
-## Development workflow
-
-**Default setup:**
-1. `yarn dev`
-2. open `localhost:3000`
-
-**Test Driven Development:**
-
-Recommended workflow when writing code for `./business-logic`.
-
-1. `yarn test`
-2. in chrome open: `chrome://inspect` and click on the remote target URL. This will open a console with your test process.
-3. add `debugger` statement in your code
-4. tests will be re-run once you save a file
-
 ## Run tests
 ```
 yarn test
