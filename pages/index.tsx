@@ -6,7 +6,9 @@ export default function Index() {
   return (
     <div className="sm:px-6 lg:px-8 flex items-center justify-center min-h-screen px-4 pt-6 pb-32">
       <div className="w-full max-w-4xl">
-        <Globe3D />
+        <div style={{ width: 200, height: 200 }}>
+          <Globe3D />
+        </div>
         <div>
           <h2 className="h2">Welcome to Simba City!</h2>
           <p className="lead-paragraph">
