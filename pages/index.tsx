@@ -1,6 +1,7 @@
+import dynamic from "next/dynamic";
 import Link from "next/link";
 
-import Globe3D from "@components/landing-page/Globe3D.js";
+const Globe3D = dynamic(() => import("@components/landing-page/Globe3D.js"));
 
 export default function Index() {
   return (
