@@ -1,0 +1,51 @@
+# I DISABLED THE CI FOR NOW
+# REMOVE THE main_DISABLE_FOR_NOW
+# TO ENABLE IT AGAIN
+name: CI
+on:
+  push:
+    branches:
+      - main_DISABLE_FOR_NOW
+  pull_request:
+    branches:
+      - main_DISABLE_FOR_NOW
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: mysql:8
+        env:
+          MYSQL_DATABASE: DB_CI
+          MYSQL_ROOT_PASSWORD: password
+          MYSQL_PORT: 3306
+        ports:
+          - 3306:3306
+    env:
+      PLANETSCALE_PRISMA_DATABASE_URL: mysql://root:password@localhost:3306/DB_CI
+      CODE_CLIMATE_TEST_REPORTER_ID: ${{secrets.CODE_CLIMATE_TEST_REPORTER_ID}}
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup node 14
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14.x
+          cache: npm
+
+      - run: npm install
+      - run: npm run check-types
+      - run: npm run lint
+
+      - name: Run integration tests
+        if: ${{env.DATABASE_URL}}
+        run: npm run test:coverage
+
+      - name: Publish code coverage to code climate
+        if: ${{env.CODE_CLIMATE_TEST_REPORTER_ID}}
+        uses: paambaati/codeclimate-action@v3.0.0
+        with:
+          debug: true
+        env:
+          CC_TEST_REPORTER_ID: ${{env.CODE_CLIMATE_TEST_REPORTER_ID}}

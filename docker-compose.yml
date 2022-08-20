@@ -1,0 +1,18 @@
+version: "3"
+
+services:
+  mysql_development:
+    image: mysql:8
+    environment:
+      MYSQL_DATABASE: "DB_DEVELOPMENT_DOCKER"
+      MYSQL_ROOT_PASSWORD: "password"
+    ports:
+      - "33061:3306"
+
+  mysql_test:
+    image: mysql:8
+    environment:
+      MYSQL_DATABASE: "DB_TEST_DOCKER"
+      MYSQL_ROOT_PASSWORD: "password"
+    ports:
+      - "33062:3306"
