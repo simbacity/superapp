@@ -7,7 +7,6 @@ import Link from "next/link";
 function usePostsData() {
   return useQuery(["post"], async () => {
     const response = await axios.get("/api/apps/mini-blog/posts/list");
-    console.log(response);
     return postListSchema.parse(response.data);
   });
 }
@@ -18,7 +17,7 @@ function buildPostExcerpt(postContent: string) {
 
 export default function Index() {
   const { data: posts } = usePostsData();
-  console.log(posts);
+
   return (
     <Shell>
       <div className="layout py-8">
