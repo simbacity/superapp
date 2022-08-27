@@ -16,9 +16,9 @@ function buildPostExcerpt(postContent: string) {
 }
 
 export default function Index() {
-  const { data: post } = usePostsData();
+  const { data: posts } = usePostsData();
 
-  if (!post) return <div>Loading...</div>;
+  if (!posts) return <div>Loading...</div>;
 
   return (
     <Shell>
@@ -26,7 +26,7 @@ export default function Index() {
         <h1 className="h1">Mini blog</h1>
         <section className="pb-6 border-b-4 border-white border-dotted"></section>
         <div>
-          {post.map((post) => (
+          {posts.map((post) => (
             <div key={post.id} className="py-6 border-b-4 border-white border-dotted">
               <h2 className="h2">{post.title}</h2>
               <p className="paragraph">{buildPostExcerpt(post.content)}</p>
