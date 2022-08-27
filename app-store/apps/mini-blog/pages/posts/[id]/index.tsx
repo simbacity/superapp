@@ -1,4 +1,4 @@
-import { ResponseParamsShow } from "@app-store/apps/mini-blog/api-contracts/posts/show";
+import { postSchema } from "@app-store/apps/mini-blog/api-contracts/post.schema";
 import Shell from "@app-store/shared/components/Shell";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
@@ -8,14 +8,15 @@ interface PostParams {
   id: string;
 }
 
-async function getPost(id: string) {
-  const response = await axios.get("/api/apps/mini-blog/posts/show", { params: { id } });
-  const responseData: ResponseParamsShow = response.data;
-  return responseData;
+function usePostData(id: string) {
+  return useQuery(["post"], async () => {
+    const response = await axios.get("/api/apps/mini-blog/posts/show", { params: { id } });
+    return postSchema.parse(response.data);
+  });
 }
 
 export default function Post({ id }: PostParams) {
-  const { data: post } = useQuery(["post", id], () => getPost(id));
+  const { data: post } = usePostData(id);
 
   if (!post) return <div>No post...</div>;
 

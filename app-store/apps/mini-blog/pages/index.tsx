@@ -1,13 +1,15 @@
-import { ResponseParamsList } from "@app-store/apps/mini-blog/api-contracts/posts/list";
+import { postListSchema } from "@app-store/apps/mini-blog/api-contracts/post.schema";
 import Shell from "@app-store/shared/components/Shell";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import Link from "next/link";
 
-async function getPosts() {
-  const response = await axios.get("/api/apps/mini-blog/posts/list");
-  const responseData: ResponseParamsList = response.data;
-  return responseData;
+function usePostsData() {
+  return useQuery(["post"], async () => {
+    const response = await axios.get("/api/apps/mini-blog/posts/list");
+    console.log(response);
+    return postListSchema.parse(response.data);
+  });
 }
 
 function buildPostExcerpt(postContent: string) {
@@ -15,14 +17,15 @@ function buildPostExcerpt(postContent: string) {
 }
 
 export default function Index() {
-  const { data: posts } = useQuery(["posts"], getPosts);
-
+  const { data: posts } = usePostsData();
+  console.log(posts);
   return (
     <Shell>
       <div className="layout py-8">
         <h1 className="h1">Mini blog</h1>
         <section className="pb-6 border-b-4 border-white border-dotted"></section>
         <div>
+          {/* TODO: make sure that posts cannot be undefined */}
           {posts?.map((post) => (
             <div key={post.id} className="py-6 border-b-4 border-white border-dotted">
               <h2 className="h2">{post.title}</h2>
