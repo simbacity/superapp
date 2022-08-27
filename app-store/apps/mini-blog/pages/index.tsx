@@ -5,7 +5,7 @@ import axios from "axios";
 import Link from "next/link";
 
 function usePostsData() {
-  return useQuery(["post"], async () => {
+  return useQuery(["posts.list"], async () => {
     const response = await axios.get("/api/apps/mini-blog/posts/list");
     return postListSchema.parse(response.data);
   });
@@ -16,7 +16,9 @@ function buildPostExcerpt(postContent: string) {
 }
 
 export default function Index() {
-  const { data: posts } = usePostsData();
+  const { data: post } = usePostsData();
+
+  if (!post) return <div>Loading...</div>;
 
   return (
     <Shell>
@@ -24,8 +26,7 @@ export default function Index() {
         <h1 className="h1">Mini blog</h1>
         <section className="pb-6 border-b-4 border-white border-dotted"></section>
         <div>
-          {/* TODO: make sure that posts cannot be undefined */}
-          {posts?.map((post) => (
+          {post.map((post) => (
             <div key={post.id} className="py-6 border-b-4 border-white border-dotted">
               <h2 className="h2">{post.title}</h2>
               <p className="paragraph">{buildPostExcerpt(post.content)}</p>
