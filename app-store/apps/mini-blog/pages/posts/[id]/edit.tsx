@@ -8,7 +8,7 @@ interface PostParams {
 }
 
 function usePostData(id: string) {
-  return useQuery(["posts.show"], async () => {
+  return useQuery(["mini-blog.posts.show"], async () => {
     const response = await axios.get("/api/apps/mini-blog/posts/show", { params: { id } });
     return postSchema.parse(response.data);
   });

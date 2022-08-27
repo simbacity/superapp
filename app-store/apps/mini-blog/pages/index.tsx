@@ -5,7 +5,7 @@ import axios from "axios";
 import Link from "next/link";
 
 function usePostsData() {
-  return useQuery(["posts.list"], async () => {
+  return useQuery(["mini-blog.posts.list"], async () => {
     const response = await axios.get("/api/apps/mini-blog/posts/list");
     return postListSchema.parse(response.data);
   });
