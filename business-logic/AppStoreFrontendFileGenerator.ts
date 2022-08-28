@@ -49,7 +49,7 @@ export default class AppStoreFrontendFileGenerator {
   }
 
   private formatFilePath(file: string) {
-    // '/Users/daniel/dev/simba-app/app-store/apps/mini-blog/pages/index.tsx'
+    // '/Users/daniel/dev/superapp/app-store/apps/mini-blog/pages/index.tsx'
     // becomes
     // 'mini-blog/pages/index'
     const relativePath = this.getRelativePathFromFile(file);
@@ -64,10 +64,10 @@ export default class AppStoreFrontendFileGenerator {
   }
 
   private getRelativePathFromFile(file: string) {
-    // '/Users/daniel/dev/simba-app/app-store/apps/mini-blog/pages/index.tsx'
+    // '/Users/daniel/dev/superapp/app-store/apps/mini-blog/pages/index.tsx'
     // becomes
     // 'mini-blog/pages/index.tsx'
-    return file.split("simba-app/app-store/apps/")[1];
+    return file.split("superapp/app-store/apps/")[1];
   }
 
   private buildUrlPathFromFilePath(file: string) {

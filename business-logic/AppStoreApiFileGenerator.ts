@@ -41,7 +41,7 @@ export default class AppStoreApiFileGenerator {
   }
 
   private formatFilePath(file: string) {
-    // '/Users/daniel/dev/simba-app/app-store/apps/mini-blog/pages/api/create.ts'
+    // '/Users/daniel/dev/superapp/app-store/apps/mini-blog/pages/api/create.ts'
     // becomes
     // 'mini-blog/pages/api/create'
     const relativePath = this.getRelativePathFromFile(file);
@@ -56,10 +56,10 @@ export default class AppStoreApiFileGenerator {
   }
 
   private getRelativePathFromFile(file: string) {
-    // '/Users/daniel/dev/simba-app/app-store/apps/mini-blog/pages/api/create.ts'
+    // '/Users/daniel/dev/superapp/app-store/apps/mini-blog/pages/api/create.ts'
     // becomes
     // 'mini-blog/pages/api/create.ts'
-    return file.split("simba-app/app-store/apps/")[1];
+    return file.split("superapp/app-store/apps/")[1];
   }
 
   private buildApiPathFromFilePath(file: string) {
