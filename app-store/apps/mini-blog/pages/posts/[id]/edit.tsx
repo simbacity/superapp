@@ -7,14 +7,19 @@ import axios from "axios";
 interface PostParams {
   id: string;
 }
-
+// TODO NEXT:
+// -> Add create page
+// -> Save and update to database
+// -> Refactor api routes /[id]/update, /[id]/delete (instead of /update /delete)
+// -> Add delete functionality
+// -> Add functionality to see posts from other users in a news feed
 export default function PostEdit({ id }: PostParams) {
   const { data: post } = useQuery(["mini-blog.posts.show"], async () => {
     const response = await axios.get("/api/apps/mini-blog/posts/show", { params: { id } });
     return postSchema.parse(response.data);
   });
 
-  if (!post) return <div>No post...</div>;
+  if (!post) return <div className="h1">Loading...</div>;
 
   return (
     <Shell>
