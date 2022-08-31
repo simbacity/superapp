@@ -10,4 +10,9 @@ export const apiEndpoints: ApiEndpoints = {
   "mini-blog/posts/list": import("../../apps/mini-blog/pages/api/posts/list"),
   "mini-blog/posts/show": import("../../apps/mini-blog/pages/api/posts/show"),
   "mini-blog/posts/update": import("../../apps/mini-blog/pages/api/posts/update"),
+  "todos/create": import("../../apps/todos/pages/api/create"),
+  "todos/delete": import("../../apps/todos/pages/api/delete"),
+  "todos/list": import("../../apps/todos/pages/api/list"),
+  "todos/show": import("../../apps/todos/pages/api/show"),
+  "todos/update": import("../../apps/todos/pages/api/update"),
 };

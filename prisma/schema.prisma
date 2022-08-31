@@ -102,3 +102,14 @@ model Post_MiniBlog {
 
   @@index([userId])
 }
+
+model Post_Todo {
+  id       String    @id @default(cuid())
+  title    String
+  content  String    @db.Text
+  status   String
+  dueDate  DateTime?
+  category String?
+  priority String?
+  userId   String
+}
