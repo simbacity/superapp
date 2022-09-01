@@ -13,5 +13,5 @@ export const AppImports: Imports = {
   "simba-design-system": dynamic(() => import("@app-store/apps/simba-design-system/pages/index")),
   "todos/[id]/edit": dynamic(() => import("@app-store/apps/todos/pages/[id]/edit")),
   "todos/[id]": dynamic(() => import("@app-store/apps/todos/pages/[id]/index")),
-  todos: dynamic(() => import("@app-store/apps/todos/pages/index")),
+  "todos": dynamic(() => import("@app-store/apps/todos/pages/index")),
 };

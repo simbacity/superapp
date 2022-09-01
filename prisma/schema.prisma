@@ -112,4 +112,6 @@ model Post_Todo {
   category String?
   priority String?
   userId   String
+
+  @@index([userId])
 }
