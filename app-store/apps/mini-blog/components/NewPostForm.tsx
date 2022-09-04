@@ -1,23 +1,16 @@
-import {
-  PostCreateRequest,
-  postCreateSchema,
-  PostResponse,
-} from "@app-store/apps/mini-blog/api-contracts/post.schema";
+import { PostCreateRequest, postCreateSchema } from "@app-store/apps/mini-blog/api-contracts/post.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Link from "next/link";
+import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 
-interface PostFormParams {
-  defaultValues: PostResponse;
-}
+export default function PostForm() {
+  const router = useRouter();
 
-export default function PostForm({ defaultValues }: PostFormParams) {
   const {
     handleSubmit,
     register,
     formState: { errors },
   } = useForm<PostCreateRequest>({
-    defaultValues,
     resolver: zodResolver(postCreateSchema),
   });
 
@@ -47,9 +40,9 @@ export default function PostForm({ defaultValues }: PostFormParams) {
         {errors.content?.message && <p className="error-text">{errors.content.message}</p>}
       </div>
       <div>
-        <Link href={`/apps/mini-blog/posts/${defaultValues.id}`}>
-          <button className="invisible-button--medium">Cancel</button>
-        </Link>
+        <button onClick={() => router.back()} className="invisible-button--medium">
+          Cancel
+        </button>
         <button type="submit" className="default-button--medium">
           Save post
         </button>

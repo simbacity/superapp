@@ -23,7 +23,17 @@ export default function Index() {
   return (
     <Shell>
       <div className="layout py-8">
-        <h1 className="h1">Mini blog</h1>
+        <section className="flex justify-between items-center">
+          <div>
+            <h1 className="h1">Mini blog</h1>
+          </div>
+
+          <div>
+            <Link href="/apps/mini-blog/posts/new">
+              <button className="default-button--medium">New post</button>
+            </Link>
+          </div>
+        </section>
         <section className="pb-6 border-b-4 border-white border-dotted"></section>
         <div>
           {posts.map((post) => (

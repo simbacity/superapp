@@ -1,5 +1,5 @@
 import { postSchema } from "@app-store/apps/mini-blog/api-contracts/post.schema";
-import PostForm from "@app-store/apps/mini-blog/components/PostForm";
+import EditPostForm from "@app-store/apps/mini-blog/components/EditPostForm";
 import Shell from "@app-store/shared/components/Shell";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
@@ -8,7 +8,6 @@ interface PostParams {
   id: string;
 }
 // TODO NEXT:
-// -> Add create page
 // -> Save and update to database
 // -> Refactor api routes /[id]/update, /[id]/delete (instead of /update /delete)
 // -> Add delete functionality
@@ -26,7 +25,7 @@ export default function PostEdit({ id }: PostParams) {
       <div className="layout py-8">
         <h1 className="h1">Edit post</h1>
         <main>
-          <PostForm defaultValues={post} />
+          <EditPostForm defaultValues={post} />
         </main>
       </div>
     </Shell>
