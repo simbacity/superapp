@@ -10,6 +10,7 @@ export const AppImports: Imports = {
   "mini-blog": dynamic(() => import("@app-store/apps/mini-blog/pages/index")),
   "mini-blog/posts/[id]/edit": dynamic(() => import("@app-store/apps/mini-blog/pages/posts/[id]/edit")),
   "mini-blog/posts/[id]": dynamic(() => import("@app-store/apps/mini-blog/pages/posts/[id]/index")),
+  "mini-blog/posts/new": dynamic(() => import("@app-store/apps/mini-blog/pages/posts/new")),
   "simba-design-system": dynamic(() => import("@app-store/apps/simba-design-system/pages/index")),
   "todos/[id]/edit": dynamic(() => import("@app-store/apps/todos/pages/[id]/edit")),
   "todos/[id]": dynamic(() => import("@app-store/apps/todos/pages/[id]/index")),
