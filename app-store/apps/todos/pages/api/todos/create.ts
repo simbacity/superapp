@@ -13,7 +13,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const entity = new TodoEntity();
 
   try {
-    const requestBody = todoCreateSchema.parse(req.body);
+    const requestBody = todoCreateSchema.parse({ ...req.body, status: "To Do" });
     const response: TodoResponse = await entity.create(requestBody, session.user.id);
     return res.status(200).json(response);
   } catch (error) {

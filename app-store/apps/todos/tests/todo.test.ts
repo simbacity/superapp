@@ -20,7 +20,7 @@ describe("Todo", () => {
         category: "This is the category of the todo",
         priority: "This is the priority of the todo",
         status: "This is the priority of the todo",
-        dueDate: new Date("December 25, 2022 00:00:00"),
+        dueDate: new Date("December 25, 2022 00:00:00").toString(),
       };
 
       const entity = new TodoEntity();
@@ -33,7 +33,7 @@ describe("Todo", () => {
       expect(todo.category).toBe(requestParams.category);
       expect(todo.priority).toBe(requestParams.priority);
       expect(todo.status).toBe(requestParams.status);
-      expect(todo.dueDate).toStrictEqual(requestParams.dueDate);
+      expect(todo.dueDate).toBe(requestParams.dueDate);
     });
 
     it("throws error if todo is from a different user", async () => {
@@ -45,7 +45,7 @@ describe("Todo", () => {
         category: "This is the category of the todo",
         priority: "This is the priority of the todo",
         status: "This is the priority of the todo",
-        dueDate: new Date("December 25, 2022 00:00:00"),
+        dueDate: new Date("December 25, 2022 00:00:00").toString(),
       };
 
       const entity = new TodoEntity();
@@ -68,7 +68,7 @@ describe("Todo", () => {
         category: "This is the category of the todo",
         priority: "This is the priority of the todo",
         status: "This is the priority of the todo",
-        dueDate: new Date("December 25, 2022 00:00:00"),
+        dueDate: new Date("December 25, 2022 00:00:00").toString(),
       };
 
       const entity = new TodoEntity();
@@ -81,7 +81,7 @@ describe("Todo", () => {
       expect(todo.category).toBe(requestParams.category);
       expect(todo.priority).toBe(requestParams.priority);
       expect(todo.status).toBe(requestParams.status);
-      expect(todo.dueDate).toStrictEqual(requestParams.dueDate);
+      expect(todo.dueDate).toBe(requestParams.dueDate);
     });
   });
 
@@ -95,7 +95,7 @@ describe("Todo", () => {
         category: "This is the category of the todo",
         priority: "This is the priority of the todo",
         status: "This is the priority of the todo",
-        dueDate: new Date("December 25, 2022 00:00:00"),
+        dueDate: new Date("December 25, 2022 00:00:00").toString(),
       };
 
       const entity = new TodoEntity();
@@ -122,7 +122,7 @@ describe("Todo", () => {
         category: "This is the category of the todo",
         priority: "This is the priority of the todo",
         status: "This is the priority of the todo",
-        dueDate: new Date("December 25, 2022 00:00:00"),
+        dueDate: new Date("December 25, 2022 00:00:00").toString(),
       };
 
       const entity = new TodoEntity();
@@ -135,7 +135,7 @@ describe("Todo", () => {
         category: "New category",
         priority: "New priority",
         status: "New status",
-        dueDate: new Date("December 25, 2023 00:00:00"),
+        dueDate: new Date("December 25, 2023 00:00:00").toString(),
       };
 
       await entity.update(newParams, user.id);
@@ -147,7 +147,7 @@ describe("Todo", () => {
       expect(update?.category).toBe(newParams.category);
       expect(update?.status).toBe(newParams.status);
       expect(update?.priority).toBe(newParams.priority);
-      expect(update?.dueDate).toStrictEqual(newParams.dueDate);
+      expect(update?.dueDate).toBe(newParams.dueDate);
     });
 
     it("does not update todo if todo is from different user", async () => {
@@ -159,7 +159,7 @@ describe("Todo", () => {
         category: "This is the category of the todo",
         priority: "This is the priority of the todo",
         status: "This is the priority of the todo",
-        dueDate: new Date("December 25, 2022 00:00:00"),
+        dueDate: new Date("December 25, 2022 00:00:00").toString(),
       };
 
       const entity = new TodoEntity();
@@ -172,7 +172,7 @@ describe("Todo", () => {
         category: "New category",
         priority: "New priority",
         status: "New status",
-        dueDate: new Date("December 25, 2023 00:00:00"),
+        dueDate: new Date("December 25, 2023 00:00:00").toString(),
       };
 
       await expect(async () => {
@@ -191,7 +191,7 @@ describe("Todo", () => {
         category: "This is the category of the todo",
         priority: "This is the priority of the todo",
         status: "This is the priority of the todo",
-        dueDate: new Date("December 25, 2022 00:00:00"),
+        dueDate: new Date("December 25, 2022 00:00:00").toString(),
       };
 
       const entity = new TodoEntity();
@@ -213,7 +213,7 @@ describe("Todo", () => {
         category: "This is the category of the todo",
         priority: "This is the priority of the todo",
         status: "This is the priority of the todo",
-        dueDate: new Date("December 25, 2022 00:00:00"),
+        dueDate: new Date("December 25, 2022 00:00:00").toString(),
       };
 
       const entity = new TodoEntity();

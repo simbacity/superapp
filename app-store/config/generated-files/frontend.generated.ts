@@ -15,4 +15,5 @@ export const AppImports: Imports = {
   "todos/[id]/edit": dynamic(() => import("@app-store/apps/todos/pages/[id]/edit")),
   "todos/[id]": dynamic(() => import("@app-store/apps/todos/pages/[id]/index")),
   "todos": dynamic(() => import("@app-store/apps/todos/pages/index")),
+  "todos/new": dynamic(() => import("@app-store/apps/todos/pages/new")),
 };

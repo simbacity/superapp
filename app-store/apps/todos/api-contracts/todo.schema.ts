@@ -5,20 +5,20 @@ export const todoSchema = z.object({
   title: z.string(),
   content: z.string(),
   status: z.string(),
-  category: z.string(),
-  priority: z.string(),
-  dueDate: z.date(),
+  category: z.string().nullable(),
+  priority: z.string().nullable(),
+  dueDate: z.string().nullable(),
 });
 
 export const todoListSchema = z.array(todoSchema);
 
 export const todoCreateSchema = z.object({
-  title: z.string(),
-  content: z.string(),
+  title: z.string().min(1, "Title cannot be empty"),
+  content: z.string().min(1, "Content cannot be empty"),
   status: z.string(),
-  category: z.string(),
-  priority: z.string(),
-  dueDate: z.date(),
+  category: z.string().nullable(),
+  priority: z.string().nullable(),
+  dueDate: z.string().nullable(),
 });
 
 export const todoUpdateSchema = z.object({
@@ -26,9 +26,9 @@ export const todoUpdateSchema = z.object({
   title: z.string(),
   content: z.string(),
   status: z.string(),
-  category: z.string(),
-  priority: z.string(),
-  dueDate: z.date(),
+  category: z.string().nullable(),
+  priority: z.string().nullable(),
+  dueDate: z.string().nullable(),
 });
 
 export const todoDeleteSchema = z.object({
