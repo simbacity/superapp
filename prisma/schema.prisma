@@ -104,11 +104,11 @@ model Post_MiniBlog {
 }
 
 model Post_Todo {
-  id       String  @id @default(cuid())
+  id       String    @id @default(cuid())
   title    String
-  content  String  @db.Text
+  content  String    @db.Text
   status   String
-  dueDate  String?
+  dueDate  DateTime?
   category String?
   priority String?
   userId   String

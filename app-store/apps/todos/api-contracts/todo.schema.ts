@@ -1,5 +1,9 @@
 import { z } from "zod";
 
+const dateSchema = (arg: unknown) => {
+  if (typeof arg == "string" || arg instanceof Date) return new Date(arg);
+};
+
 export const todoSchema = z.object({
   id: z.string(),
   title: z.string(),
@@ -7,7 +11,7 @@ export const todoSchema = z.object({
   status: z.string(),
   category: z.string().nullable(),
   priority: z.string().nullable(),
-  dueDate: z.string().nullable(),
+  dueDate: z.preprocess(dateSchema, z.date().nullable()),
 });
 
 export const todoListSchema = z.array(todoSchema);
@@ -18,7 +22,7 @@ export const todoCreateSchema = z.object({
   status: z.string(),
   category: z.string().nullable(),
   priority: z.string().nullable(),
-  dueDate: z.string().nullable(),
+  dueDate: z.preprocess(dateSchema, z.date().nullable()),
 });
 
 export const todoUpdateSchema = z.object({
@@ -28,7 +32,7 @@ export const todoUpdateSchema = z.object({
   status: z.string(),
   category: z.string().nullable(),
   priority: z.string().nullable(),
-  dueDate: z.string().nullable(),
+  dueDate: z.preprocess(dateSchema, z.date().nullable()),
 });
 
 export const todoDeleteSchema = z.object({
