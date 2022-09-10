@@ -1,10 +1,18 @@
 import { PostRequest, postRequestSchema } from "@app-store/apps/mini-blog/api-contracts/post.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 
+async function createPost(data: PostRequest) {
+  const { data: response } = await axios.post("/api/mini-blog/posts/create", data);
+  return response.data;
+}
+
 export default function PostForm() {
   const router = useRouter();
+  const { mutate, isLoading } = useMutation(createPost);
 
   const {
     handleSubmit,
@@ -15,7 +23,7 @@ export default function PostForm() {
   });
 
   function onSubmit(data: PostRequest) {
-    console.log(data);
+    mutate(data);
   }
 
   return (
@@ -43,7 +51,7 @@ export default function PostForm() {
         <button onClick={() => router.back()} className="invisible-button--medium">
           Cancel
         </button>
-        <button type="submit" className="default-button--medium">
+        <button type="submit" disabled={isLoading} className="default-button--medium">
           Save post
         </button>
       </div>
