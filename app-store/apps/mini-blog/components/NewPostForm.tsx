@@ -1,4 +1,4 @@
-import { PostCreateRequest, postCreateSchema } from "@app-store/apps/mini-blog/api-contracts/post.schema";
+import { PostRequest, postRequestSchema } from "@app-store/apps/mini-blog/api-contracts/post.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
@@ -10,11 +10,11 @@ export default function PostForm() {
     handleSubmit,
     register,
     formState: { errors },
-  } = useForm<PostCreateRequest>({
-    resolver: zodResolver(postCreateSchema),
+  } = useForm<PostRequest>({
+    resolver: zodResolver(postRequestSchema),
   });
 
-  function onSubmit(data: PostCreateRequest) {
+  function onSubmit(data: PostRequest) {
     console.log(data);
   }
 

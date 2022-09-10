@@ -1,4 +1,4 @@
-import { PostCreateRequest, PostUpdateRequest } from "@app-store/apps/mini-blog/api-contracts/post.schema";
+import { PostRequest } from "@app-store/apps/mini-blog/api-contracts/post.schema";
 import PostEntity from "@app-store/apps/mini-blog/business-logic/post.entity";
 import prisma from "@app-store/shared/helpers/prisma";
 import { setup } from "@app-store/shared/helpers/tests/setup";
@@ -14,7 +14,7 @@ describe("Post", () => {
     it("finds post", async () => {
       const { user } = await setup();
 
-      const requestParams: PostCreateRequest = {
+      const requestParams: PostRequest = {
         title: "This is the title of the post",
         content: "This is the content of the post",
       };
@@ -32,7 +32,7 @@ describe("Post", () => {
   it("throws error if post is from different user", async () => {
     const { user } = await setup();
 
-    const requestParams: PostCreateRequest = {
+    const requestParams: PostRequest = {
       title: "This is the title of the post",
       content: "This is the content of the post",
     };
@@ -49,7 +49,7 @@ describe("Post", () => {
     it("creates post", async () => {
       const { user } = await setup();
 
-      const requestParams: PostCreateRequest = {
+      const requestParams: PostRequest = {
         title: "This is the title of the post",
         content: "This is the content of the post",
       };
@@ -68,7 +68,7 @@ describe("Post", () => {
     it("lists posts", async () => {
       const { user } = await setup();
 
-      const requestParams: PostCreateRequest = {
+      const requestParams: PostRequest = {
         title: "Random title",
         content: "Random content",
       };
@@ -89,7 +89,7 @@ describe("Post", () => {
     it("updates post if post is from user", async () => {
       const { user } = await setup();
 
-      const requestParams: PostCreateRequest = {
+      const requestParams: PostRequest = {
         title: "Random title",
         content: "Random content",
       };
@@ -97,12 +97,11 @@ describe("Post", () => {
       const entity = new PostEntity();
       const post = await entity.create(requestParams, user.id);
 
-      const newParams: PostUpdateRequest = {
-        id: post.id,
+      const newParams: PostRequest = {
         title: "New title",
         content: "New content",
       };
-      await entity.update(newParams, user.id);
+      await entity.update(newParams, post.id, user.id);
 
       const result = await prisma.post_MiniBlog.findUnique({ where: { id: post.id } });
 
@@ -113,7 +112,7 @@ describe("Post", () => {
     it("does not update post if post is from different user", async () => {
       const { user } = await setup();
 
-      const requestParams: PostCreateRequest = {
+      const requestParams: PostRequest = {
         title: "Random title",
         content: "Random content",
       };
@@ -121,14 +120,13 @@ describe("Post", () => {
       const entity = new PostEntity();
       const post = await entity.create(requestParams, user.id);
 
-      const newParams: PostUpdateRequest = {
-        id: post.id,
+      const newParams: PostRequest = {
         title: "New title",
         content: "New content",
       };
 
       await expect(async () => {
-        await entity.update(newParams, "random_user_id");
+        await entity.update(newParams, post.id, "random_user_id");
       }).rejects.toThrowError("Forbidden");
     });
   });
@@ -137,7 +135,7 @@ describe("Post", () => {
     it("deletes post if post is from user", async () => {
       const { user } = await setup();
 
-      const requestParams: PostCreateRequest = {
+      const requestParams: PostRequest = {
         title: "Random title",
         content: "Random content",
       };
@@ -155,7 +153,7 @@ describe("Post", () => {
     it("does not delete post if post is from different user", async () => {
       const { user } = await setup();
 
-      const requestParams: PostCreateRequest = {
+      const requestParams: PostRequest = {
         title: "Random title",
         content: "Random content",
       };

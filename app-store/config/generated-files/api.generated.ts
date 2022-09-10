@@ -5,9 +5,9 @@
 type ApiEndpoints = { [key: string]: unknown };
 
 export const apiEndpoints: ApiEndpoints = {
+  "mini-blog/posts/[id]/delete": import("../../apps/mini-blog/pages/api/posts/[id]/delete"),
+  "mini-blog/posts/[id]/show": import("../../apps/mini-blog/pages/api/posts/[id]/show"),
+  "mini-blog/posts/[id]/update": import("../../apps/mini-blog/pages/api/posts/[id]/update"),
   "mini-blog/posts/create": import("../../apps/mini-blog/pages/api/posts/create"),
-  "mini-blog/posts/delete": import("../../apps/mini-blog/pages/api/posts/delete"),
   "mini-blog/posts/list": import("../../apps/mini-blog/pages/api/posts/list"),
-  "mini-blog/posts/show": import("../../apps/mini-blog/pages/api/posts/show"),
-  "mini-blog/posts/update": import("../../apps/mini-blog/pages/api/posts/update"),
 };

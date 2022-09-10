@@ -1,4 +1,4 @@
-import { PostCreateRequest, PostUpdateRequest } from "@app-store/apps/mini-blog/api-contracts/post.schema";
+import { PostRequest } from "@app-store/apps/mini-blog/api-contracts/post.schema";
 import ForbiddenError from "@app-store/shared/helpers/errors/ForbiddenError";
 import prisma from "@app-store/shared/helpers/prisma";
 
@@ -13,7 +13,7 @@ export default class PostEntity {
     return post;
   }
 
-  async create(params: PostCreateRequest, userId: string) {
+  async create(params: PostRequest, userId: string) {
     const { title, content } = params;
 
     const response = await prisma.post_MiniBlog.create({
@@ -27,10 +27,10 @@ export default class PostEntity {
     return response;
   }
 
-  async update(params: PostUpdateRequest, userId: string) {
+  async update(params: PostRequest, postId: string, userId: string) {
     const { title, content } = params;
 
-    const post = await this.find(params.id, userId);
+    const post = await this.find(postId, userId);
 
     const response = await prisma.post_MiniBlog.update({
       where: { id: post.id },
