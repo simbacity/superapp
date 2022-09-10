@@ -5,26 +5,32 @@ import { NextApiHandler } from "next";
 type Module = { default: unknown };
 
 export default class AppStoreApiProxyEntity {
-  allowedActions = ["show", "create", "update", "delete", "list"];
-
   async run(requestQuery: unknown) {
     if (!Array.isArray(requestQuery)) {
       throw new NotFoundError("Not found");
     }
 
-    const [appNamespace, resourceName, actionName] = requestQuery;
+    // ['mini-blog', 'posts', 'id123', 'update']
+    const hasDynamicId = requestQuery.length === 4;
 
-    const isAllowedAction = this.allowedActions.includes(actionName);
-    if (requestQuery.length !== 3 || !isAllowedAction) {
-      const errorMessage =
-        "Only these actions are allowed: show.ts, create.ts, update.ts, delete.ts, list.ts";
-      throw new NotFoundError(errorMessage);
-    }
+    // mini-blog
+    const appNamespace = requestQuery[0];
 
-    const module = (await apiEndpoints[`${appNamespace}/${resourceName}/${actionName}`]) as Module;
+    // posts
+    const resourceName = requestQuery[1];
+
+    // id123
+    const id = hasDynamicId ? requestQuery[2] : undefined;
+
+    // update
+    const actionName = hasDynamicId ? requestQuery[3] : requestQuery[2];
+
+    const resourcePath = hasDynamicId ? `${resourceName}/[id]` : resourceName;
+    const endpointKey = `${appNamespace}/${resourcePath}/${actionName}`;
+    const module = (await apiEndpoints[endpointKey]) as Module;
     if (!module) throw new NotFoundError("Not found");
 
     const apiHandler = module.default as NextApiHandler;
-    return apiHandler;
+    return { apiHandler, id };
   }
 }
