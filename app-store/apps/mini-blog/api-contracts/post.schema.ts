@@ -9,8 +9,8 @@ export const postSchema = z.object({
 export const postListSchema = z.array(postSchema);
 
 export const postRequestSchema = z.object({
-  title: z.string(),
-  content: z.string(),
+  title: z.string().min(1),
+  content: z.string().min(1),
 });
 
 export type PostResponse = z.TypeOf<typeof postSchema>;
