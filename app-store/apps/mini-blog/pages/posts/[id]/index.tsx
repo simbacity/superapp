@@ -12,7 +12,7 @@ interface PostParams {
 export default function Post({ id }: PostParams) {
   const router = useRouter();
   const { data: post } = useGetPost(id);
-  const deletePost = useDeletePost(id);
+  const deletePost = useDeletePost();
 
   const onDeleteHandler = (id: string) => {
     if (window.confirm("Are you sure you want to delete this post?")) {
