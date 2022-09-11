@@ -2,8 +2,8 @@ import chokidar from "chokidar";
 import { debounce } from "lodash";
 import path from "path";
 
-import AppStoreApiFileGenerator from "../business-logic/AppStoreApiFileGenerator";
-import AppStoreFrontendFileGenerator from "../business-logic/AppStoreFrontendFileGenerator";
+import AppStoreApiFileGenerator from "../business-logic/app-store-api-file-generator.entity";
+import AppStoreFrontendFileGenerator from "../business-logic/app-store-frontend-file-generator.entity";
 
 const APPS_PATH = path.join(__dirname, "..", "app-store", "apps");
 const appStoreFrontendFileGeneratorEntity = new AppStoreFrontendFileGenerator();

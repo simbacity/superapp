@@ -1,4 +1,4 @@
-import { RequestParams } from "@api-contracts/invitees/create";
+import { InviteeRequest } from "@api-contracts/invitee.schema";
 import axios from "axios";
 import { CtxOrReq } from "next-auth/client/_utils";
 import { AppProviders } from "next-auth/providers";
@@ -24,7 +24,7 @@ export default function SignIn({ providers }: SignInProps) {
   async function handleSubmit(e: React.SyntheticEvent) {
     e.preventDefault();
 
-    const params: RequestParams = {
+    const params: InviteeRequest = {
       email,
       token: inviteCode,
     };

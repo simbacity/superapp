@@ -1,5 +1,5 @@
 import HttpError from "@app-store/shared/helpers/errors/HttpError";
-import AppStoreApiProxyEntity from "@business-logic/AppStoreApiProxy";
+import AppStoreApiProxyEntity from "@business-logic/app-store-api-proxy.entity";
 import { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
