@@ -32,7 +32,7 @@ export default function PostForm({ formValues }: PostFormParams) {
     updatePost.mutate(
       { id: formValues.id, data },
       {
-        onSuccess() {
+        onSuccess: () => {
           alert("Post updated successfully.");
           router.push("/apps/mini-blog");
         },

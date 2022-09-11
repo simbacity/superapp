@@ -17,7 +17,7 @@ export default function PostForm() {
 
   function onSubmitHandler(data: PostRequest) {
     createPost.mutate(data, {
-      onSuccess(response) {
+      onSuccess: (response) => {
         alert("Post created successfully.");
         router.push(`/apps/mini-blog/posts/${response.id}`);
       },
