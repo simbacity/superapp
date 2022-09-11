@@ -82,7 +82,7 @@ export function useUpdatePost() {
   };
 
   return useMutation(updatePost, {
-    onSuccess({ id }) {
+    onSuccess: ({ id }) => {
       queryClient.invalidateQueries(["mini-blog", "posts", "show", id]);
       queryClient.invalidateQueries(["mini-blog", "posts", "list"]);
     },

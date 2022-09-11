@@ -66,7 +66,7 @@ export function useCreatePost() {
   };
 
   return useMutation(createPost, {
-    onSuccess() {
+    onSuccess: () => {
       queryClient.invalidateQueries(["mini-blog", "posts", "list"]);
     },
   });

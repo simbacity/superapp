@@ -69,7 +69,7 @@ export function useDeletePost() {
   };
 
   return useMutation((id: string) => deletePost(id), {
-    onSuccess() {
+    onSuccess: () => {
       queryClient.invalidateQueries(["mini-blog", "posts", "list"]);
     },
   });
