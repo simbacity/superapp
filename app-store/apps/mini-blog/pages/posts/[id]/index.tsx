@@ -65,7 +65,7 @@ export function useDeletePost() {
   const queryClient = useQueryClient();
   const deletePost = async (id: string) => {
     const response = await axios.delete(`/api/apps/mini-blog/posts/${id}/delete`);
-    return response.data;
+    return postSchema.parse(response.data);
   };
 
   return useMutation((id: string) => deletePost(id), {

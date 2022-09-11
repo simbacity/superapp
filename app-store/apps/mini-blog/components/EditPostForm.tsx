@@ -14,11 +14,6 @@ interface PostFormParams {
   formValues: PostResponse;
 }
 
-interface UpdatePostHook {
-  id: string;
-  data: PostRequest;
-}
-
 export default function PostForm({ formValues }: PostFormParams) {
   const form = useForm<PostRequest>({
     defaultValues: formValues,
@@ -74,9 +69,14 @@ export default function PostForm({ formValues }: PostFormParams) {
 }
 
 export function useUpdatePost() {
+  interface UpdatePostParams {
+    id: string;
+    data: PostRequest;
+  }
+
   const queryClient = useQueryClient();
 
-  const updatePost = async ({ id, data }: UpdatePostHook) => {
+  const updatePost = async ({ id, data }: UpdatePostParams) => {
     const response = await axios.patch(`/api/apps/mini-blog/posts/${id}/update`, data);
     return postSchema.parse(response.data);
   };
