@@ -4,21 +4,10 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import Link from "next/link";
 
-function usePostsData() {
-  return useQuery(["mini-blog.posts.list"], async () => {
-    const response = await axios.get("/api/apps/mini-blog/posts/list");
-    return postListSchema.parse(response.data);
-  });
-}
-
-function buildPostExcerpt(postContent: string) {
-  return `${postContent.substring(0, 144)}...`;
-}
-
 export default function Index() {
-  const { data: posts } = usePostsData();
+  const { data: posts } = useGetAllPosts();
 
-  if (!posts) return <div>Loading...</div>;
+  if (!posts) return <div className="h1">Loading...</div>;
 
   return (
     <Shell>
@@ -49,4 +38,17 @@ export default function Index() {
       </div>
     </Shell>
   );
+}
+
+export function useGetAllPosts() {
+  const getAllPosts = async () => {
+    const response = await axios.get("/api/apps/mini-blog/posts/list");
+    return postListSchema.parse(response.data);
+  };
+
+  return useQuery(["mini-blog", "posts", "list"], () => getAllPosts());
+}
+
+function buildPostExcerpt(postContent: string) {
+  return `${postContent.substring(0, 144)}...`;
 }

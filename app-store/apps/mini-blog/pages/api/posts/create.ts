@@ -1,4 +1,4 @@
-import { postSchema, PostResponse } from "@app-store/apps/mini-blog/api-contracts/post.schema";
+import { postRequestSchema, PostResponse } from "@app-store/apps/mini-blog/api-contracts/post.schema";
 import PostEntity from "@app-store/apps/mini-blog/business-logic/post.entity";
 import HttpError from "@app-store/shared/helpers/errors/HttpError";
 import { NextApiRequest, NextApiResponse } from "next";
@@ -13,7 +13,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const entity = new PostEntity();
 
   try {
-    const requestBody = postSchema.parse(req.body);
+    const requestBody = postRequestSchema.parse(req.body);
     const response: PostResponse = await entity.create(requestBody, session.user.id);
     return res.status(200).json(response);
   } catch (error) {
