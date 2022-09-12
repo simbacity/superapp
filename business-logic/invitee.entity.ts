@@ -1,14 +1,14 @@
-import { RequestParams } from "@api-contracts/invitees/create";
+import { InviteeRequest } from "@api-contracts/invitee.schema";
 import NotFoundError from "@app-store/shared/helpers/errors/NotFoundError";
 import prisma from "@app-store/shared/helpers/prisma";
-import InviteCodeEntity from "@business-logic/InviteCode";
+import InviteCodeEntity from "@business-logic/invite-code.entity";
 
 export default class InviteeEntity {
-  async create(params: RequestParams) {
+  async create(params: InviteeRequest) {
     const { token, email } = params;
 
     const existingInvitee = await this.find(email);
-    if (existingInvitee) return existingInvitee;
+    if (existingInvitee) return { ...existingInvitee, token };
 
     const inviteCode = await new InviteCodeEntity().find(token);
     if (!inviteCode?.valid) throw new NotFoundError("Not found");
@@ -19,7 +19,8 @@ export default class InviteeEntity {
       },
     });
 
-    return invitee;
+    const response = { ...invitee, token };
+    return response;
   }
 
   async find(email: string) {

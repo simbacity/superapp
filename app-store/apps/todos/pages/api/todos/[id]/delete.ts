@@ -1,12 +1,11 @@
 import { TodoResponse } from "@app-store/apps/todos/api-contracts/todo.schema";
 import TodoEntity from "@app-store/apps/todos/business-logic/todo.entity";
 import HttpError from "@app-store/shared/helpers/errors/HttpError";
-import NotFoundError from "@app-store/shared/helpers/errors/NotFoundError";
 import { NextApiRequest, NextApiResponse } from "next";
 import { getSession } from "next-auth/react";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method !== "GET") return;
+  if (req.method !== "DELETE") return;
 
   const session = await getSession({ req });
   if (!session?.user?.id) return res.status(401).json("Not authenticated");
@@ -14,10 +13,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const entity = new TodoEntity();
 
   try {
-    const id = req.query.id;
-    if (Array.isArray(id)) throw new NotFoundError("Not found");
-
-    const response: TodoResponse = await entity.find(id, session.user.id);
+    const id = req.query.id.toString();
+    const response: TodoResponse = await entity.delete(id, session.user.id);
     return res.status(200).json(response);
   } catch (error) {
     if (error instanceof HttpError) return res.status(error.code).json(error.message);

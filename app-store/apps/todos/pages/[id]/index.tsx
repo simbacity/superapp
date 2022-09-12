@@ -1,7 +1,7 @@
 import { todoSchema } from "@app-store/apps/todos/api-contracts/todo.schema";
 import daysjs from "@app-store/apps/todos/business-logic/Days";
 import Shell from "@app-store/shared/components/Shell";
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -10,27 +10,41 @@ interface TodoParams {
   id: string;
 }
 
-function useTodoData(id: string) {
-  return useQuery(["todos.show"], async () => {
-    const response = await axios.get("/api/apps/todos/todos/show", { params: { id } });
+export function useGetTodo(id: string) {
+  const getTodo = async (id: string) => {
+    const response = await axios.get(`/api/apps/todos/todos/${id}/show`);
     return todoSchema.parse(response.data);
-  });
+  };
+
+  return useQuery(["todo", "todos", "show", id], () => getTodo(id));
 }
 
-async function useMutateTodo(id: string) {
-  const response = await axios.delete("/api/apps/todos/todos/delete", { data: { id } });
-  return response;
+export function useDeleteTodo() {
+  const queryClient = useQueryClient();
+  const deleteTodo = async (id: string) => {
+    const response = await axios.delete(`/api/apps/todos/todos/${id}/delete`);
+    return todoSchema.parse(response.data);
+  };
+
+  return useMutation((id: string) => deleteTodo(id), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(["todo", "todos", "list"]);
+    },
+  });
 }
 
 export default function Todo({ id }: TodoParams) {
   const router = useRouter();
-  const { data: todo } = useTodoData(id);
+  const { data: todo } = useGetTodo(id);
+  const deleteTodo = useDeleteTodo();
 
-  const { mutate } = useMutation(useMutateTodo, {
-    onSuccess() {
-      router.back();
-    },
-  });
+  const onDeleteHandler = (id: string) => {
+    deleteTodo.mutate(id, {
+      onSuccess: () => {
+        router.push("/apps/todos");
+      },
+    });
+  };
 
   if (!todo) return <div>Loading....</div>;
 
@@ -57,7 +71,7 @@ export default function Todo({ id }: TodoParams) {
             <Link href={`/apps/todos/${todo.id}/edit`}>
               <a className="link mr-4">[edit]</a>
             </Link>
-            <button className="danger-button--small" onClick={() => mutate(todo.id)}>
+            <button className="danger-button--small" onClick={() => onDeleteHandler(id)}>
               Delete
             </button>
           </div>

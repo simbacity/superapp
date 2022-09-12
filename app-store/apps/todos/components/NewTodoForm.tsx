@@ -1,35 +1,40 @@
-import { TodoCreateRequest, todoCreateSchema } from "@app-store/apps/todos/api-contracts/todo.schema";
+import { TodoRequest, todoRequestSchema, todoSchema } from "@app-store/apps/todos/api-contracts/todo.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useForm, Controller } from "react-hook-form";
 import Select from "react-select";
 
-type TodoCreateRequestParams = Omit<TodoCreateRequest, "status">;
-const todoCreateSchemaNoStatus = todoCreateSchema.omit({ status: true });
+type TodoCreateRequestParams = Omit<TodoRequest, "status">;
+const todoCreateSchemaNoStatus = todoRequestSchema.omit({ status: true });
 
-async function useMutateTodo(data: TodoCreateRequestParams) {
-  const response = await axios.post("/api/apps/todos/todos/create", data);
+export function useCreateTodo() {
+  const queryClient = useQueryClient();
 
-  return response;
+  const createTodo = async (data: TodoCreateRequestParams) => {
+    const response = await axios.post("/api/apps/todos/todos/create", data);
+    return todoSchema.parse(response);
+  };
+
+  return useMutation(createTodo, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(["todo", "todos", "list"]);
+    },
+  });
 }
 
 export default function TodoForm() {
   const router = useRouter();
-
-  const {
-    handleSubmit,
-    register,
-    control,
-    formState: { errors },
-  } = useForm<TodoCreateRequestParams>({ resolver: zodResolver(todoCreateSchemaNoStatus) });
-
-  const { mutate, isLoading } = useMutation(useMutateTodo);
+  const form = useForm<TodoCreateRequestParams>({ resolver: zodResolver(todoCreateSchemaNoStatus) });
+  const formErrors = form.formState.errors;
+  const createTodo = useCreateTodo();
 
   function onSubmit(data: TodoCreateRequestParams) {
-    mutate(data, {
-      onSuccess: () => router.back(),
+    createTodo.mutate(data, {
+      onSuccess: (response) => {
+        router.push(`/apps/todos/${response.id}`);
+      },
     });
   }
 
@@ -40,31 +45,37 @@ export default function TodoForm() {
   ];
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={form.handleSubmit(onSubmit)}>
       <div>
         <label htmlFor="label_title" className="label">
           Title (*)
         </label>
-        <input {...register("title")} id="label_title" name="title" type="text" className="input" />
-        {errors.title?.message && <p className="error-text">{errors.title.message}</p>}
+        <input {...form.register("title")} id="label_title" name="title" type="text" className="input" />
+        {formErrors.title?.message && <p className="error-text">{formErrors.title.message}</p>}
       </div>
       <div>
         <label htmlFor="label_content" className="label">
           Content (*)
         </label>
         <textarea
-          {...register("content")}
+          {...form.register("content")}
           className="textarea"
           name="content"
           placeholder="You can break down the todo"
         />
-        {errors.content?.message && <p className="error-text">{errors.content.message}</p>}
+        {formErrors.content?.message && <p className="error-text">{formErrors.content.message}</p>}
       </div>
       <div>
         <label htmlFor="label_category" className="label">
           Category
         </label>
-        <input {...register("category")} id="label_category" name="category" type="text" className="input" />
+        <input
+          {...form.register("category")}
+          id="label_category"
+          name="category"
+          type="text"
+          className="input"
+        />
       </div>
       <div className="flex">
         <div className="s:w-full md:w-1/2 mr-2">
@@ -72,7 +83,7 @@ export default function TodoForm() {
             Due Date
           </label>
           <input
-            {...register("dueDate")}
+            {...form.register("dueDate")}
             id="label_dueDate"
             name="dueDate"
             type="datetime-local"
@@ -84,7 +95,7 @@ export default function TodoForm() {
             Priority
           </label>
           <Controller
-            control={control}
+            control={form.control}
             name="priority"
             defaultValue={options[0].value}
             render={({ field: { onChange, name, ref } }) => (
@@ -106,7 +117,9 @@ export default function TodoForm() {
         </button>
         <button
           type="submit"
-          className={`${isLoading ? "default-button--medium--disabled" : "default-button--medium"}`}>
+          className={`${
+            createTodo.isLoading ? "default-button--medium--disabled" : "default-button--medium"
+          }`}>
           Save
         </button>
       </div>

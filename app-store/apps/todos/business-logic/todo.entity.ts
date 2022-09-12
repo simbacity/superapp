@@ -1,4 +1,4 @@
-import { TodoCreateRequest, TodoUpdateRequest } from "@app-store/apps/todos/api-contracts/todo.schema";
+import { TodoRequest } from "@app-store/apps/todos/api-contracts/todo.schema";
 import ForbiddenError from "@app-store/shared/helpers/errors/ForbiddenError";
 import prisma from "@app-store/shared/helpers/prisma";
 
@@ -13,7 +13,7 @@ export default class TodoEntity {
     return todo;
   }
 
-  async create(params: TodoCreateRequest, userId: string) {
+  async create(params: TodoRequest, userId: string) {
     const { title, content, status, category, priority, dueDate } = params;
 
     const response = await prisma.post_Todo.create({
@@ -31,10 +31,10 @@ export default class TodoEntity {
     return response;
   }
 
-  async update(params: TodoUpdateRequest, userId: string) {
+  async update(params: TodoRequest, todoId: string, userId: string) {
     const { title, content, status, category, priority, dueDate } = params;
 
-    const todo = await this.find(params.id, userId);
+    const todo = await this.find(todoId, userId);
 
     const response = await prisma.post_Todo.update({
       where: { id: todo.id },

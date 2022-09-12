@@ -6,15 +6,17 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import Link from "next/link";
 
-function useTodosData() {
-  return useQuery(["todo.todos.list"], async () => {
+export function useGetAllTodos() {
+  const getAllTodos = async () => {
     const response = await axios.get("/api/apps/todos/todos/list");
     return todoListSchema.parse(response.data);
-  });
+  };
+
+  return useQuery(["todo", "todos", "list"], () => getAllTodos());
 }
 
 export default function Index() {
-  const { data: todos } = useTodosData();
+  const { data: todos } = useGetAllTodos();
 
   if (!todos) return <div>Loading...</div>;
 
@@ -46,7 +48,6 @@ export default function Index() {
                 <button className="default-button--small">All</button>
                 <button className="default-button--small">In progress</button>
                 <button className="primary-button--small">Complete</button>
-                <button className="danger-button--small">Past Due</button>
               </div>
               <div className="flex items-center">
                 <Link href="/apps/todos/new">

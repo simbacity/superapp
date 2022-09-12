@@ -1,7 +1,7 @@
-import { RequestParams } from "@api-contracts/invitees/create";
+import { InviteeRequest } from "@api-contracts/invitee.schema";
 import prisma from "@app-store/shared/helpers/prisma";
 import { teardown } from "@app-store/shared/helpers/tests/teardown";
-import InviteeEntity from "@business-logic/Invitee";
+import InviteeEntity from "@business-logic/invitee.entity";
 import { Invitee } from "@prisma/client";
 
 describe("Invitee", () => {
@@ -17,7 +17,7 @@ describe("Invitee", () => {
         },
       });
 
-      const requestParams: RequestParams = {
+      const requestParams: InviteeRequest = {
         token: inviteCode.token,
         email: "random@example.com",
       };
@@ -38,7 +38,7 @@ describe("Invitee", () => {
         },
       });
 
-      const requestParams: RequestParams = {
+      const requestParams: InviteeRequest = {
         token: inviteCode.token,
         email: "random@example.com",
       };
@@ -46,7 +46,7 @@ describe("Invitee", () => {
       const entity = new InviteeEntity();
       await entity.create(requestParams);
 
-      const requestParamsSecondTry: RequestParams = { ...requestParams, token: "WRONG-TOKEN" };
+      const requestParamsSecondTry: InviteeRequest = { ...requestParams, token: "WRONG-TOKEN" };
       const response = await entity.create(requestParamsSecondTry);
       const invitee = (await prisma.invitee.findUnique({ where: { id: response?.id } })) as Invitee;
 
@@ -60,7 +60,7 @@ describe("Invitee", () => {
         },
       });
 
-      const requestParams: RequestParams = {
+      const requestParams: InviteeRequest = {
         token: "NOT-CORRECT",
         email: "random@example.com",
       };
@@ -81,7 +81,7 @@ describe("Invitee", () => {
         },
       });
 
-      const requestParams: RequestParams = {
+      const requestParams: InviteeRequest = {
         token: inviteCode.token,
         email: "random@example.com",
       };

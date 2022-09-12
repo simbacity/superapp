@@ -1,5 +1,5 @@
 import prisma from "@app-store/shared/helpers/prisma";
-import InviteeEntity from "@business-logic/Invitee";
+import InviteeEntity from "@business-logic/invitee.entity";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";

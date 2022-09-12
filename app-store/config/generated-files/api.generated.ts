@@ -5,14 +5,14 @@
 type ApiEndpoints = { [key: string]: unknown };
 
 export const apiEndpoints: ApiEndpoints = {
+  "mini-blog/posts/[id]/delete": import("../../apps/mini-blog/pages/api/posts/[id]/delete"),
+  "mini-blog/posts/[id]/show": import("../../apps/mini-blog/pages/api/posts/[id]/show"),
+  "mini-blog/posts/[id]/update": import("../../apps/mini-blog/pages/api/posts/[id]/update"),
   "mini-blog/posts/create": import("../../apps/mini-blog/pages/api/posts/create"),
-  "mini-blog/posts/delete": import("../../apps/mini-blog/pages/api/posts/delete"),
   "mini-blog/posts/list": import("../../apps/mini-blog/pages/api/posts/list"),
-  "mini-blog/posts/show": import("../../apps/mini-blog/pages/api/posts/show"),
-  "mini-blog/posts/update": import("../../apps/mini-blog/pages/api/posts/update"),
+  "todos/todos/[id]/delete": import("../../apps/todos/pages/api/todos/[id]/delete"),
+  "todos/todos/[id]/show": import("../../apps/todos/pages/api/todos/[id]/show"),
+  "todos/todos/[id]/update": import("../../apps/todos/pages/api/todos/[id]/update"),
   "todos/todos/create": import("../../apps/todos/pages/api/todos/create"),
-  "todos/todos/delete": import("../../apps/todos/pages/api/todos/delete"),
   "todos/todos/list": import("../../apps/todos/pages/api/todos/list"),
-  "todos/todos/show": import("../../apps/todos/pages/api/todos/show"),
-  "todos/todos/update": import("../../apps/todos/pages/api/todos/update"),
 };
