@@ -1,6 +1,6 @@
 import { todoListSchema, TodoResponse } from "@app-store/apps/todos/api-contracts/todo.schema";
-import dayjs from "@app-store/apps/todos/business-logic/Days";
 import TodoItem from "@app-store/apps/todos/components/TodoItem";
+import dayjs from "@app-store/apps/todos/utils/Days";
 import Shell from "@app-store/shared/components/Shell";
 import { XCircleIcon } from "@heroicons/react/outline";
 import { PlusCircleIcon } from "@heroicons/react/solid";

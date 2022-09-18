@@ -14,7 +14,7 @@ export function useCreateTodo() {
 
   const createTodo = async (data: TodoCreateRequestParams) => {
     const response = await axios.post("/api/apps/todos/todos/create", data);
-    return todoSchema.parse(response);
+    return todoSchema.parse(response.data);
   };
 
   return useMutation(createTodo, {

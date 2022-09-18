@@ -1,5 +1,5 @@
 import { todoSchema } from "@app-store/apps/todos/api-contracts/todo.schema";
-import daysjs from "@app-store/apps/todos/business-logic/Days";
+import daysjs from "@app-store/apps/todos/utils/Days";
 import Shell from "@app-store/shared/components/Shell";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";

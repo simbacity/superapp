@@ -1,6 +1,6 @@
 import { TodoResponse } from "@app-store/apps/todos/api-contracts/todo.schema";
+import dayjs from "@app-store/apps/todos/utils/Days";
 import { ArrowCircleRightIcon } from "@heroicons/react/solid";
-import dayjs from "app-store/apps/todos/business-logic/Days";
 import Link from "next/link";
 
 interface TodoItemParams {
