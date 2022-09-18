@@ -7,7 +7,7 @@ import { PlusCircleIcon } from "@heroicons/react/solid";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export function useGetAllTodos() {
   const getAllTodos = async () => {
@@ -18,35 +18,29 @@ export function useGetAllTodos() {
   return useQuery(["todo", "todos", "list"], () => getAllTodos());
 }
 
-const durationFilterHandler = (filter: string, data: TodoResponse[] | undefined) => {
-  if (!data) return;
+const durationFilterHandler = (todos: TodoResponse[] | undefined, filter: string) => {
+  if (!todos) return;
+  if (!filter) return todos;
   if (filter === "today") {
-    return { data: data.filter((item) => dayjs(item.dueDate).isToday()) };
+    return todos.filter((item) => dayjs(item.dueDate).isToday());
   }
   if (filter === "tomorrow") {
-    return { data: data.filter((item) => dayjs(item.dueDate).isTomorrow()) };
+    return todos.filter((item) => dayjs(item.dueDate).isTomorrow());
   }
   if (filter === "this-week") {
-    return { data: data.filter((item) => dayjs(item.dueDate).week() === dayjs().week()) };
+    return todos.filter((item) => dayjs(item.dueDate).week() === dayjs().week());
   }
   if (filter === "upcoming") {
-    return { data: data.filter((item) => dayjs().isBefore(item.dueDate, "day")) };
+    return todos.filter((item) => dayjs().isBefore(item.dueDate, "day"));
   }
 };
 
 export default function Index() {
   const { data: todos } = useGetAllTodos();
-  const [todoData, setTodoData] = useState<TodoResponse[] | undefined>([]);
   const [durationFilter, setDurationFilter] = useState("");
 
-  useEffect(() => {
-    setTodoData(todos);
-  }, [todos]);
-
-  const filterHandler = (filter: string) => {
-    setDurationFilter(filter);
-    const data = durationFilterHandler(filter, todos);
-    setTodoData(data?.data);
+  const filterTodos = () => {
+    return durationFilterHandler(todos, durationFilter);
   };
 
   if (!todos) return <div>Loading...</div>;
@@ -61,22 +55,22 @@ export default function Index() {
             <aside className="w-full sm:w-1/3 md:w-1/4 px-2">
               <div className="sticky top-0 p-4 w-full">
                 <ul className="py-2 border-b-2">
-                  <a className="link" onClick={() => filterHandler("today")}>
+                  <a className="link" onClick={() => setDurationFilter("today")}>
                     Today
                   </a>
                 </ul>
                 <ul className="py-2 border-b-2">
-                  <a className="link" onClick={() => filterHandler("tomorrow")}>
+                  <a className="link" onClick={() => setDurationFilter("tomorrow")}>
                     Tomorrow
                   </a>
                 </ul>
                 <ul className="py-2 border-b-2">
-                  <a className="link" onClick={() => filterHandler("this-week")}>
+                  <a className="link" onClick={() => setDurationFilter("this-week")}>
                     This week
                   </a>
                 </ul>
                 <ul className="py-2 border-b-2">
-                  <a className="link" onClick={() => filterHandler("upcoming")}>
+                  <a className="link" onClick={() => setDurationFilter("upcoming")}>
                     Upcoming
                   </a>
                 </ul>
@@ -97,14 +91,13 @@ export default function Index() {
                       className="w-5 h-5 text-white cursor-pointer"
                       onClick={() => {
                         setDurationFilter("");
-                        setTodoData(todos);
                       }}
                     />
                   </div>
                 )}
               </div>
               <div>
-                {todoData?.map((item) => (
+                {filterTodos()?.map((item) => (
                   <TodoItem key={item.id} values={item} />
                 ))}
               </div>
