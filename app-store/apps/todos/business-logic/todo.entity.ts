@@ -1,6 +1,6 @@
 import { TodoRequest } from "@app-store/apps/todos/api-contracts/todo.schema";
-import ForbiddenError from "@app-store/shared/helpers/errors/ForbiddenError";
-import prisma from "@app-store/shared/helpers/prisma";
+import ForbiddenError from "@app-store/shared/utils/errors/ForbiddenError";
+import prisma from "@app-store/shared/utils/prisma";
 
 export default class TodoEntity {
   async find(id: string, userId: string) {

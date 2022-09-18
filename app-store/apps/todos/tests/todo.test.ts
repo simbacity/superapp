@@ -1,8 +1,8 @@
 import { TodoRequest } from "@app-store/apps/todos/api-contracts/todo.schema";
 import TodoEntity from "@app-store/apps/todos/business-logic/todo.entity";
-import prisma from "@app-store/shared/helpers/prisma";
-import { setup } from "@app-store/shared/helpers/tests/setup";
-import { teardown } from "@app-store/shared/helpers/tests/teardown";
+import prisma from "@app-store/shared/utils/prisma";
+import { setup } from "@app-store/shared/utils/tests/setup";
+import { teardown } from "@app-store/shared/utils/tests/teardown";
 import { Post_Todo } from "@prisma/client";
 
 describe("Todo", () => {

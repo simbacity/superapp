@@ -1,6 +1,6 @@
 import { TodoResponse } from "@app-store/apps/todos/api-contracts/todo.schema";
 import TodoEntity from "@app-store/apps/todos/business-logic/todo.entity";
-import HttpError from "@app-store/shared/helpers/errors/HttpError";
+import HttpError from "@app-store/shared/utils/errors/HttpError";
 import { NextApiRequest, NextApiResponse } from "next";
 import { getSession } from "next-auth/react";
 
