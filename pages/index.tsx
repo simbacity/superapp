@@ -21,7 +21,7 @@ export default function Index() {
           </p>
           <p className="lead-paragraph">
             Being a part of Simba means you’ll be surrounded by a community of highly ambitious people with
-            big dreams and the skills to make them a reality.
+            big dreams and the grit to make them a reality.
           </p>
           <h2 className="h2">Who should join?</h2>
           <p className="lead-paragraph">
