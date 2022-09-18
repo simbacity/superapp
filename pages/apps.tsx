@@ -9,6 +9,13 @@ export default function Home() {
           <h1 className="h1">Apps | Simba City</h1>
           <section className="pb-6 border-b-4 border-white border-dotted"></section>
           <section className="py-6 border-b-4 border-white border-dotted">
+            <h2 className="h2">Town Square</h2>
+            <p className="lead-paragraph">The place where we communicate. Similar to Discord, Slack, etc.</p>
+            <Link href="/apps/town-square">
+              <a className="default-button--medium">Open App</a>
+            </Link>
+          </section>
+          <section className="py-6 border-b-4 border-white border-dotted">
             <h2 className="h2">Mini Blog</h2>
             <p className="lead-paragraph">
               A minimalistic blog. You can use it as a boilerplate when building a Simba App.
