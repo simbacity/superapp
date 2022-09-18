@@ -1,4 +1,4 @@
-import { TodoCreateRequest, TodoUpdateRequest } from "@app-store/apps/todos/api-contracts/todo.schema";
+import { TodoRequest } from "@app-store/apps/todos/api-contracts/todo.schema";
 import TodoEntity from "@app-store/apps/todos/business-logic/todo.entity";
 import prisma from "@app-store/shared/helpers/prisma";
 import { setup } from "@app-store/shared/helpers/tests/setup";
@@ -14,13 +14,13 @@ describe("Todo", () => {
     it("finds todo", async () => {
       const { user } = await setup();
 
-      const requestParams: TodoCreateRequest = {
+      const requestParams: TodoRequest = {
         title: "This is the title of the todo",
         content: "This is the content of the todo",
         category: "This is the category of the todo",
         priority: "This is the priority of the todo",
         status: "This is the priority of the todo",
-        dueDate: new Date("December 25, 2022 00:00:00").toString(),
+        dueDate: new Date("December 25, 2022 00:00:00"),
       };
 
       const entity = new TodoEntity();
@@ -33,19 +33,19 @@ describe("Todo", () => {
       expect(todo.category).toBe(requestParams.category);
       expect(todo.priority).toBe(requestParams.priority);
       expect(todo.status).toBe(requestParams.status);
-      expect(todo.dueDate).toBe(requestParams.dueDate);
+      expect(todo.dueDate).toStrictEqual(requestParams.dueDate);
     });
 
     it("throws error if todo is from a different user", async () => {
       const { user } = await setup();
 
-      const requestParams: TodoCreateRequest = {
+      const requestParams: TodoRequest = {
         title: "This is the title of the todo",
         content: "This is the content of the todo",
         category: "This is the category of the todo",
         priority: "This is the priority of the todo",
         status: "This is the priority of the todo",
-        dueDate: new Date("December 25, 2022 00:00:00").toString(),
+        dueDate: new Date("December 25, 2022 00:00:00"),
       };
 
       const entity = new TodoEntity();
@@ -62,13 +62,13 @@ describe("Todo", () => {
     it("creates todo", async () => {
       const { user } = await setup();
 
-      const requestParams: TodoCreateRequest = {
+      const requestParams: TodoRequest = {
         title: "This is the title of the todo",
         content: "This is the content of the todo",
         category: "This is the category of the todo",
         priority: "This is the priority of the todo",
         status: "This is the priority of the todo",
-        dueDate: new Date("December 25, 2022 00:00:00").toString(),
+        dueDate: new Date("December 25, 2022 00:00:00"),
       };
 
       const entity = new TodoEntity();
@@ -81,7 +81,7 @@ describe("Todo", () => {
       expect(todo.category).toBe(requestParams.category);
       expect(todo.priority).toBe(requestParams.priority);
       expect(todo.status).toBe(requestParams.status);
-      expect(todo.dueDate).toBe(requestParams.dueDate);
+      expect(todo.dueDate).toStrictEqual(requestParams.dueDate);
     });
   });
 
@@ -89,13 +89,13 @@ describe("Todo", () => {
     it("lists todos", async () => {
       const { user } = await setup();
 
-      const requestParams: TodoCreateRequest = {
+      const requestParams: TodoRequest = {
         title: "This is the title of the todo",
         content: "This is the content of the todo",
         category: "This is the category of the todo",
         priority: "This is the priority of the todo",
         status: "This is the priority of the todo",
-        dueDate: new Date("December 25, 2022 00:00:00").toString(),
+        dueDate: new Date("December 25, 2022 00:00:00"),
       };
 
       const entity = new TodoEntity();
@@ -116,29 +116,28 @@ describe("Todo", () => {
     it("updates todo if todo is from user", async () => {
       const { user } = await setup();
 
-      const requestParams: TodoCreateRequest = {
+      const requestParams: TodoRequest = {
         title: "This is the title of the todo",
         content: "This is the content of the todo",
         category: "This is the category of the todo",
         priority: "This is the priority of the todo",
         status: "This is the priority of the todo",
-        dueDate: new Date("December 25, 2022 00:00:00").toString(),
+        dueDate: new Date("December 25, 2022 00:00:00"),
       };
 
       const entity = new TodoEntity();
       const result = await entity.create(requestParams, user.id);
 
-      const newParams: TodoUpdateRequest = {
-        id: result.id,
+      const newParams: TodoRequest = {
         title: "New title",
         content: "New content",
         category: "New category",
         priority: "New priority",
         status: "New status",
-        dueDate: new Date("December 25, 2023 00:00:00").toString(),
+        dueDate: new Date("December 25, 2023 00:00:00"),
       };
 
-      await entity.update(newParams, user.id);
+      await entity.update(newParams, result.id, user.id);
 
       const update = await prisma.post_Todo.findUnique({ where: { id: result.id } });
 
@@ -147,36 +146,35 @@ describe("Todo", () => {
       expect(update?.category).toBe(newParams.category);
       expect(update?.status).toBe(newParams.status);
       expect(update?.priority).toBe(newParams.priority);
-      expect(update?.dueDate).toBe(newParams.dueDate);
+      expect(update?.dueDate).toStrictEqual(newParams.dueDate);
     });
 
     it("does not update todo if todo is from different user", async () => {
       const { user } = await setup();
 
-      const requestParams: TodoCreateRequest = {
+      const requestParams: TodoRequest = {
         title: "This is the title of the todo",
         content: "This is the content of the todo",
         category: "This is the category of the todo",
         priority: "This is the priority of the todo",
         status: "This is the priority of the todo",
-        dueDate: new Date("December 25, 2022 00:00:00").toString(),
+        dueDate: new Date("December 25, 2022 00:00:00"),
       };
 
       const entity = new TodoEntity();
       const result = await entity.create(requestParams, user.id);
 
-      const newParams: TodoUpdateRequest = {
-        id: result.id,
+      const newParams: TodoRequest = {
         title: "New title",
         content: "New content",
         category: "New category",
         priority: "New priority",
         status: "New status",
-        dueDate: new Date("December 25, 2023 00:00:00").toString(),
+        dueDate: new Date("December 25, 2023 00:00:00"),
       };
 
       await expect(async () => {
-        await entity.update(newParams, "random_user_id");
+        await entity.update(newParams, result.id, "random_user_id");
       }).rejects.toThrowError("Forbidden");
     });
   });
@@ -185,13 +183,13 @@ describe("Todo", () => {
     it("deletes todo if todo is from user", async () => {
       const { user } = await setup();
 
-      const requestParams: TodoCreateRequest = {
+      const requestParams: TodoRequest = {
         title: "This is the title of the todo",
         content: "This is the content of the todo",
         category: "This is the category of the todo",
         priority: "This is the priority of the todo",
         status: "This is the priority of the todo",
-        dueDate: new Date("December 25, 2022 00:00:00").toString(),
+        dueDate: new Date("December 25, 2022 00:00:00"),
       };
 
       const entity = new TodoEntity();
@@ -207,13 +205,13 @@ describe("Todo", () => {
     it("does not delete todo if todo is from different user", async () => {
       const { user } = await setup();
 
-      const requestParams: TodoCreateRequest = {
+      const requestParams: TodoRequest = {
         title: "This is the title of the todo",
         content: "This is the content of the todo",
         category: "This is the category of the todo",
         priority: "This is the priority of the todo",
         status: "This is the priority of the todo",
-        dueDate: new Date("December 25, 2022 00:00:00").toString(),
+        dueDate: new Date("December 25, 2022 00:00:00"),
       };
 
       const entity = new TodoEntity();
