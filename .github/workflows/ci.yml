@@ -1,14 +1,12 @@
-# I DISABLED THE CI FOR NOW
-# REMOVE THE main_DISABLE_FOR_NOW
-# TO ENABLE IT AGAIN
 name: CI
 on:
   push:
     branches:
-      - main_DISABLE_FOR_NOW
+      - main
   pull_request:
     branches:
-      - main_DISABLE_FOR_NOW
+      - main
+      - staging
 jobs:
   ci:
     runs-on: ubuntu-latest
