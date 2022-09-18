@@ -1,4 +1,4 @@
-import prisma from "@app-store/shared/helpers/prisma";
+import prisma from "@app-store/shared/utils/prisma";
 
 export default class InviteCodeEntity {
   async find(token: string) {

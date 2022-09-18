@@ -1,6 +1,6 @@
 import { InviteeRequest } from "@api-contracts/invitee.schema";
-import NotFoundError from "@app-store/shared/helpers/errors/NotFoundError";
-import prisma from "@app-store/shared/helpers/prisma";
+import NotFoundError from "@app-store/shared/utils/errors/NotFoundError";
+import prisma from "@app-store/shared/utils/prisma";
 import InviteCodeEntity from "@business-logic/invite-code.entity";
 
 export default class InviteeEntity {

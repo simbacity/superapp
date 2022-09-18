@@ -1,5 +1,5 @@
 import { inviteeRequestSchema, InviteeResponse } from "@api-contracts/invitee.schema";
-import HttpError from "@app-store/shared/helpers/errors/HttpError";
+import HttpError from "@app-store/shared/utils/errors/HttpError";
 import InviteeEntity from "@business-logic/invitee.entity";
 import { NextApiRequest, NextApiResponse } from "next";
 

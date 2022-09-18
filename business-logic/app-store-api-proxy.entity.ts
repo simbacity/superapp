@@ -1,5 +1,5 @@
 import { apiEndpoints } from "@app-store/config/generated-files/api.generated";
-import NotFoundError from "@app-store/shared/helpers/errors/NotFoundError";
+import NotFoundError from "@app-store/shared/utils/errors/NotFoundError";
 import { NextApiHandler } from "next";
 
 type Module = { default: unknown };

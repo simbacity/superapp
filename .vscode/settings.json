@@ -20,7 +20,7 @@
     "cli": true,
     "pages": true,
     "components": true,
-    "helpers": true,
+    "utils": true,
     "tests": true,
     "styles": true,
     "types": true,

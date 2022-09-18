@@ -1,4 +1,4 @@
-import prisma from "@app-store/shared/helpers/prisma";
+import prisma from "@app-store/shared/utils/prisma";
 import faker from "@faker-js/faker";
 
 export async function setup() {

@@ -1,6 +1,6 @@
 import { PostRequest } from "@app-store/apps/mini-blog/api-contracts/post.schema";
-import ForbiddenError from "@app-store/shared/helpers/errors/ForbiddenError";
-import prisma from "@app-store/shared/helpers/prisma";
+import ForbiddenError from "@app-store/shared/utils/errors/ForbiddenError";
+import prisma from "@app-store/shared/utils/prisma";
 
 export default class PostEntity {
   async find(id: string, userId: string) {

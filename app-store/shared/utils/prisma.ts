@@ -1,4 +1,4 @@
-import { IS_PRODUCTION } from "@app-store/shared/helpers/config/constants";
+import { IS_PRODUCTION } from "@app-store/shared/utils/config/constants";
 import { PrismaClient } from "@prisma/client";
 
 declare global {

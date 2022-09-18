@@ -1,4 +1,4 @@
-import prisma from "@app-store/shared/helpers/prisma";
+import prisma from "@app-store/shared/utils/prisma";
 
 export async function teardown() {
   return Promise.all([
