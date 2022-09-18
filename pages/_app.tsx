@@ -1,4 +1,4 @@
-import { IS_PRODUCTION } from "@app-store/shared/helpers/config/constants";
+import { IS_PRODUCTION } from "@app-store/shared/utils/config/constants";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { SessionProvider } from "next-auth/react";
@@ -16,7 +16,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
       <SessionProvider session={session}>
         <Component {...pageProps} />
       </SessionProvider>
-      <ReactQueryDevtools initialIsOpen={false} />
+      {!IS_PRODUCTION && <ReactQueryDevtools initialIsOpen={false} />}
     </QueryClientProvider>
   );
 }

@@ -1,4 +1,4 @@
-import HttpError from "@app-store/shared/helpers/errors/HttpError";
+import HttpError from "@app-store/shared/utils/errors/HttpError";
 
 export default class BadRequestError extends HttpError {
   code: number;

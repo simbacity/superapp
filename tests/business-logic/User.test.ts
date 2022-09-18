@@ -1,5 +1,5 @@
-import prisma from "@app-store/shared/helpers/prisma";
-import { teardown } from "@app-store/shared/helpers/tests/teardown";
+import prisma from "@app-store/shared/utils/prisma";
+import { teardown } from "@app-store/shared/utils/tests/teardown";
 import UserEntity from "@business-logic/user.entity";
 import { User } from "@prisma/client";
 

@@ -1,8 +1,8 @@
 import { PostRequest } from "@app-store/apps/mini-blog/api-contracts/post.schema";
 import PostEntity from "@app-store/apps/mini-blog/business-logic/post.entity";
-import prisma from "@app-store/shared/helpers/prisma";
-import { setup } from "@app-store/shared/helpers/tests/setup";
-import { teardown } from "@app-store/shared/helpers/tests/teardown";
+import prisma from "@app-store/shared/utils/prisma";
+import { setup } from "@app-store/shared/utils/tests/setup";
+import { teardown } from "@app-store/shared/utils/tests/teardown";
 import { Post_MiniBlog } from "@prisma/client";
 
 describe("Post", () => {

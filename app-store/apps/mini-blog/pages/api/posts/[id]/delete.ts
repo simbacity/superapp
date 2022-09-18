@@ -1,6 +1,6 @@
 import { PostResponse } from "@app-store/apps/mini-blog/api-contracts/post.schema";
 import PostEntity from "@app-store/apps/mini-blog/business-logic/post.entity";
-import HttpError from "@app-store/shared/helpers/errors/HttpError";
+import HttpError from "@app-store/shared/utils/errors/HttpError";
 import { NextApiRequest, NextApiResponse } from "next";
 import { getSession } from "next-auth/react";
 
