@@ -18,9 +18,7 @@ export function useGetAllTodos() {
   return useQuery(["todo", "todos", "list"], () => getAllTodos());
 }
 
-const durationFilterHandler = (todos: TodoResponse[] | undefined, filter: string) => {
-  if (!todos) return;
-  if (!filter) return todos;
+const durationFilterHandler = (todos: TodoResponse[], filter: string) => {
   if (filter === "today") {
     return todos.filter((item) => dayjs(item.dueDate).isToday());
   }
@@ -33,17 +31,19 @@ const durationFilterHandler = (todos: TodoResponse[] | undefined, filter: string
   if (filter === "upcoming") {
     return todos.filter((item) => dayjs().isBefore(item.dueDate, "day"));
   }
+
+  return todos;
 };
 
 export default function Index() {
   const { data: todos } = useGetAllTodos();
   const [durationFilter, setDurationFilter] = useState("");
 
+  if (!todos) return <div>Loading...</div>;
+
   const filterTodos = () => {
     return durationFilterHandler(todos, durationFilter);
   };
-
-  if (!todos) return <div>Loading...</div>;
 
   return (
     <Shell>
@@ -97,7 +97,7 @@ export default function Index() {
                 )}
               </div>
               <div>
-                {filterTodos()?.map((item) => (
+                {filterTodos().map((item) => (
                   <TodoItem key={item.id} values={item} />
                 ))}
               </div>
