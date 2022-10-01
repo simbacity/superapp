@@ -1,5 +1,6 @@
 import { MessageResponse } from "@app-store/apps/town-square/api-contracts/message.schema";
 import Message from "@app-store/apps/town-square/components/Message";
+import NewMessageForm from "@app-store/apps/town-square/components/NewMessageForm";
 import Shell from "@app-store/shared/components/Shell";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import axios from "axios";
@@ -15,8 +16,7 @@ export default function TownSquare() {
       <div className="layout py-8">
         {data?.pages.map((group, i) => (
           <React.Fragment key={i}>
-            {group.data.map((item: MessageResponse) => {
-              const message = { ...item, replyCount: getReplyCount(item.id, group.data) };
+            {group.data.map((message: MessageResponse) => {
               return <Message key={message.id} values={message} />;
             })}
           </React.Fragment>
@@ -27,6 +27,7 @@ export default function TownSquare() {
           className="default-button--medium ml-2">
           Load More
         </button>
+        <NewMessageForm />
       </div>
     </Shell>
   );
@@ -44,12 +45,4 @@ export function useGetAllMessages() {
       return undefined;
     },
   });
-}
-
-export function getReplyCount(messageId: string, data: MessageResponse[]) {
-  return data.filter((message) => {
-    if (message.thread) {
-      return message.thread.messageId === messageId;
-    }
-  }).length;
 }

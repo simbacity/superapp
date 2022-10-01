@@ -108,18 +108,20 @@ model Post_MiniBlog {
 // /apps/town-square
 // *******************
 model Message_TownSquare {
-  id        String                    @id @default(cuid())
-  content   String                    @db.Text
-  thread    MessageThread_TownSquare? @relation(fields: [threadId], references: [id])
-  threadId  String?
-  user      User                      @relation(fields: [userId], references: [id])
-  userId    String
-  createdAt DateTime                  @default(now())
+  id          String                    @id @default(cuid())
+  content     String                    @db.Text
+  thread      MessageThread_TownSquare? @relation("referred_thread", fields: [threadId], references: [id], onDelete: Cascade)
+  threadId    String?
+  user        User                      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      String
+  mainMessage MessageThread_TownSquare?
+  createdAt   DateTime                  @default(now())
 }
 
 model MessageThread_TownSquare {
-  id        String               @id @default(cuid())
-  messageId String
-  messages  Message_TownSquare[]
-  createAt  DateTime             @default(now())
+  id          String               @id @default(cuid())
+  messages    Message_TownSquare[] @relation("referred_thread")
+  mainMessage Message_TownSquare?  @relation(fields: [messageId], references: [id], onUpdate: NoAction, onDelete: NoAction)
+  messageId   String               @unique
+  createdAt   DateTime             @default(now())
 }

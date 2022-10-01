@@ -12,12 +12,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   const entity = new MessageEntity();
 
-  const { cursor, pageSize } = req.query;
-  const cursorFilter = Array.isArray(cursor) ? cursor[0] : cursor;
-  const pageSizeFilter = Array.isArray(pageSize) ? pageSize[0] : pageSize;
-
   try {
-    const response: MessageListResponse = await entity.list(parseInt(pageSizeFilter, 10), cursorFilter);
+    const response: MessageListResponse = await entity.list(req.query);
     return res.status(200).json(response);
   } catch (error) {
     if (error instanceof HttpError) return res.status(error.code).json(error.message);
