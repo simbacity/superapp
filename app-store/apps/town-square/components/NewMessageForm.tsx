@@ -2,6 +2,7 @@ import {
   messageRequestSchema,
   MessageRequest,
 } from "@app-store/apps/town-square/api-contracts/message.schema";
+import { useSocket } from "@app-store/shared/hooks/useSocket";
 import { PhotographIcon } from "@heroicons/react/solid";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -60,6 +61,7 @@ export default function MessageForm({ formValues }: MessageFormParams) {
 }
 
 export function useCreateMessage() {
+  const socket = useSocket();
   const queryClient = useQueryClient();
 
   const createMessage = async (data: MessageRequest) => {
@@ -69,6 +71,7 @@ export function useCreateMessage() {
 
   return useMutation(createMessage, {
     onSuccess: (response) => {
+      socket.emit("send_message", response);
       queryClient.invalidateQueries(["town-square", "messages", "list"]);
       queryClient.invalidateQueries(["town-square", "threads", "show", response.threadId]);
     },

@@ -37,6 +37,7 @@
     "react-hook-form": "^7.34.2",
     "react-select": "^5.3.2",
     "react-youtube": "^9.0.2",
+    "socket.io-client": "^4.5.2",
     "uuid": "^8.3.2",
     "zod": "^3.18.0"
   },

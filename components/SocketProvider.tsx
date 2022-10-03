@@ -1,0 +1,31 @@
+import { createContext, ReactChild, useEffect, useState } from "react";
+import io from "socket.io-client";
+
+const socket = io("http://localhost:8080");
+
+export const SocketContext = createContext(socket);
+
+interface SocketProviderProps {
+  children: ReactChild;
+}
+
+export function SocketProvider(props: SocketProviderProps) {
+  const [isConnected, setIsConnected] = useState(socket.connected);
+
+  useEffect(() => {
+    console.log("provider effect fired");
+    socket.on("connection", () => {
+      setIsConnected(true);
+    });
+
+    socket.on("disconnect", () => {
+      setIsConnected(false);
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, [isConnected, setIsConnected]);
+
+  return <SocketContext.Provider value={socket}>{props.children}</SocketContext.Provider>;
+}
