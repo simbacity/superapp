@@ -16,3 +16,11 @@ services:
       MYSQL_ROOT_PASSWORD: "password"
     ports:
       - "33062:3306"
+
+  socket_io:
+    image: node:16-alpine
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./services/socket-io:/app/server
+    command: sh -c "cd /app/server && yarn && yarn start"
