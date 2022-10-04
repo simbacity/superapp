@@ -1,9 +1,9 @@
 import { MessageRequest } from "@app-store/apps/town-square/api-contracts/message.schema";
+import { MessageThreadResponse } from "@app-store/apps/town-square/api-contracts/thread.schema";
 import MessageEntity from "@app-store/apps/town-square/business-logic/message.entity";
 import prisma from "@app-store/shared/utils/prisma";
 import { setup } from "@app-store/shared/utils/tests/setup";
 import { teardown } from "@app-store/shared/utils/tests/teardown";
-import { MessageThread_TownSquare } from "@prisma/client";
 
 describe("Thread", () => {
   beforeEach(async () => {
@@ -30,7 +30,7 @@ describe("Thread", () => {
 
       const thread = (await prisma.messageThread_TownSquare.findUnique({
         where: { messageId: response.id },
-      })) as MessageThread_TownSquare;
+      })) as MessageThreadResponse;
 
       expect(response.id).toBe(thread?.messageId);
     });

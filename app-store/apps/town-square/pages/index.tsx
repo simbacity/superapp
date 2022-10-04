@@ -1,5 +1,5 @@
-import { MessageResponse } from "@app-store/apps/town-square/api-contracts/message.schema";
-import Message from "@app-store/apps/town-square/components/Message";
+import { Message } from "@app-store/apps/town-square/api-contracts/message.schema";
+import MessageComponent from "@app-store/apps/town-square/components/Message";
 import NewMessageForm from "@app-store/apps/town-square/components/NewMessageForm";
 import Shell from "@app-store/shared/components/Shell";
 import { useInfiniteQuery } from "@tanstack/react-query";
@@ -16,8 +16,8 @@ export default function TownSquare() {
       <div className="layout py-8">
         {data?.pages.map((group, i) => (
           <React.Fragment key={i}>
-            {group.data.map((message: MessageResponse) => {
-              return <Message key={message.id} values={message} />;
+            {group.data.map((message: Message) => {
+              return <MessageComponent key={message.id} values={message} />;
             })}
           </React.Fragment>
         ))}

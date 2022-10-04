@@ -1,10 +1,39 @@
 import { z } from "zod";
 
-export const messageThreadSchema = z.object({
+export const messageThreadSchema = z
+  .object({
+    id: z.string(),
+    messageId: z.string(),
+    messages: z.array(
+      z.object({
+        id: z.string(),
+        content: z.string(),
+        threadId: z.string().nullable(),
+        createdAt: z.date(),
+        user: z.object({
+          id: z.string(),
+          name: z.string().nullable(),
+          image: z.string().nullable(),
+        }),
+      })
+    ),
+    mainMessage: z
+      .object({
+        id: z.string(),
+        content: z.string(),
+        threadId: z.string().nullable(),
+        createdAt: z.date(),
+      })
+      .nullable(),
+    createdAt: z.date(),
+  })
+  .nullable();
+
+export const messageResponseSchema = z.object({
   id: z.string(),
   messageId: z.string(),
-  user: z.object({}),
-  created_at: z.date(),
+  createdAt: z.date(),
 });
 
-export type MessageThreadResponse = z.TypeOf<typeof messageThreadSchema>;
+export type MessageThread = z.TypeOf<typeof messageThreadSchema>;
+export type MessageThreadResponse = z.TypeOf<typeof messageResponseSchema>;

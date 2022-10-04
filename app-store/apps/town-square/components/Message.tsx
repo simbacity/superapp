@@ -1,4 +1,4 @@
-import { MessageResponse } from "@app-store/apps/town-square/api-contracts/message.schema";
+import { Message, messageResponseSchema } from "@app-store/apps/town-square/api-contracts/message.schema";
 import { DotsHorizontalIcon } from "@heroicons/react/outline";
 import { PhotographIcon } from "@heroicons/react/solid";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -10,10 +10,10 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 
 interface MessageParam {
-  values: MessageResponse;
+  values: Message;
 }
 
-export default function Message({ values }: MessageParam) {
+export default function MessagePage({ values }: MessageParam) {
   const router = useRouter();
   const [deleteButton, showDeleteButton] = useState<boolean>(false);
   const { data: session } = useSession();
@@ -55,7 +55,9 @@ export default function Message({ values }: MessageParam) {
               </div>
               <p className="text-white text-sm mt-1">{values.content}</p>
               {!!values.replyCount && (
-                <p className="text-[10px] text-blue-300">{values.replyCount} Replies</p>
+                <p className="text-[10px] text-blue-300">
+                  {values.replyCount} {values.replyCount > 1 ? "Replies" : "Reply"}
+                </p>
               )}
             </a>
           </Link>
@@ -82,7 +84,8 @@ export function useDeleteMessage() {
   const queryClient = useQueryClient();
   const deleteMessage = async (id: string) => {
     const response = await axios.delete(`/api/apps/town-square/messages/${id}/delete`);
-    return response.data;
+    // 'createdAt' returned as dateString/convert to dateTime.
+    return messageResponseSchema.parse({ ...response.data, createdAt: new Date(response.data.createdAt) });
   };
 
   return useMutation((id: string) => deleteMessage(id), {

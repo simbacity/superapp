@@ -1,6 +1,7 @@
 import {
   messageRequestSchema,
   MessageRequest,
+  messageResponseSchema,
 } from "@app-store/apps/town-square/api-contracts/message.schema";
 import { PhotographIcon } from "@heroicons/react/solid";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -64,7 +65,8 @@ export function useCreateMessage() {
 
   const createMessage = async (data: MessageRequest) => {
     const response = await axios.post("/api/apps/town-square/messages/create", data);
-    return response.data;
+    // 'createdAt' returned as dateString/convert to dateTime.
+    return messageResponseSchema.parse({ ...response.data, createdAt: new Date(response.data.createdAt) });
   };
 
   return useMutation(createMessage, {

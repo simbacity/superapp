@@ -18,6 +18,13 @@ export const messageSchema = z.object({
   createdAt: z.date(),
 });
 
+export const messageResponseSchema = z.object({
+  id: z.string(),
+  content: z.string(),
+  threadId: z.string().nullable(),
+  createdAt: z.date(),
+});
+
 export const messageListSchema = z.array(messageSchema);
 
 export const messageRequestSchema = z.object({
@@ -51,7 +58,8 @@ export const messageQuerySchema = z.object({
   }),
 });
 
-export type MessageResponse = z.TypeOf<typeof messageSchema>;
+export type Message = z.TypeOf<typeof messageSchema>;
+export type MessageResponse = z.TypeOf<typeof messageResponseSchema>;
 export type MessageListResponse = z.TypeOf<typeof messageListSchema>;
 export type MessageRequest = z.TypeOf<typeof messageRequestSchema>;
 export type MessageQueryParams = z.TypeOf<typeof messageQuerySchema>;

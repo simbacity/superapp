@@ -1,6 +1,7 @@
+import { MessageResponse } from "@app-store/apps/town-square/api-contracts/message.schema";
+import { MessageThreadResponse } from "@app-store/apps/town-square/api-contracts/thread.schema";
 import MessageEntity from "@app-store/apps/town-square/business-logic/message.entity";
 import HttpError from "@app-store/shared/utils/errors/HttpError";
-import { MessageThread_TownSquare, Message_TownSquare } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
 import { getSession } from "next-auth/react";
 
@@ -14,7 +15,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   try {
     const id = req.query.id.toString();
-    const response: Message_TownSquare | [MessageThread_TownSquare, Message_TownSquare] = await entity.delete(
+    const response: MessageResponse | [MessageThreadResponse, MessageResponse] = await entity.delete(
       id,
       session.user.id
     );

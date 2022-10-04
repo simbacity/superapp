@@ -1,7 +1,7 @@
 import {
   MessageQueryParams,
   MessageRequest,
-  MessageResponse,
+  Message,
 } from "@app-store/apps/town-square/api-contracts/message.schema";
 import ForbiddenError from "@app-store/shared/utils/errors/ForbiddenError";
 import prisma from "@app-store/shared/utils/prisma";
@@ -64,7 +64,7 @@ export default class MessageEntity {
     return await this.createMessage(params, userId);
   }
 
-  private getReplyCount(messageId: string, data: Omit<MessageResponse, "replyCount">[]) {
+  private getReplyCount(messageId: string, data: Omit<Message, "replyCount">[]) {
     return data.filter((message) => {
       if (message.thread) {
         return message.thread.messageId === messageId;

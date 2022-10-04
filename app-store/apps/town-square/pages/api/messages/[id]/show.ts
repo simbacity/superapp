@@ -1,6 +1,6 @@
+import { MessageResponse } from "@app-store/apps/town-square/api-contracts/message.schema";
 import MessageEntity from "@app-store/apps/town-square/business-logic/message.entity";
 import HttpError from "@app-store/shared/utils/errors/HttpError";
-import { Message_TownSquare } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
 import { getSession } from "next-auth/react";
 
@@ -14,7 +14,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   try {
     const id = req.query.id.toString();
-    const response: Message_TownSquare = await entity.find(id, session.user.id);
+    const response: MessageResponse = await entity.find(id, session.user.id);
     return res.status(200).json(response);
   } catch (error) {
     if (error instanceof HttpError) return res.status(error.code).json(error.message);

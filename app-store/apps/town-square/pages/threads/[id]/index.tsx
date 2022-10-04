@@ -1,5 +1,5 @@
-import { MessageResponse } from "@app-store/apps/town-square/api-contracts/message.schema";
-import Message from "@app-store/apps/town-square/components/Message";
+import { Message } from "@app-store/apps/town-square/api-contracts/message.schema";
+import MessageComponent from "@app-store/apps/town-square/components/Message";
 import NewMessageForm from "@app-store/apps/town-square/components/NewMessageForm";
 import Shell from "@app-store/shared/components/Shell";
 import { ArrowLeftIcon } from "@heroicons/react/solid";
@@ -31,10 +31,10 @@ export default function NewThread({ id }: MessageParams) {
           />
           <p className="text-white ">Threads</p>
         </div>
-        <Message values={thread.mainMessage} />
+        <MessageComponent values={thread.mainMessage} />
         <div className="ml-4">
-          {thread.messages.map((message: MessageResponse) => (
-            <Message key={message.id} values={message} />
+          {thread.messages.map((message: Message) => (
+            <MessageComponent key={message.id} values={message} />
           ))}
         </div>
         <NewMessageForm formValues={formValues} />

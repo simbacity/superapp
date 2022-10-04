@@ -1,9 +1,9 @@
-import { MessageRequest } from "@app-store/apps/town-square/api-contracts/message.schema";
+import { MessageRequest, MessageResponse } from "@app-store/apps/town-square/api-contracts/message.schema";
+import { MessageThreadResponse } from "@app-store/apps/town-square/api-contracts/thread.schema";
 import MessageEntity from "@app-store/apps/town-square/business-logic/message.entity";
 import prisma from "@app-store/shared/utils/prisma";
 import { setup } from "@app-store/shared/utils/tests/setup";
 import { teardown } from "@app-store/shared/utils/tests/teardown";
-import { MessageThread_TownSquare, Message_TownSquare } from "@prisma/client";
 
 describe("Message", () => {
   beforeEach(async () => {
@@ -55,7 +55,7 @@ describe("Message", () => {
 
       const message = (await prisma.message_TownSquare.findUnique({
         where: { id: response?.id },
-      })) as Message_TownSquare;
+      })) as MessageResponse;
 
       expect(message.content).toBe(requestParams.content);
     });
@@ -79,10 +79,10 @@ describe("Message", () => {
 
       const message = (await prisma.message_TownSquare.findUnique({
         where: { id: responseInThread.id },
-      })) as Message_TownSquare;
+      })) as MessageResponse;
       const thread = (await prisma.messageThread_TownSquare.findUnique({
         where: { messageId: response.id },
-      })) as MessageThread_TownSquare;
+      })) as MessageThreadResponse;
 
       expect(message.content).toBe(requestParamsWithMessageId.content);
       expect(response.id).toBe(thread?.messageId);
