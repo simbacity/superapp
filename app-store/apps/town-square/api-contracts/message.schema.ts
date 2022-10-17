@@ -1,3 +1,4 @@
+import { messageThreadResponseSchema } from "@app-store/apps/town-square/api-contracts/thread.schema";
 import { z } from "zod";
 
 export const messageSchema = z.object({
@@ -24,6 +25,12 @@ export const messageResponseSchema = z.object({
   threadId: z.string().nullable(),
   createdAt: z.date(),
 });
+
+// for prisma delete $transaction
+export const messageAndThreadSchema = z.tuple([
+  messageThreadResponseSchema.merge(z.object({ createdAt: z.string() })),
+  messageResponseSchema.merge(z.object({ createdAt: z.string() })),
+]);
 
 export const messageListSchema = z.array(messageSchema);
 

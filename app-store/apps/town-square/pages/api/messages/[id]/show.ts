@@ -14,7 +14,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   try {
     const id = req.query.id.toString();
-    const response: MessageResponse = await entity.find(id, session.user.id);
+    const response: MessageResponse = await entity.find(id);
     return res.status(200).json(response);
   } catch (error) {
     if (error instanceof HttpError) return res.status(error.code).json(error.message);

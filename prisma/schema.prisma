@@ -110,7 +110,7 @@ model Post_MiniBlog {
 model Message_TownSquare {
   id          String                    @id @default(cuid())
   content     String                    @db.Text
-  thread      MessageThread_TownSquare? @relation("referred_thread", fields: [threadId], references: [id], onDelete: Cascade)
+  thread      MessageThread_TownSquare? @relation("referred_thread", fields: [threadId], references: [id], onDelete: SetNull)
   threadId    String?
   user        User                      @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId      String

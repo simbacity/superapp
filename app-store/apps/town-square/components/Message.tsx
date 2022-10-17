@@ -1,4 +1,9 @@
-import { Message, messageResponseSchema } from "@app-store/apps/town-square/api-contracts/message.schema";
+import {
+  Message,
+  messageResponseSchema,
+  messageAndThreadSchema,
+} from "@app-store/apps/town-square/api-contracts/message.schema";
+import { useSocket } from "@app-store/shared/hooks/useSocket";
 import { DotsHorizontalIcon } from "@heroicons/react/outline";
 import { PhotographIcon } from "@heroicons/react/solid";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -81,15 +86,21 @@ export default function MessagePage({ values }: MessageParam) {
 }
 
 export function useDeleteMessage() {
+  const socket = useSocket();
   const queryClient = useQueryClient();
   const deleteMessage = async (id: string) => {
     const response = await axios.delete(`/api/apps/town-square/messages/${id}/delete`);
-    // 'createdAt' returned as dateString/convert to dateTime.
-    return messageResponseSchema.parse({ ...response.data, createdAt: new Date(response.data.createdAt) });
+    // check if delete $transaction
+    if (Array.isArray(response.data)) {
+      return messageAndThreadSchema.parse(response.data);
+    } else {
+      return messageResponseSchema.parse({ ...response.data, createdAt: new Date(response.data.createdAt) });
+    }
   };
 
   return useMutation((id: string) => deleteMessage(id), {
-    onSuccess: () => {
+    onSuccess: (response) => {
+      socket.emit("send_message", response);
       queryClient.invalidateQueries(["town-square", "messages", "list"]);
     },
   });

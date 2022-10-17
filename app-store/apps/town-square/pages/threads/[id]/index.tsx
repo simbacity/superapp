@@ -44,9 +44,15 @@ export default function NewThread({ id }: MessageParams) {
 }
 
 export function useMessageThread(id: string) {
+  const router = useRouter();
   const getMessageThread = async (id: string) => {
-    const response = await axios.get(`/api/apps/town-square/threads/${id}/show`);
-    return response.data;
+    try {
+      const response = await axios.get(`/api/apps/town-square/threads/${id}/show`);
+      return response.data;
+    } catch (error) {
+      // response is null;
+      router.push("/apps/town-square");
+    }
   };
 
   return useQuery(["town-square", "threads", "show", id], () => getMessageThread(id));

@@ -4,14 +4,15 @@ import {
   Message,
 } from "@app-store/apps/town-square/api-contracts/message.schema";
 import ForbiddenError from "@app-store/shared/utils/errors/ForbiddenError";
+import NotFoundError from "@app-store/shared/utils/errors/NotFoundError";
 import prisma from "@app-store/shared/utils/prisma";
 
 export default class MessageEntity {
-  async find(id: string, userId: string) {
+  async find(id: string) {
     const message = await prisma.message_TownSquare.findUnique({ where: { id }, include: { user: true } });
 
-    if (message?.userId !== userId) {
-      throw new ForbiddenError("Forbidden");
+    if (!message) {
+      throw new NotFoundError("Not Found");
     }
     return message;
   }
@@ -109,7 +110,7 @@ export default class MessageEntity {
   }
 
   async delete(id: string, userId: string) {
-    const message = await this.find(id, userId);
+    const message = await this.find(id);
     const thread = await prisma.messageThread_TownSquare.findUnique({
       where: {
         messageId: message.id,
@@ -117,7 +118,7 @@ export default class MessageEntity {
     });
 
     if (message?.userId !== userId) {
-      throw new Error("Forbidden");
+      throw new ForbiddenError("Forbidden");
     }
 
     // delete thread if message is main message of thread

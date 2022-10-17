@@ -29,11 +29,11 @@ export const messageThreadSchema = z
   })
   .nullable();
 
-export const messageResponseSchema = z.object({
+export const messageThreadResponseSchema = z.object({
   id: z.string(),
   messageId: z.string(),
   createdAt: z.date(),
 });
 
 export type MessageThread = z.TypeOf<typeof messageThreadSchema>;
-export type MessageThreadResponse = z.TypeOf<typeof messageResponseSchema>;
+export type MessageThreadResponse = z.TypeOf<typeof messageThreadResponseSchema>;
