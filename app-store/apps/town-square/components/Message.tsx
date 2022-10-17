@@ -88,6 +88,7 @@ export default function MessagePage({ values }: MessageParam) {
 export function useDeleteMessage() {
   const socket = useSocket();
   const queryClient = useQueryClient();
+
   const deleteMessage = async (id: string) => {
     const response = await axios.delete(`/api/apps/town-square/messages/${id}/delete`);
     // check if delete $transaction
