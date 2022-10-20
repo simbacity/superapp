@@ -27,21 +27,6 @@ describe("Message", () => {
     });
   });
 
-  it("throws error when message is from different user", async () => {
-    const { user } = await setup();
-
-    const requestParams: MessageRequest = {
-      content: "This is the content of the message",
-    };
-
-    const entity = new MessageEntity();
-    const response = await entity.create(requestParams, user.id);
-
-    await expect(async () => {
-      await entity.find(response.id);
-    }).rejects.toThrowError("Forbidden");
-  });
-
   describe("#create", () => {
     it("creates message", async () => {
       const { user } = await setup();
