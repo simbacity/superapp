@@ -14,6 +14,7 @@ export default class MessageEntity {
     if (!message) {
       throw new NotFoundError("Not Found");
     }
+
     return message;
   }
 
@@ -113,7 +114,7 @@ export default class MessageEntity {
     const message = await this.find(id);
     const thread = await prisma.messageThread_TownSquare.findUnique({
       where: {
-        messageId: message.id,
+        messageId: message?.id,
       },
     });
 

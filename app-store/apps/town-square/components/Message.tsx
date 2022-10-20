@@ -3,6 +3,7 @@ import {
   messageResponseSchema,
   messageAndThreadSchema,
 } from "@app-store/apps/town-square/api-contracts/message.schema";
+import { useMessageThread } from "@app-store/apps/town-square/pages/threads/[id]";
 import { useSocket } from "@app-store/shared/hooks/useSocket";
 import { DotsHorizontalIcon } from "@heroicons/react/outline";
 import { PhotographIcon } from "@heroicons/react/solid";
@@ -24,6 +25,9 @@ export default function MessagePage({ values }: MessageParam) {
   const { data: session } = useSession();
   const isUser = values.user.id === session?.user.id;
   const deleteMessage = useDeleteMessage();
+
+  // get thread ID for navigation
+  const { data: thread } = useMessageThread(values.id, true); // findByMainMessageId -> true
 
   const onDeleteHandler = () => {
     deleteMessage.mutate(values.id, {
@@ -47,9 +51,7 @@ export default function MessagePage({ values }: MessageParam) {
         <div className="flex mt-1 justify-between">
           <Link
             href={
-              values.thread
-                ? `/apps/town-square/threads/${values.thread.id}`
-                : `/apps/town-square/threads/new/${values.id}`
+              thread ? `/apps/town-square/threads/${thread.id}` : `/apps/town-square/threads/new/${values.id}`
             }>
             <a className="w-11/12">
               <div className="flex items-end">
@@ -91,7 +93,7 @@ export function useDeleteMessage() {
 
   const deleteMessage = async (id: string) => {
     const response = await axios.delete(`/api/apps/town-square/messages/${id}/delete`);
-    // check if delete $transaction
+    // check if delete is $transaction
     if (Array.isArray(response.data)) {
       return messageAndThreadSchema.parse(response.data);
     } else {

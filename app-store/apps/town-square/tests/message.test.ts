@@ -21,9 +21,9 @@ describe("Message", () => {
       const entity = new MessageEntity();
       const response = await entity.create(requestParams, user.id);
 
-      const message = await entity.find(response.id, user.id);
+      const message = await entity.find(response.id);
 
-      expect(message.content).toBe(requestParams.content);
+      expect(message?.content).toBe(requestParams.content);
     });
   });
 
@@ -38,7 +38,7 @@ describe("Message", () => {
     const response = await entity.create(requestParams, user.id);
 
     await expect(async () => {
-      await entity.find(response.id, "random_user");
+      await entity.find(response.id);
     }).rejects.toThrowError("Forbidden");
   });
 

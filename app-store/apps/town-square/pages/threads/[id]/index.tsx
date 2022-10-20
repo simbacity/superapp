@@ -25,10 +25,7 @@ export default function NewThread({ id }: MessageParams) {
     <Shell>
       <div className="layout py-8">
         <div className="flex items-center">
-          <ArrowLeftIcon
-            className="w-10 h-5 text-white cursor-pointer"
-            onClick={() => router.push("/apps/town-square")}
-          />
+          <ArrowLeftIcon className="w-10 h-5 text-white cursor-pointer" onClick={() => router.back()} />
           <p className="text-white ">Threads</p>
         </div>
         <MessageComponent values={thread.mainMessage} />
@@ -43,16 +40,12 @@ export default function NewThread({ id }: MessageParams) {
   );
 }
 
-export function useMessageThread(id: string) {
-  const router = useRouter();
+export function useMessageThread(id: string, findByMainMessageId?: boolean) {
   const getMessageThread = async (id: string) => {
-    try {
-      const response = await axios.get(`/api/apps/town-square/threads/${id}/show`);
-      return response.data;
-    } catch (error) {
-      // response is null;
-      router.push("/apps/town-square");
-    }
+    const response = await axios.get(`/api/apps/town-square/threads/${id}/show`, {
+      params: { findByMainMessageId },
+    });
+    return response.data;
   };
 
   return useQuery(["town-square", "threads", "show", id], () => getMessageThread(id));

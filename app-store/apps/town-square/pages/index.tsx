@@ -16,13 +16,16 @@ export default function TownSquare() {
   return (
     <Shell>
       <div className="layout py-8">
-        {data.pages.map((group, i) => (
-          <React.Fragment key={i}>
-            {group.data.map((message: Message) => {
-              return <MessageComponent key={message.id} values={message} />;
-            })}
-          </React.Fragment>
-        ))}
+        {data.pages.map((group, i) => {
+          const mainMessages = group.data.filter((message: Message) => message.thread == null);
+          return (
+            <React.Fragment key={i}>
+              {mainMessages.map((message: Message) => {
+                return <MessageComponent key={message.id} values={message} />;
+              })}
+            </React.Fragment>
+          );
+        })}
         <button
           onClick={() => fetchNextPage()}
           disabled={isFetching || isFetchingNextPage || !hasNextPage}
