@@ -9,11 +9,12 @@ import { DotsHorizontalIcon } from "@heroicons/react/outline";
 import { PhotographIcon } from "@heroicons/react/solid";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
+
+import { processDate } from "../utils/days";
 
 interface MessageParam {
   values: Message;
@@ -57,7 +58,8 @@ export default function MessagePage({ values }: MessageParam) {
               <div className="flex items-end">
                 <p className="text-white text-xs font-bold">{values.user.name}</p>
                 <p className="text-[10px] text-gray-400 ml-2">
-                  {dayjs(values.createdAt).format("DD-MM-YYYY")}
+                  {/* {dayjs(values.createdAt).format("DD-MM-YYYY")} */}
+                  {processDate(values.createdAt)}
                 </p>
               </div>
               <p className="text-white text-sm mt-1">{values.content}</p>
