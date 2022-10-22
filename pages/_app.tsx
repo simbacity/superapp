@@ -11,8 +11,6 @@ import "../styles/globals.css";
 const queryClient = new QueryClient();
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
-  console.log(IS_PRODUCTION);
-
   return (
     <QueryClientProvider client={queryClient}>
       <SessionProvider session={session}>
