@@ -58,7 +58,11 @@ export default function MessagePage({ values }: MessageParams) {
       className="group flex sm:w-full md:w-3/4 my-2 p-2 hover:bg-gray-700"
       onMouseLeave={() => showDeleteButton(false)}>
       {values.user.image ? (
-        <img src={values.user.image} className="w-8 h-8 rounded-[16px] border border-white m-1" />
+        <img
+          src={values.user.image}
+          referrerPolicy="no-referrer"
+          className="w-8 h-8 rounded-[16px] border border-white m-1"
+        />
       ) : (
         <PhotographIcon className="w-8 h-8 rounded-[16px] border border-white m-1 text-white" />
       )}

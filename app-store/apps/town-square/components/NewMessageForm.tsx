@@ -42,7 +42,11 @@ export default function MessageForm({ formValues }: MessageFormParams) {
     <form onSubmit={form.handleSubmit(onSubmitHandler)}>
       <div className="flex sm:w-full md:w-3/4">
         {userData?.user.image ? (
-          <img src={userData?.user.image} className="w-8 h-8 rounded-[16px] border border-white m-1" />
+          <img
+            src={userData?.user.image}
+            referrerPolicy="no-referrer"
+            className="w-8 h-8 rounded-[16px] border border-white m-1"
+          />
         ) : (
           <PhotographIcon className="w-8 h-8 rounded-[16px] border border-white m-1 text-white" />
         )}
