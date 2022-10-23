@@ -1,6 +1,6 @@
 import prisma from "@app-store/shared/utils/prisma";
 
-export default class MessageThreadEntity {
+export default class ThreadEntity {
   async find(id: string, findByMainMessageId?: boolean) {
     if (findByMainMessageId) {
       return await this.findByMainMessageId(id);
@@ -31,5 +31,14 @@ export default class MessageThreadEntity {
     });
 
     return thread;
+  }
+
+  async delete(id: string) {
+    const thread = await this.find(id);
+
+    return await prisma.$transaction([
+      prisma.message_TownSquare.delete({ where: { id: thread?.messageId } }),
+      prisma.messageThread_TownSquare.delete({ where: { id } }),
+    ]);
   }
 }

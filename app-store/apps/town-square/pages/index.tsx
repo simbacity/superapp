@@ -1,5 +1,5 @@
 import { Message } from "@app-store/apps/town-square/api-contracts/message.schema";
-import MessageComponent from "@app-store/apps/town-square/components/Message";
+import MessageComponent, { User } from "@app-store/apps/town-square/components/Message";
 import NewMessageForm from "@app-store/apps/town-square/components/NewMessageForm";
 import Shell from "@app-store/shared/components/Shell";
 import { useSocket } from "@app-store/shared/hooks/useSocket";
@@ -16,16 +16,13 @@ export default function TownSquare() {
   return (
     <Shell>
       <div className="layout py-8">
-        {data.pages.map((group, i) => {
-          const mainMessages = group.data.filter((message: Message) => message.thread == null);
-          return (
-            <React.Fragment key={i}>
-              {mainMessages.map((message: Message) => {
-                return <MessageComponent key={message.id} values={message} />;
-              })}
-            </React.Fragment>
-          );
-        })}
+        {data.pages.map((group, i) => (
+          <React.Fragment key={i}>
+            {group.data.map((message: Message & User) => {
+              return <MessageComponent key={message.id} values={message} />;
+            })}
+          </React.Fragment>
+        ))}
         <button
           onClick={() => fetchNextPage()}
           disabled={isFetching || isFetchingNextPage || !hasNextPage}
@@ -39,8 +36,10 @@ export default function TownSquare() {
 }
 
 export function useGetAllMessages() {
-  const getAllMessages = ({ pageParam = "" }) =>
-    axios.get(`/api/apps/town-square/messages/list?cursor=${pageParam}&pageSize=100`);
+  const getAllMessages = async ({ pageParam = "" }) => {
+    const response = await axios.get(`/api/apps/town-square/messages/list?cursor=${pageParam}&pageSize=100`);
+    return response;
+  };
 
   return useInfiniteQuery(["town-square", "messages", "list"], getAllMessages, {
     getNextPageParam: (lastPage) => {

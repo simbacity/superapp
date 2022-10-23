@@ -1,5 +1,5 @@
-import { MessageRequest, MessageResponse } from "@app-store/apps/town-square/api-contracts/message.schema";
-import { MessageThreadResponse } from "@app-store/apps/town-square/api-contracts/thread.schema";
+import { MessageRequest, Message } from "@app-store/apps/town-square/api-contracts/message.schema";
+import { Thread } from "@app-store/apps/town-square/api-contracts/thread.schema";
 import MessageEntity from "@app-store/apps/town-square/business-logic/message.entity";
 import prisma from "@app-store/shared/utils/prisma";
 import { setup } from "@app-store/shared/utils/tests/setup";
@@ -40,7 +40,7 @@ describe("Message", () => {
 
       const message = (await prisma.message_TownSquare.findUnique({
         where: { id: response?.id },
-      })) as MessageResponse;
+      })) as Message;
 
       expect(message.content).toBe(requestParams.content);
     });
@@ -64,10 +64,10 @@ describe("Message", () => {
 
       const message = (await prisma.message_TownSquare.findUnique({
         where: { id: responseInThread.id },
-      })) as MessageResponse;
+      })) as Message;
       const thread = (await prisma.messageThread_TownSquare.findUnique({
         where: { messageId: response.id },
-      })) as MessageThreadResponse;
+      })) as Thread;
 
       expect(message.content).toBe(requestParamsWithMessageId.content);
       expect(response.id).toBe(thread?.messageId);

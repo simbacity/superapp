@@ -1,6 +1,7 @@
-import { MessageRequest } from "@app-store/apps/town-square/api-contracts/message.schema";
-import { MessageThreadResponse } from "@app-store/apps/town-square/api-contracts/thread.schema";
+import { MessageRequest, Message } from "@app-store/apps/town-square/api-contracts/message.schema";
+import { Thread } from "@app-store/apps/town-square/api-contracts/thread.schema";
 import MessageEntity from "@app-store/apps/town-square/business-logic/message.entity";
+import ThreadEntity from "@app-store/apps/town-square/business-logic/thread.entity";
 import prisma from "@app-store/shared/utils/prisma";
 import { setup } from "@app-store/shared/utils/tests/setup";
 import { teardown } from "@app-store/shared/utils/tests/teardown";
@@ -30,7 +31,7 @@ describe("Thread", () => {
 
       const thread = (await prisma.messageThread_TownSquare.findUnique({
         where: { messageId: response.id },
-      })) as MessageThreadResponse;
+      })) as Thread;
 
       expect(response.id).toBe(thread?.messageId);
     });
@@ -45,6 +46,7 @@ describe("Thread", () => {
       };
 
       const entity = new MessageEntity();
+      const threadEntity = new ThreadEntity();
       const response = await entity.create(requestParams, user.id);
 
       const requestParamsWithMessageId: MessageRequest = {
@@ -52,9 +54,9 @@ describe("Thread", () => {
         messageId: response.id,
       };
 
-      await entity.create(requestParamsWithMessageId, user.id);
+      const threadMessage: Message = await entity.create(requestParamsWithMessageId, user.id);
 
-      await entity.delete(response.id, user.id);
+      await threadEntity.delete(threadMessage.threadId!);
 
       const thread = await prisma.messageThread_TownSquare.findUnique({ where: { messageId: response.id } });
 

@@ -1,7 +1,7 @@
 import {
   messageRequestSchema,
   MessageRequest,
-  messageResponseSchema,
+  messageSchema,
 } from "@app-store/apps/town-square/api-contracts/message.schema";
 import { useSocket } from "@app-store/shared/hooks/useSocket";
 import { PhotographIcon } from "@heroicons/react/solid";
@@ -68,7 +68,7 @@ export function useCreateMessage() {
   const createMessage = async (data: MessageRequest) => {
     const response = await axios.post("/api/apps/town-square/messages/create", data);
     // 'createdAt' returned as dateString/convert to dateTime.
-    return messageResponseSchema.parse({ ...response.data, createdAt: new Date(response.data.createdAt) });
+    return messageSchema.parse({ ...response.data, createdAt: new Date(response.data.createdAt) });
   };
 
   return useMutation(createMessage, {

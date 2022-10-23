@@ -1,5 +1,6 @@
 import { Message } from "@app-store/apps/town-square/api-contracts/message.schema";
 import MessageComponent from "@app-store/apps/town-square/components/Message";
+import { User } from "@app-store/apps/town-square/components/Message";
 import NewMessageForm from "@app-store/apps/town-square/components/NewMessageForm";
 import Shell from "@app-store/shared/components/Shell";
 import { ArrowLeftIcon } from "@heroicons/react/solid";
@@ -25,12 +26,15 @@ export default function NewThread({ id }: MessageParams) {
     <Shell>
       <div className="layout py-8">
         <div className="flex items-center">
-          <ArrowLeftIcon className="w-10 h-5 text-white cursor-pointer" onClick={() => router.back()} />
+          <ArrowLeftIcon
+            className="w-10 h-5 text-white cursor-pointer"
+            onClick={() => router.push("/apps/town-square")}
+          />
           <p className="text-white ">Threads</p>
         </div>
         <MessageComponent values={thread.mainMessage} />
         <div className="ml-4">
-          {thread.messages.map((message: Message) => (
+          {thread.messages.map((message: Message & User) => (
             <MessageComponent key={message.id} values={message} />
           ))}
         </div>

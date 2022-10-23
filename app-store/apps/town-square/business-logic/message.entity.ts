@@ -1,11 +1,23 @@
-import {
-  MessageQueryParams,
-  MessageRequest,
-  Message,
-} from "@app-store/apps/town-square/api-contracts/message.schema";
+import { MessageRequest } from "@app-store/apps/town-square/api-contracts/message.schema";
 import ForbiddenError from "@app-store/shared/utils/errors/ForbiddenError";
 import NotFoundError from "@app-store/shared/utils/errors/NotFoundError";
 import prisma from "@app-store/shared/utils/prisma";
+
+type MessageListQuerySchema = {
+  take: number;
+  cursor?: { id: string };
+  skip?: number;
+  where: { threadId: null };
+  include: {
+    user: {
+      select: {
+        id: boolean;
+        name: boolean;
+        image: boolean;
+      };
+    };
+  };
+};
 
 export default class MessageEntity {
   async find(id: string) {
@@ -66,27 +78,16 @@ export default class MessageEntity {
     return await this.createMessage(params, userId);
   }
 
-  private getReplyCount(messageId: string, data: Omit<Message, "replyCount">[]) {
-    return data.filter((message) => {
-      if (message.thread) {
-        return message.thread.messageId === messageId;
-      }
-    }).length;
-  }
-
   async list(query: Record<string, string | string[]>) {
     const cursor = Array.isArray(query.cursor) ? query.cursor[0] : query.cursor;
     const pageSize = Array.isArray(query.pageSize) ? query.pageSize[0] : query.pageSize;
 
-    const _query: MessageQueryParams = {
+    const _query: MessageListQuerySchema = {
       take: parseInt(pageSize, 10),
+      where: {
+        threadId: null,
+      },
       include: {
-        thread: {
-          select: {
-            id: true,
-            messageId: true,
-          },
-        },
         user: {
           select: {
             id: true,
@@ -104,30 +105,14 @@ export default class MessageEntity {
     }
 
     const response = await prisma.message_TownSquare.findMany(_query);
-    return response.map((message) => ({
-      ...message,
-      replyCount: this.getReplyCount(message.id, response),
-    }));
+    return response;
   }
 
   async delete(id: string, userId: string) {
     const message = await this.find(id);
-    const thread = await prisma.messageThread_TownSquare.findUnique({
-      where: {
-        messageId: message?.id,
-      },
-    });
 
     if (message?.userId !== userId) {
       throw new ForbiddenError("Forbidden");
-    }
-
-    // delete thread if message is main message of thread
-    if (thread) {
-      return await prisma.$transaction([
-        prisma.messageThread_TownSquare.delete({ where: { id: thread.id } }),
-        prisma.message_TownSquare.delete({ where: { id } }),
-      ]);
     }
 
     return prisma.message_TownSquare.delete({ where: { id } });
