@@ -1,5 +1,5 @@
-import { Message } from "@app-store/apps/town-square/api-contracts/message.schema";
-import MessageComponent, { User } from "@app-store/apps/town-square/components/Message";
+import { Message, messageListSchema } from "@app-store/apps/town-square/api-contracts/message.schema";
+import MessageComponent from "@app-store/apps/town-square/components/Message";
 import NewMessageForm from "@app-store/apps/town-square/components/NewMessageForm";
 import Shell from "@app-store/shared/components/Shell";
 import { useSocket } from "@app-store/shared/hooks/useSocket";
@@ -9,16 +9,16 @@ import React, { useEffect } from "react";
 
 export default function TownSquare() {
   useReactQuerySubscription();
-  const { data, fetchNextPage, hasNextPage, isFetching, isFetchingNextPage } = useGetAllMessages();
+  const { data: pagesData, fetchNextPage, hasNextPage, isFetching, isFetchingNextPage } = useGetAllMessages();
 
-  if (!data) return <div className="h1">Loading...</div>;
+  if (!pagesData) return <div className="h1">Loading...</div>;
 
   return (
     <Shell>
       <div className="layout py-8">
-        {data.pages.map((group, i) => (
+        {pagesData.pages.map((group, i) => (
           <React.Fragment key={i}>
-            {group.data.map((message: Message & User) => {
+            {group.data.map((message: Message) => {
               return <MessageComponent key={message.id} values={message} />;
             })}
           </React.Fragment>
@@ -38,7 +38,12 @@ export default function TownSquare() {
 export function useGetAllMessages() {
   const getAllMessages = async ({ pageParam = "" }) => {
     const response = await axios.get(`/api/apps/town-square/messages/list?cursor=${pageParam}&pageSize=100`);
-    return response;
+    const parsedResponse = messageListSchema.parse(response.data);
+    /*
+      The fn returned data structure must conform to the Infinite Query returned data structure,
+      otherwise, your changes will be overwritten: https://tanstack.com/query/v4/docs/guides/infinite-queries
+     */
+    return { data: parsedResponse, pageParams: [] };
   };
 
   return useInfiniteQuery(["town-square", "messages", "list"], getAllMessages, {

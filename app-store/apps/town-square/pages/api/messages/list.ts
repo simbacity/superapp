@@ -1,6 +1,5 @@
-import { Message } from "@app-store/apps/town-square/api-contracts/message.schema";
+import { MessageList } from "@app-store/apps/town-square/api-contracts/message.schema";
 import MessageEntity from "@app-store/apps/town-square/business-logic/message.entity";
-import { User } from "@app-store/apps/town-square/components/Message";
 import HttpError from "@app-store/shared/utils/errors/HttpError";
 import { NextApiRequest, NextApiResponse } from "next";
 import { getSession } from "next-auth/react";
@@ -14,7 +13,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const entity = new MessageEntity();
 
   try {
-    const response: (Message & User)[] = await entity.list(req.query);
+    const response: MessageList = await entity.list(req.query);
     return res.status(200).json(response);
   } catch (error) {
     if (error instanceof HttpError) return res.status(error.code).json(error.message);

@@ -71,8 +71,7 @@ export function useCreateMessage() {
 
   const createMessage = async (data: MessageRequest) => {
     const response = await axios.post("/api/apps/town-square/messages/create", data);
-    // 'createdAt' returned as dateString/convert to dateTime.
-    return messageSchema.parse({ ...response.data, createdAt: new Date(response.data.createdAt) });
+    return messageSchema.parse(response.data);
   };
 
   return useMutation(createMessage, {

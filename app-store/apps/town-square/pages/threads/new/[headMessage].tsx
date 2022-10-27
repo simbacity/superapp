@@ -1,3 +1,4 @@
+import { messageSchema } from "@app-store/apps/town-square/api-contracts/message.schema";
 import Message from "@app-store/apps/town-square/components/Message";
 import NewMessageForm from "@app-store/apps/town-square/components/NewMessageForm";
 import Shell from "@app-store/shared/components/Shell";
@@ -37,7 +38,7 @@ export default function NewThread({ headMessage }: MessageParams) {
 export function useGetMessage(id: string) {
   const getMessage = async (id: string) => {
     const response = await axios.get(`/api/apps/town-square/messages/${id}/show`);
-    return response.data;
+    return messageSchema.parse(response.data);
   };
 
   return useQuery(["town-square", "messages", "show", id], () => getMessage(id));

@@ -1,6 +1,6 @@
 import { Message } from "@app-store/apps/town-square/api-contracts/message.schema";
+import { threadSchema } from "@app-store/apps/town-square/api-contracts/thread.schema";
 import MessageComponent from "@app-store/apps/town-square/components/Message";
-import { User } from "@app-store/apps/town-square/components/Message";
 import NewMessageForm from "@app-store/apps/town-square/components/NewMessageForm";
 import Shell from "@app-store/shared/components/Shell";
 import { ArrowLeftIcon } from "@heroicons/react/solid";
@@ -34,7 +34,7 @@ export default function NewThread({ id }: MessageParams) {
         </div>
         <MessageComponent values={thread.mainMessage} />
         <div className="ml-4">
-          {thread.messages.map((message: Message & User) => (
+          {thread.messages.map((message: Message) => (
             <MessageComponent key={message.id} values={message} />
           ))}
         </div>
@@ -49,7 +49,7 @@ export function useMessageThread(id: string, findByMainMessageId?: boolean) {
     const response = await axios.get(`/api/apps/town-square/threads/${id}/show`, {
       params: { findByMainMessageId },
     });
-    return response.data;
+    return threadSchema.parse(response.data);
   };
 
   return useQuery(["town-square", "threads", "show", id], () => getMessageThread(id));

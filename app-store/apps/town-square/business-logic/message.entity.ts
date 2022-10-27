@@ -21,7 +21,10 @@ type MessageListQuerySchema = {
 
 export default class MessageEntity {
   async find(id: string) {
-    const message = await prisma.message_TownSquare.findUnique({ where: { id }, include: { user: true } });
+    const message = await prisma.message_TownSquare.findUnique({
+      where: { id },
+      include: { user: { select: { id: true, name: true, image: true } } },
+    });
 
     if (!message) {
       throw new NotFoundError("Not Found");
@@ -43,7 +46,7 @@ export default class MessageEntity {
         thread: {
           connectOrCreate: {
             create: {
-              messageId: params.messageId,
+              messageId: params.messageId || "",
             },
             where: {
               id: params.threadId,
@@ -59,7 +62,7 @@ export default class MessageEntity {
 
   private async createMessage(params: MessageRequest, userId: string) {
     const { content } = params;
-    return await prisma.message_TownSquare.create({
+    const response = await prisma.message_TownSquare.create({
       data: {
         content,
         user: {
@@ -69,6 +72,8 @@ export default class MessageEntity {
         },
       },
     });
+
+    return response;
   }
 
   async create(params: MessageRequest, userId: string) {
@@ -115,6 +120,6 @@ export default class MessageEntity {
       throw new ForbiddenError("Forbidden");
     }
 
-    return prisma.message_TownSquare.delete({ where: { id } });
+    return await prisma.message_TownSquare.delete({ where: { id } });
   }
 }

@@ -36,9 +36,17 @@ export default class ThreadEntity {
   async delete(id: string) {
     const thread = await this.find(id);
 
-    return await prisma.$transaction([
+    const response = await prisma.$transaction([
       prisma.message_TownSquare.delete({ where: { id: thread?.messageId } }),
       prisma.messageThread_TownSquare.delete({ where: { id } }),
     ]);
+
+    return {
+      id: response[1].id,
+      messageId: response[1].messageId,
+      mainMessage: response[0],
+      messages: [response[0]],
+      createdAt: response[1].createdAt,
+    };
   }
 }

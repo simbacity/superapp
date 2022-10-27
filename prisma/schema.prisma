@@ -121,7 +121,7 @@ model Message_TownSquare {
 model MessageThread_TownSquare {
   id          String               @id @default(cuid())
   messages    Message_TownSquare[]
-  mainMessage Message_TownSquare?  @relation("main_message", fields: [messageId], references: [id], onUpdate: NoAction, onDelete: NoAction)
+  mainMessage Message_TownSquare   @relation("main_message", fields: [messageId], references: [id], onUpdate: NoAction, onDelete: NoAction)
   messageId   String               @unique
   createdAt   DateTime             @default(now())
 }
