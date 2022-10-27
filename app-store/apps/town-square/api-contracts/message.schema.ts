@@ -27,15 +27,3 @@ export const messageListSchema = z.array(messageSchema);
 export type Message = z.TypeOf<typeof messageSchema>;
 export type MessageList = z.TypeOf<typeof messageListSchema>;
 export type MessageRequest = z.TypeOf<typeof messageRequestSchema>;
-
-export const testSchema = z.object({
-  // data: z.object({
-  // pages: z.array(
-  //   z.object({
-  //     data: messageListSchema,
-  //   })
-  // ),
-  data: messageListSchema,
-  pageParams: z.array(z.string()),
-  // }),
-});
