@@ -11,9 +11,9 @@
 // https://developers.google.com/web/tools/workbox/guides/configure-workbox#disable_logging
 self.__WB_DISABLE_DEV_LOGS = true;
 
-self.addEventListener("push", pushEvent);
+self.addEventListener("push", showNotification);
 
-function pushEvent(event) {
+function showNotification(event) {
   const data = JSON.parse(event.data.text());
   event.waitUntil(
     self.registration.showNotification(data.title, {
