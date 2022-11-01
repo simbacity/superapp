@@ -12,8 +12,8 @@
     "prettier": "prettier --write .",
     "prepare": "husky install",
     "pre-commit": "lint-staged",
-    "test": "yarn test:db:reset && node --inspect node_modules/.bin/jest --runInBand --testNamePattern",
-    "test:coverage": "yarn test:db:reset && node --inspect node_modules/.bin/jest --coverage",
+    "test": "yarn test:db:reset && node --inspect node_modules/.bin/jest --runInBand --testPathPattern",
+    "test:coverage": "yarn test:db:reset && node --inspect node_modules/.bin/jest --runInBand --coverage",
     "test:db:reset": "dotenv -e .env.test -- npx prisma migrate reset --force --skip-seed && dotenv -e .env.test -- npx prisma db push",
     "app-store:generate-files": "ts-node --transpile-only cli/app-store-generate-files"
   },
