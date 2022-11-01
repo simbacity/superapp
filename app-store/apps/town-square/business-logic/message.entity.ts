@@ -1,7 +1,9 @@
 import { MessageRequest } from "@app-store/apps/town-square/api-contracts/message.schema";
+import PushNotificationEntity from "@app-store/shared/business-logic/push-notification.entity";
 import ForbiddenError from "@app-store/shared/utils/errors/ForbiddenError";
 import NotFoundError from "@app-store/shared/utils/errors/NotFoundError";
 import prisma from "@app-store/shared/utils/prisma";
+import { User } from "@prisma/client";
 
 type MessageListQuerySchema = {
   take: number;
@@ -77,10 +79,15 @@ export default class MessageEntity {
   }
 
   async create(params: MessageRequest, userId: string) {
-    if (params.messageId || params.threadId) {
-      return await this.createMessageInThread(params, userId);
-    }
-    return await this.createMessage(params, userId);
+    const isInThread = params.threadId || params.messageId;
+    const createMessage = isInThread ? this.createMessageInThread : this.createMessage;
+
+    const user = await prisma.user.findUnique({ where: { id: userId } });
+    const messageTitle = user?.name || "New message";
+
+    const response = await createMessage(params, userId);
+    await this.sendPushNotificationToAllOtherUsers(userId, messageTitle, params.content);
+    return response;
   }
 
   async list(query: Record<string, string | string[]>) {
@@ -121,5 +128,13 @@ export default class MessageEntity {
     }
 
     return await prisma.message_TownSquare.delete({ where: { id } });
+  }
+
+  private async sendPushNotificationToAllOtherUsers(currentUserId: string, title: string, body: string) {
+    const users = await prisma.user.findMany();
+    const userIds = users.map((user: User) => user.id).filter((id: string) => id !== currentUserId);
+
+    const pushNotification = new PushNotificationEntity();
+    pushNotification.send(userIds, title, body);
   }
 }

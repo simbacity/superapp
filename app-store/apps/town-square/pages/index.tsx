@@ -1,6 +1,7 @@
 import { Message, messageListSchema } from "@app-store/apps/town-square/api-contracts/message.schema";
 import MessageComponent from "@app-store/apps/town-square/components/Message";
 import NewMessageForm from "@app-store/apps/town-square/components/NewMessageForm";
+import NotificationsPermissionRequest from "@app-store/shared/components/NotificationsPermissionRequest";
 import Shell from "@app-store/shared/components/Shell";
 import { useSocket } from "@app-store/shared/hooks/useSocket";
 import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
@@ -16,6 +17,7 @@ export default function TownSquare() {
   return (
     <Shell>
       <div className="layout py-8">
+        <NotificationsPermissionRequest />
         {pagesData.pages.map((group, i) => (
           <React.Fragment key={i}>
             {group.data.map((message: Message) => {

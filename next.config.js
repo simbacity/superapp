@@ -2,6 +2,9 @@
 
 const nextConfig = {
   reactStrictMode: true,
+  env: {
+    WEB_PUSH_VAPID_PUBLIC_KEY: process.env.WEB_PUSH_VAPID_PUBLIC_KEY,
+  },
 };
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
