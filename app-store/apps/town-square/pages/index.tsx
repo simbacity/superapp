@@ -1,16 +1,18 @@
-import { Message, messageListSchema } from "@app-store/apps/town-square/api-contracts/message.schema";
+import { MessageResponse, messageListSchema } from "@app-store/apps/town-square/api-contracts/message.schema";
+import { threadListSchema } from "@app-store/apps/town-square/api-contracts/thread.schema";
 import MessageComponent from "@app-store/apps/town-square/components/Message";
 import NewMessageForm from "@app-store/apps/town-square/components/NewMessageForm";
 import NotificationsPermissionRequest from "@app-store/shared/components/NotificationsPermissionRequest";
 import Shell from "@app-store/shared/components/Shell";
 import { useSocket } from "@app-store/shared/hooks/useSocket";
-import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
+import { useInfiniteQuery, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import React, { useEffect } from "react";
 
 export default function TownSquare() {
   useReactQuerySubscription();
   const { data: pagesData, fetchNextPage, hasNextPage, isFetching, isFetchingNextPage } = useGetAllMessages();
+  const { data: allThreads } = useGetAllThreads();
 
   if (!pagesData) return <div className="h1">Loading...</div>;
 
@@ -20,8 +22,11 @@ export default function TownSquare() {
         <NotificationsPermissionRequest />
         {pagesData.pages.map((group, i) => (
           <React.Fragment key={i}>
-            {group.data.map((message: Message) => {
-              return <MessageComponent key={message.id} values={message} />;
+            {group.data.map((message: MessageResponse) => {
+              // Pass reply count to message component
+              const replyCount = allThreads?.find((thread) => thread?.messageId === message.id)?.messages
+                ?.length;
+              return <MessageComponent key={message.id} message={message} replyCount={replyCount} />;
             })}
           </React.Fragment>
         ))}
@@ -56,6 +61,15 @@ export function useGetAllMessages() {
       return undefined;
     },
   });
+}
+
+export function useGetAllThreads() {
+  const getAllThreads = async () => {
+    const response = await axios.get("/api/apps/town-square/threads/list");
+    return threadListSchema.parse(response.data);
+  };
+
+  return useQuery(["town-square", "threads", "list"], getAllThreads);
 }
 
 export function useReactQuerySubscription() {

@@ -1,4 +1,7 @@
-import { messageRequestSchema, Message } from "@app-store/apps/town-square/api-contracts/message.schema";
+import {
+  messageRequestSchema,
+  MessageResponse,
+} from "@app-store/apps/town-square/api-contracts/message.schema";
 import MessageEntity from "@app-store/apps/town-square/business-logic/message.entity";
 import HttpError from "@app-store/shared/utils/errors/HttpError";
 import { NextApiRequest, NextApiResponse } from "next";
@@ -14,7 +17,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   try {
     const requestBody = messageRequestSchema.parse(req.body);
-    const response: Message = await entity.create(requestBody, session.user.id);
+    const response: MessageResponse = await entity.create(requestBody, session.user.id);
     return res.status(200).json(response);
   } catch (error) {
     if (error instanceof HttpError) return res.status(error.code).json(error.message);

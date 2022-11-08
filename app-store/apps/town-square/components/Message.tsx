@@ -1,45 +1,56 @@
-import { Message, messageSchema } from "@app-store/apps/town-square/api-contracts/message.schema";
-import { threadSchema } from "@app-store/apps/town-square/api-contracts/thread.schema";
-import { useMessageThread } from "@app-store/apps/town-square/pages/threads/[id]";
+import { MessageResponse, messageSchema } from "@app-store/apps/town-square/api-contracts/message.schema";
+import { Thread, threadSchema } from "@app-store/apps/town-square/api-contracts/thread.schema";
 import { useSocket } from "@app-store/shared/hooks/useSocket";
 import { DotsHorizontalIcon } from "@heroicons/react/outline";
 import { PhotographIcon } from "@heroicons/react/solid";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { useSession } from "next-auth/react";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
-import { processDate } from "../utils/days";
+import { formatDate } from "../utils/days";
 
 interface MessageParams {
-  values: Message;
+  message?: MessageResponse;
+  replyCount?: number;
 }
 
-export default function MessagePage({ values }: MessageParams) {
+export default function MessagePage({ message, replyCount }: MessageParams) {
   const router = useRouter();
-  const [deleteButton, showDeleteButton] = useState<boolean>(false);
+  const [deleteButtonVisible, setIsDeleteButtonVisible] = useState<boolean>(false);
   const { data: session } = useSession();
-  const isUser = values.user?.id === session?.user.id;
+  const isCurrentUser = message?.user?.id === session?.user.id;
+  const createThread = useCreateThread();
   const deleteMessage = useDeleteMessage();
   const deleteThread = useDeleteThread();
 
-  // get thread ID for navigation
-  const { data: thread } = useMessageThread(values.id, true); // findByMainMessageId -> true
+  const onNavigateToThreadsHandler = () => {
+    if (message?.threadId) {
+      router.push(`/apps/town-square/threads/${message.threadId}`);
+    } else {
+      createThread.mutate(
+        { messageId: message?.id || "" },
+        {
+          onSuccess: (response) => {
+            if (response) {
+              router.push(`/apps/town-square/threads/${response.id}`);
+            }
+          },
+        }
+      );
+    }
+  };
 
   const onDeleteHandler = () => {
-    if (thread) {
-      deleteThread.mutate(thread.id, {
+    if (!message?.isReply && message?.threadId) {
+      deleteThread.mutate(message.threadId, {
         onSuccess: () => {
           router.push("/apps/town-square");
         },
-        onError: (err) => {
-          console.log(err);
-        },
       });
     } else {
-      deleteMessage.mutate(values.id, {
+      deleteMessage.mutate(message?.id || "", {
         onSuccess: () => {
           router.push("/apps/town-square");
         },
@@ -49,45 +60,45 @@ export default function MessagePage({ values }: MessageParams) {
 
   return (
     <div
-      key={values.id}
+      key={message?.id}
       className="group flex sm:w-full md:w-3/4 my-2 p-2 hover:bg-gray-700"
-      onMouseLeave={() => showDeleteButton(false)}>
-      {values.user?.image ? (
+      onMouseLeave={() => setIsDeleteButtonVisible(false)}>
+      {message?.user?.image ? (
         <img
-          src={values.user.image}
+          src={message.user.image}
           referrerPolicy="no-referrer"
-          className="w-8 h-8 rounded-[16px] border border-white m-1"
+          className="w-8 h-8 rounded-full border border-white m-1"
         />
       ) : (
-        <PhotographIcon className="w-8 h-8 rounded-[16px] border border-white m-1 text-white" />
+        <PhotographIcon className="w-8 h-8 rounded-full border border-white m-1 text-white" />
       )}
       <div className="w-full">
         <div className="flex mt-1 justify-between">
-          <Link
-            href={
-              thread ? `/apps/town-square/threads/${thread.id}` : `/apps/town-square/threads/new/${values.id}`
-            }>
-            <a className="w-11/12">
+          <button
+            className="w-full items-start"
+            onClick={onNavigateToThreadsHandler}
+            disabled={createThread.isLoading}>
+            <div className="w-11/12">
               <div className="flex items-end">
-                <p className="text-white text-xs font-bold">{values.user?.name}</p>
-                <p className="text-[10px] text-gray-400 ml-2">{processDate(values.createdAt)}</p>
+                <p className="text-white text-xs font-bold">{message?.user?.name}</p>
+                <p className="text-xs text-gray-400 ml-2">{formatDate(message?.createdAt || "")}</p>
               </div>
-              <p className="text-white text-sm mt-1">{values.content}</p>
-              {thread && !!thread.messages.length && (
-                <p className="text-[10px] text-blue-300">
-                  {thread.messages.length} {thread.messages.length > 1 ? "Replies" : "Reply"}
+              <p className="text-white text-left text-sm mt-1">{message?.content}</p>
+              {!!replyCount && replyCount !== 0 && (
+                <p className="text-xs text-left text-blue-300 mt-2">
+                  {replyCount} {replyCount > 1 ? "Replies" : "Reply"}
                 </p>
               )}
-            </a>
-          </Link>
+            </div>
+          </button>
           <div className="relative">
             <DotsHorizontalIcon
               className="w-4 h-4 text-white hidden group-hover:block hover:bg-gray-200 hover:text-black group"
-              onClick={() => showDeleteButton(true)}
+              onClick={() => setIsDeleteButtonVisible(true)}
             />
-            {deleteButton && isUser && (
+            {deleteButtonVisible && isCurrentUser && (
               <div
-                className="bg-white text-[12px] absolute top-4 right-0 px-3 cursor-pointer"
+                className="bg-white text-sm absolute top-4 right-0 px-3 cursor-pointer"
                 onClick={() => onDeleteHandler()}>
                 Delete
               </div>
@@ -97,6 +108,15 @@ export default function MessagePage({ values }: MessageParams) {
       </div>
     </div>
   );
+}
+
+export function useCreateThread() {
+  const createThread = async (data: Thread) => {
+    const response = await axios.post("/api/apps/town-square/threads/create", data);
+    return threadSchema.parse(response.data);
+  };
+
+  return useMutation(createThread, {});
 }
 
 export function useDeleteMessage() {

@@ -124,6 +124,7 @@ model Message_TownSquare {
   user        User                      @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId      String
   mainMessage MessageThread_TownSquare? @relation("main_message")
+  isReply     Boolean
   createdAt   DateTime                  @default(now())
 }
 

@@ -9,7 +9,7 @@ type MessageListQuerySchema = {
   take: number;
   cursor?: { id: string };
   skip?: number;
-  where: { threadId: null };
+  where: { isReply: boolean };
   include: {
     user: {
       select: {
@@ -35,52 +35,8 @@ export default class MessageEntity {
     return message;
   }
 
-  private async createMessageInThread(params: MessageRequest, userId: string) {
-    const { content } = params;
-    const response = await prisma.message_TownSquare.create({
-      data: {
-        content,
-        user: {
-          connect: {
-            id: userId,
-          },
-        },
-        thread: {
-          connectOrCreate: {
-            create: {
-              messageId: params.messageId || "",
-            },
-            where: {
-              id: params.threadId,
-              messageId: params.messageId,
-            },
-          },
-        },
-      },
-    });
-
-    return response;
-  }
-
-  private async createMessage(params: MessageRequest, userId: string) {
-    const { content } = params;
-    const response = await prisma.message_TownSquare.create({
-      data: {
-        content,
-        user: {
-          connect: {
-            id: userId,
-          },
-        },
-      },
-    });
-
-    return response;
-  }
-
   async create(params: MessageRequest, userId: string) {
-    const isInThread = params.threadId || params.messageId;
-    const createMessage = isInThread ? this.createMessageInThread : this.createMessage;
+    const createMessage = params.threadId ? this.createReply : this.createMessage;
 
     const user = await prisma.user.findUnique({ where: { id: userId } });
     const messageTitle = user?.name || "New message";
@@ -97,7 +53,7 @@ export default class MessageEntity {
     const _query: MessageListQuerySchema = {
       take: parseInt(pageSize, 10),
       where: {
-        threadId: null,
+        isReply: false,
       },
       include: {
         user: {
@@ -128,6 +84,45 @@ export default class MessageEntity {
     }
 
     return await prisma.message_TownSquare.delete({ where: { id } });
+  }
+
+  private async createReply(params: MessageRequest, userId: string) {
+    const { content, isReply = true } = params;
+    const response = await prisma.message_TownSquare.create({
+      data: {
+        content,
+        isReply,
+        user: {
+          connect: {
+            id: userId,
+          },
+        },
+        thread: {
+          connect: {
+            id: params.threadId,
+          },
+        },
+      },
+    });
+
+    return response;
+  }
+
+  private async createMessage(params: MessageRequest, userId: string) {
+    const { content, isReply = false } = params;
+    const response = await prisma.message_TownSquare.create({
+      data: {
+        content,
+        isReply,
+        user: {
+          connect: {
+            id: userId,
+          },
+        },
+      },
+    });
+
+    return response;
   }
 
   private async sendPushNotificationToAllOtherUsers(currentUserId: string, title: string, body: string) {

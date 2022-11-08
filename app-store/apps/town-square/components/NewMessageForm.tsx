@@ -13,9 +13,10 @@ import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 
 interface MessageFormParams {
-  formValues?: Omit<MessageRequest, "content">;
+  threadId?: string;
 }
-export default function MessageForm({ formValues }: MessageFormParams) {
+
+export default function MessageForm({ threadId }: MessageFormParams) {
   const router = useRouter();
   const form = useForm<MessageRequest>({
     resolver: zodResolver(messageRequestSchema),
@@ -26,7 +27,7 @@ export default function MessageForm({ formValues }: MessageFormParams) {
 
   function onSubmitHandler(data: MessageRequest) {
     createMessage.mutate(
-      { ...data, threadId: formValues?.threadId, messageId: formValues?.messageId },
+      { ...data, threadId },
       {
         onSuccess: (response) => {
           form.reset();
@@ -39,7 +40,7 @@ export default function MessageForm({ formValues }: MessageFormParams) {
   }
 
   return (
-    <form onSubmit={form.handleSubmit(onSubmitHandler)}>
+    <form onSubmit={form.handleSubmit(onSubmitHandler, (e) => console.log(e))}>
       <div className="flex sm:w-full md:w-3/4">
         {userData?.user.image ? (
           <img

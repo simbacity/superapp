@@ -16,4 +16,6 @@ export const apiEndpoints: ApiEndpoints = {
   "town-square/messages/list": import("../../apps/town-square/pages/api/messages/list"),
   "town-square/threads/[id]/delete": import("../../apps/town-square/pages/api/threads/[id]/delete"),
   "town-square/threads/[id]/show": import("../../apps/town-square/pages/api/threads/[id]/show"),
+  "town-square/threads/create": import("../../apps/town-square/pages/api/threads/create"),
+  "town-square/threads/list": import("../../apps/town-square/pages/api/threads/list"),
 };

@@ -1,19 +1,15 @@
+import { Thread } from "@app-store/apps/town-square/api-contracts/thread.schema";
 import prisma from "@app-store/shared/utils/prisma";
 
 export default class ThreadEntity {
-  async find(id: string, findByMainMessageId?: boolean) {
-    if (findByMainMessageId) {
-      return await this.findByMainMessageId(id);
-    } else {
-      return await this.findById(id);
-    }
-  }
-
-  private async findById(id: string) {
+  async find(id: string) {
     const thread = await prisma.messageThread_TownSquare.findUnique({
       where: { id },
       include: {
-        messages: { include: { user: { select: { id: true, image: true, name: true } } } },
+        messages: {
+          include: { user: { select: { id: true, image: true, name: true } } },
+          where: { isReply: true },
+        },
         mainMessage: { include: { user: { select: { id: true, image: true, name: true } } } },
       },
     });
@@ -21,16 +17,38 @@ export default class ThreadEntity {
     return thread;
   }
 
-  private async findByMainMessageId(id: string) {
-    const thread = await prisma.messageThread_TownSquare.findUnique({
-      where: { messageId: id },
-      include: {
-        messages: { include: { user: { select: { id: true, image: true, name: true } } } },
-        mainMessage: { include: { user: { select: { id: true, image: true, name: true } } } },
+  async create(params: Thread) {
+    const thread = await prisma.messageThread_TownSquare.create({
+      data: {
+        messageId: params.messageId,
+      },
+    });
+
+    // Update main message with its newly created thread
+    await prisma.message_TownSquare.update({
+      where: {
+        id: params.messageId,
+      },
+      data: {
+        threadId: thread.id,
       },
     });
 
     return thread;
+  }
+
+  async list() {
+    const threads = await prisma.messageThread_TownSquare.findMany({
+      include: {
+        messages: {
+          include: { user: { select: { id: true, image: true, name: true } } },
+          where: { isReply: true },
+        },
+        mainMessage: { include: { user: { select: { id: true, image: true, name: true } } } },
+      },
+    });
+
+    return threads;
   }
 
   async delete(id: string) {

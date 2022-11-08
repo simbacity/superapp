@@ -1,4 +1,4 @@
-import { Message } from "@app-store/apps/town-square/api-contracts/message.schema";
+import { MessageResponse } from "@app-store/apps/town-square/api-contracts/message.schema";
 import { threadSchema } from "@app-store/apps/town-square/api-contracts/thread.schema";
 import MessageComponent from "@app-store/apps/town-square/components/Message";
 import NewMessageForm from "@app-store/apps/town-square/components/NewMessageForm";
@@ -8,19 +8,15 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useRouter } from "next/router";
 
-interface MessageParams {
+interface ThreadParams {
   id: string;
 }
 
-export default function NewThread({ id }: MessageParams) {
+export default function Thread({ id }: ThreadParams) {
   const router = useRouter();
-  const { data: thread } = useMessageThread(id);
+  const { data: thread } = useThread(id);
 
   if (!thread) return <div className="h1">Loading...</div>;
-
-  const formValues = {
-    threadId: thread.id,
-  };
 
   return (
     <Shell>
@@ -30,27 +26,25 @@ export default function NewThread({ id }: MessageParams) {
             className="w-10 h-5 text-white cursor-pointer"
             onClick={() => router.push("/apps/town-square")}
           />
-          <p className="text-white ">Threads</p>
+          <p className="text-white ">Thread</p>
         </div>
-        <MessageComponent values={thread.mainMessage} />
+        <MessageComponent message={thread.mainMessage} />
         <div className="ml-4">
-          {thread.messages.map((message: Message) => (
-            <MessageComponent key={message.id} values={message} />
+          {thread.messages?.map((message: MessageResponse) => (
+            <MessageComponent key={message.id} message={message} />
           ))}
         </div>
-        <NewMessageForm formValues={formValues} />
+        <NewMessageForm threadId={thread.id} />
       </div>
     </Shell>
   );
 }
 
-export function useMessageThread(id: string, findByMainMessageId?: boolean) {
-  const getMessageThread = async (id: string) => {
-    const response = await axios.get(`/api/apps/town-square/threads/${id}/show`, {
-      params: { findByMainMessageId },
-    });
+export function useThread(id: string) {
+  const getThread = async (id: string) => {
+    const response = await axios.get(`/api/apps/town-square/threads/${id}/show`);
     return threadSchema.parse(response.data);
   };
 
-  return useQuery(["town-square", "threads", "show", id], () => getMessageThread(id));
+  return useQuery(["town-square", "threads", "show", id], () => getThread(id));
 }

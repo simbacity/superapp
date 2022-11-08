@@ -14,5 +14,4 @@ export const AppImports: Imports = {
   "simba-design-system": dynamic(() => import("@app-store/apps/simba-design-system/pages/index")),
   "town-square": dynamic(() => import("@app-store/apps/town-square/pages/index")),
   "town-square/threads/[id]": dynamic(() => import("@app-store/apps/town-square/pages/threads/[id]/index")),
-  "town-square/threads/new/[headMessage]": dynamic(() => import("@app-store/apps/town-square/pages/threads/new/[headMessage]")),
 };

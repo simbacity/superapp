@@ -1,6 +1,7 @@
-import { MessageRequest, Message } from "@app-store/apps/town-square/api-contracts/message.schema";
-import { Thread } from "@app-store/apps/town-square/api-contracts/thread.schema";
+import { MessageRequest, MessageResponse } from "@app-store/apps/town-square/api-contracts/message.schema";
+import { ThreadResponse } from "@app-store/apps/town-square/api-contracts/thread.schema";
 import MessageEntity from "@app-store/apps/town-square/business-logic/message.entity";
+import ThreadEntity from "@app-store/apps/town-square/business-logic/thread.entity";
 import prisma from "@app-store/shared/utils/prisma";
 import { setup } from "@app-store/shared/utils/tests/setup";
 import { teardown } from "@app-store/shared/utils/tests/teardown";
@@ -40,12 +41,12 @@ describe("Message", () => {
 
       const message = (await prisma.message_TownSquare.findUnique({
         where: { id: response?.id },
-      })) as Message;
+      })) as MessageResponse;
 
       expect(message.content).toBe(requestParams.content);
     });
 
-    it("creates message in A new thread with messageId", async () => {
+    it("creates message in A new thread", async () => {
       const { user } = await setup();
 
       const requestParams: MessageRequest = {
@@ -53,21 +54,23 @@ describe("Message", () => {
       };
 
       const entity = new MessageEntity();
+      const threadEntity = new ThreadEntity();
       const response = await entity.create(requestParams, user.id);
+      const threadResponse = await threadEntity.create({ messageId: response.id });
 
       const requestParamsWithMessageId: MessageRequest = {
         content: "This is the comment of the message",
-        messageId: response.id,
+        threadId: threadResponse.id,
       };
 
       const responseInThread = await entity.create(requestParamsWithMessageId, user.id);
 
       const message = (await prisma.message_TownSquare.findUnique({
         where: { id: responseInThread.id },
-      })) as Message;
+      })) as MessageResponse;
       const thread = (await prisma.messageThread_TownSquare.findUnique({
         where: { messageId: response.id },
-      })) as Thread;
+      })) as ThreadResponse;
 
       expect(message.content).toBe(requestParamsWithMessageId.content);
       expect(response.id).toBe(thread?.messageId);

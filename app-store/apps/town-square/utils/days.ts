@@ -5,7 +5,7 @@ import isYesterday from "dayjs/plugin/isYesterday";
 dayjs.extend(isToday);
 dayjs.extend(isYesterday);
 
-export const processDate = (date: Date | string) => {
+export const formatDate = (date: Date | string) => {
   const parsedDate = dayjs(date);
   if (!parsedDate.isValid()) return "Invalid date";
 
