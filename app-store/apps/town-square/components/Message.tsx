@@ -1,5 +1,5 @@
 import { MessageResponse, messageSchema } from "@app-store/apps/town-square/api-contracts/message.schema";
-import { Thread, threadSchema } from "@app-store/apps/town-square/api-contracts/thread.schema";
+import { ThreadRequest, threadSchema } from "@app-store/apps/town-square/api-contracts/thread.schema";
 import { useSocket } from "@app-store/shared/hooks/useSocket";
 import { DotsHorizontalIcon } from "@heroicons/react/outline";
 import { PhotographIcon } from "@heroicons/react/solid";
@@ -111,7 +111,7 @@ export default function MessagePage({ message, replyCount }: MessageParams) {
 }
 
 export function useCreateThread() {
-  const createThread = async (data: Thread) => {
+  const createThread = async (data: ThreadRequest) => {
     const response = await axios.post("/api/apps/town-square/threads/create", data);
     return threadSchema.parse(response.data);
   };

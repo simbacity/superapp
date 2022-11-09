@@ -26,5 +26,5 @@ export const messageSchema = z.object({
 export const messageListSchema = z.array(messageSchema);
 
 export type MessageResponse = z.TypeOf<typeof messageSchema>;
-export type MessageList = z.TypeOf<typeof messageListSchema>;
+export type MessageListResponse = z.TypeOf<typeof messageListSchema>;
 export type MessageRequest = z.TypeOf<typeof messageRequestSchema>;

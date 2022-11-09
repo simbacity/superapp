@@ -17,6 +17,6 @@ export const threadSchema = z
 
 export const threadListSchema = z.array(threadSchema);
 
-export type Thread = z.TypeOf<typeof threadRequestSchema>;
+export type ThreadRequest = z.TypeOf<typeof threadRequestSchema>;
 export type ThreadResponse = z.TypeOf<typeof threadSchema>;
-export type ThreadList = z.TypeOf<typeof threadListSchema>;
+export type ThreadListResponse = z.TypeOf<typeof threadListSchema>;

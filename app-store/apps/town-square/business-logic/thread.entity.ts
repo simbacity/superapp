@@ -1,4 +1,4 @@
-import { Thread } from "@app-store/apps/town-square/api-contracts/thread.schema";
+import { ThreadRequest } from "@app-store/apps/town-square/api-contracts/thread.schema";
 import prisma from "@app-store/shared/utils/prisma";
 
 export default class ThreadEntity {
@@ -17,7 +17,7 @@ export default class ThreadEntity {
     return thread;
   }
 
-  async create(params: Thread) {
+  async create(params: ThreadRequest) {
     const thread = await prisma.messageThread_TownSquare.create({
       data: {
         messageId: params.messageId,
