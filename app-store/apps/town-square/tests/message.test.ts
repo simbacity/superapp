@@ -46,34 +46,36 @@ describe("Message", () => {
       expect(message.content).toBe(requestParams.content);
     });
 
-    it("creates message in A new thread", async () => {
+    it("creates message in a new thread", async () => {
       const { user } = await setup();
 
       const requestParams: MessageRequest = {
         content: "This is the content of the message",
       };
 
-      const entity = new MessageEntity();
+      const messageEntity = new MessageEntity();
       const threadEntity = new ThreadEntity();
-      const response = await entity.create(requestParams, user.id);
-      const threadResponse = await threadEntity.create({ messageId: response.id });
+
+      const messageResponse = await messageEntity.create(requestParams, user.id);
+      const threadResponse = await threadEntity.create({ messageId: messageResponse.id });
 
       const requestParamsWithMessageId: MessageRequest = {
         content: "This is the comment of the message",
         threadId: threadResponse.id,
       };
 
-      const responseInThread = await entity.create(requestParamsWithMessageId, user.id);
+      const responseInThread = await messageEntity.create(requestParamsWithMessageId, user.id);
 
       const message = (await prisma.message_TownSquare.findUnique({
         where: { id: responseInThread.id },
       })) as MessageResponse;
+
       const thread = (await prisma.messageThread_TownSquare.findUnique({
-        where: { messageId: response.id },
+        where: { messageId: messageResponse.id },
       })) as ThreadResponse;
 
       expect(message.content).toBe(requestParamsWithMessageId.content);
-      expect(response.id).toBe(thread?.messageId);
+      expect(messageResponse.id).toBe(thread?.messageId);
     });
   });
 
@@ -86,6 +88,7 @@ describe("Message", () => {
       };
 
       const entity = new MessageEntity();
+
       const createFirstMessage = await entity.create(requestParams, user.id);
       const createSecondMessage = await entity.create(requestParams, user.id);
       const createThirdMessage = await entity.create(requestParams, user.id);
@@ -96,11 +99,33 @@ describe("Message", () => {
       expect(allMessages.length).toBe(3);
     });
 
-    // Todo: load more messages using cursor
+    it("list more messages after the first fetch", async () => {
+      const { user } = await setup();
+
+      const requestParams: MessageRequest = {
+        content: "This is the content of the message",
+      };
+
+      const entity = new MessageEntity();
+
+      const createFirstMessage = await entity.create(requestParams, user.id);
+      const createSecondMessage = await entity.create(requestParams, user.id);
+      const createThirdMessage = await entity.create(requestParams, user.id);
+      await Promise.all([createFirstMessage, createSecondMessage, createThirdMessage]);
+
+      const messagesLoadedOnInitialRequest = await entity.list({ pageSize: "2" });
+      const messagesLoadedOnLoadMore = await entity.list({
+        pageSize: "2",
+        cursor: messagesLoadedOnInitialRequest[1].id,
+      });
+
+      expect(messagesLoadedOnInitialRequest.length).toBe(2);
+      expect(messagesLoadedOnLoadMore.length).toBe(1);
+    });
   });
 
   describe("#delete", () => {
-    it("deletes if messages is from user", async () => {
+    it("deletes message if message is from user", async () => {
       const { user } = await setup();
 
       const requestParams: MessageRequest = {
@@ -117,7 +142,7 @@ describe("Message", () => {
       expect(message).toBe(null);
     });
 
-    it("does not delete if post is from a different user", async () => {
+    it("does not delete message if message is from a different user", async () => {
       const { user } = await setup();
 
       const requestParams: MessageRequest = {

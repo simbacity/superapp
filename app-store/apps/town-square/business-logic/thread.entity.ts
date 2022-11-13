@@ -1,4 +1,7 @@
 import { ThreadRequest } from "@app-store/apps/town-square/api-contracts/thread.schema";
+import MessageEntity from "@app-store/apps/town-square/business-logic/message.entity";
+import ForbiddenError from "@app-store/shared/utils/errors/ForbiddenError";
+import NotFoundError from "@app-store/shared/utils/errors/NotFoundError";
 import prisma from "@app-store/shared/utils/prisma";
 
 export default class ThreadEntity {
@@ -13,6 +16,10 @@ export default class ThreadEntity {
         mainMessage: { include: { user: { select: { id: true, image: true, name: true } } } },
       },
     });
+
+    if (!thread) {
+      throw new NotFoundError("Not found");
+    }
 
     return thread;
   }
@@ -51,11 +58,17 @@ export default class ThreadEntity {
     return threads;
   }
 
-  async delete(id: string) {
+  async delete(id: string, userId: string) {
+    const messageEntity = new MessageEntity();
     const thread = await this.find(id);
+    const mainMessage = await messageEntity.find(thread.messageId);
+
+    if (mainMessage?.userId !== userId) {
+      throw new ForbiddenError("Forbidden");
+    }
 
     const response = await prisma.$transaction([
-      prisma.message_TownSquare.delete({ where: { id: thread?.messageId } }),
+      prisma.message_TownSquare.delete({ where: { id: mainMessage.id } }),
       prisma.messageThread_TownSquare.delete({ where: { id } }),
     ]);
 

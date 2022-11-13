@@ -23,8 +23,14 @@ export const messageSchema = z.object({
     .optional(),
 });
 
+export const messageListRequestSchema = z.object({
+  cursor: z.string().or(z.array(z.string())).optional(),
+  pageSize: z.string().or(z.array(z.string())),
+});
+
 export const messageListSchema = z.array(messageSchema);
 
 export type MessageResponse = z.TypeOf<typeof messageSchema>;
 export type MessageListResponse = z.TypeOf<typeof messageListSchema>;
 export type MessageRequest = z.TypeOf<typeof messageRequestSchema>;
+export type MessageListRequest = z.TypeOf<typeof messageListRequestSchema>;

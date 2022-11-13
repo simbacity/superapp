@@ -12,46 +12,65 @@ describe("Thread", () => {
   });
 
   describe("#create", () => {
-    it("creates thread", async () => {
+    it("creates a thread", async () => {
       const { user } = await setup();
 
       const requestParams: MessageRequest = {
         content: "This is the content of the message",
       };
 
-      const entity = new MessageEntity();
+      const messageEntity = new MessageEntity();
       const threadEntity = new ThreadEntity();
-      const response = await entity.create(requestParams, user.id);
 
-      const threadResponse = await threadEntity.create({ messageId: response.id });
+      const messageResponse = await messageEntity.create(requestParams, user.id);
+      const threadResponse = await threadEntity.create({ messageId: messageResponse.id });
 
-      const thread: ThreadResponse = await prisma.messageThread_TownSquare.findUnique({
+      const thread = (await prisma.messageThread_TownSquare.findUnique({
         where: { id: threadResponse.id },
-      });
+      })) as ThreadResponse;
 
-      expect(thread?.messageId).toBe(response.id);
+      expect(thread?.messageId).toBe(messageResponse.id);
     });
   });
 
   describe("#delete", () => {
-    it("deletes a thread", async () => {
+    it("deletes thread if thread's main message is from user", async () => {
       const { user } = await setup();
 
       const requestParams: MessageRequest = {
         content: "This is the content of the message",
       };
 
-      const entity = new MessageEntity();
+      const messageEntity = new MessageEntity();
       const threadEntity = new ThreadEntity();
-      const response = await entity.create(requestParams, user.id);
 
-      const threadResponse = await threadEntity.create({ messageId: response.id });
+      const messageResponse = await messageEntity.create(requestParams, user.id);
+      const threadResponse = await threadEntity.create({ messageId: messageResponse.id });
 
-      await threadEntity.delete(threadResponse.id);
-
-      const thread = await prisma.messageThread_TownSquare.findUnique({ where: { messageId: response.id } });
+      await threadEntity.delete(threadResponse.id, user.id);
+      const thread = await prisma.messageThread_TownSquare.findUnique({
+        where: { messageId: messageResponse.id },
+      });
 
       expect(thread).toBe(null);
+    });
+
+    it("does not delete thread if thread's main message is from a different user", async () => {
+      const { user } = await setup();
+
+      const requestParams: MessageRequest = {
+        content: "This is the content of the message",
+      };
+
+      const messageEntity = new MessageEntity();
+      const threadEntity = new ThreadEntity();
+
+      const messageResponse = await messageEntity.create(requestParams, user.id);
+      const threadResponse = await threadEntity.create({ messageId: messageResponse.id });
+
+      await expect(async () => {
+        await threadEntity.delete(threadResponse.id, "random_user");
+      }).rejects.toThrowError("Forbidden");
     });
   });
 });

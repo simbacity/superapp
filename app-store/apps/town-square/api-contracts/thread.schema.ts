@@ -5,15 +5,13 @@ export const threadRequestSchema = z.object({
   messageId: z.string(),
 });
 
-export const threadSchema = z
-  .object({
-    id: z.string(),
-    messageId: z.string(),
-    mainMessage: z.optional(messageSchema),
-    messages: z.array(messageSchema).optional(),
-    createdAt: z.date().or(z.string()),
-  })
-  .nullable();
+export const threadSchema = z.object({
+  id: z.string(),
+  messageId: z.string(),
+  mainMessage: z.optional(messageSchema),
+  messages: z.array(messageSchema).optional(),
+  createdAt: z.date().or(z.string()),
+});
 
 export const threadListSchema = z.array(threadSchema);
 

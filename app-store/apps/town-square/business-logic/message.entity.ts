@@ -1,4 +1,4 @@
-import { MessageRequest } from "@app-store/apps/town-square/api-contracts/message.schema";
+import { MessageRequest, MessageListRequest } from "@app-store/apps/town-square/api-contracts/message.schema";
 import PushNotificationEntity from "@app-store/shared/business-logic/push-notification.entity";
 import ForbiddenError from "@app-store/shared/utils/errors/ForbiddenError";
 import NotFoundError from "@app-store/shared/utils/errors/NotFoundError";
@@ -46,7 +46,7 @@ export default class MessageEntity {
     return response;
   }
 
-  async list(query: Record<string, string | string[]>) {
+  async list(query: MessageListRequest) {
     const cursor = Array.isArray(query.cursor) ? query.cursor[0] : query.cursor;
     const pageSize = Array.isArray(query.pageSize) ? query.pageSize[0] : query.pageSize;
 
