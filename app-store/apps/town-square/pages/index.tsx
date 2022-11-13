@@ -1,4 +1,8 @@
-import { MessageResponse, messageListSchema } from "@app-store/apps/town-square/api-contracts/message.schema";
+import {
+  MessageResponse,
+  messageListSchema,
+  messageSchema,
+} from "@app-store/apps/town-square/api-contracts/message.schema";
 import { threadListSchema } from "@app-store/apps/town-square/api-contracts/thread.schema";
 import MessageComponent from "@app-store/apps/town-square/components/Message";
 import NewMessageForm from "@app-store/apps/town-square/components/NewMessageForm";
@@ -77,8 +81,11 @@ export function useReactQuerySubscription() {
   const queryClient = useQueryClient();
 
   useEffect(() => {
-    const invalidateQueries = () => {
+    const invalidateQueries = (data: MessageResponse) => {
+      const message = messageSchema.parse(data);
+      console.log("invalidated thread show", message.threadId);
       queryClient.invalidateQueries(["town-square", "messages", "list"]);
+      queryClient.invalidateQueries(["town-square", "threads", "show", message.threadId]);
     };
 
     socket.on("receive_message", invalidateQueries);
