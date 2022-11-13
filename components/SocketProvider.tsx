@@ -13,7 +13,6 @@ export function SocketProvider(props: SocketProviderProps) {
   const [isConnected, setIsConnected] = useState(socket.connected);
 
   useEffect(() => {
-    console.log("provider effect fired");
     socket.on("connection", () => {
       setIsConnected(true);
     });

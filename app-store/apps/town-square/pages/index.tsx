@@ -83,7 +83,7 @@ export function useReactQuerySubscription() {
   useEffect(() => {
     const invalidateQueries = (data: MessageResponse) => {
       const message = messageSchema.parse(data);
-      console.log("invalidated thread show", message.threadId);
+
       queryClient.invalidateQueries(["town-square", "messages", "list"]);
       queryClient.invalidateQueries(["town-square", "threads", "show", message.threadId]);
     };
