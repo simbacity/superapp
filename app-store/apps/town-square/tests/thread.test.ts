@@ -25,7 +25,7 @@ describe("Thread", () => {
       const messageResponse = await messageEntity.create(requestParams, user.id);
       const threadResponse = await threadEntity.create({ messageId: messageResponse.id });
 
-      const thread = (await prisma.messageThread_TownSquare.findUnique({
+      const thread = (await prisma.thread_TownSquare.findUnique({
         where: { id: threadResponse.id },
       })) as ThreadResponse;
 
@@ -48,7 +48,7 @@ describe("Thread", () => {
       const threadResponse = await threadEntity.create({ messageId: messageResponse.id });
 
       await threadEntity.delete(threadResponse.id, user.id);
-      const thread = await prisma.messageThread_TownSquare.findUnique({
+      const thread = await prisma.thread_TownSquare.findUnique({
         where: { messageId: messageResponse.id },
       });
 

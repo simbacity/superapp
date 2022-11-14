@@ -6,7 +6,7 @@ import prisma from "@app-store/shared/utils/prisma";
 
 export default class ThreadEntity {
   async find(id: string) {
-    const thread = await prisma.messageThread_TownSquare.findUnique({
+    const thread = await prisma.thread_TownSquare.findUnique({
       where: { id },
       include: {
         messages: {
@@ -25,7 +25,7 @@ export default class ThreadEntity {
   }
 
   async create(params: ThreadRequest) {
-    const thread = await prisma.messageThread_TownSquare.create({
+    const thread = await prisma.thread_TownSquare.create({
       data: {
         messageId: params.messageId,
       },
@@ -45,7 +45,7 @@ export default class ThreadEntity {
   }
 
   async list() {
-    const threads = await prisma.messageThread_TownSquare.findMany({
+    const threads = await prisma.thread_TownSquare.findMany({
       include: {
         messages: {
           include: { user: { select: { id: true, image: true, name: true } } },
@@ -69,7 +69,7 @@ export default class ThreadEntity {
 
     const response = await prisma.$transaction([
       prisma.message_TownSquare.delete({ where: { id: mainMessage.id } }),
-      prisma.messageThread_TownSquare.delete({ where: { id } }),
+      prisma.thread_TownSquare.delete({ where: { id } }),
     ]);
 
     return {

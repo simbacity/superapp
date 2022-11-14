@@ -3,9 +3,12 @@ import PushNotificationEntity from "@app-store/shared/business-logic/push-notifi
 import ForbiddenError from "@app-store/shared/utils/errors/ForbiddenError";
 import NotFoundError from "@app-store/shared/utils/errors/NotFoundError";
 import prisma from "@app-store/shared/utils/prisma";
-import { User } from "@prisma/client";
+import { Prisma, User } from "@prisma/client";
 
 type MessageListQuerySchema = {
+  orderBy: {
+    createdAt: typeof Prisma.SortOrder.desc;
+  };
   take: number;
   cursor?: { id: string };
   skip?: number;
@@ -16,6 +19,15 @@ type MessageListQuerySchema = {
         id: boolean;
         name: boolean;
         image: boolean;
+      };
+    };
+    thread: {
+      select: {
+        _count: {
+          select: {
+            messages: boolean;
+          };
+        };
       };
     };
   };
@@ -51,6 +63,9 @@ export default class MessageEntity {
     const pageSize = Array.isArray(query.pageSize) ? query.pageSize[0] : query.pageSize;
 
     const _query: MessageListQuerySchema = {
+      orderBy: {
+        createdAt: Prisma.SortOrder.desc,
+      },
       take: parseInt(pageSize, 10),
       where: {
         isReply: false,
@@ -63,6 +78,15 @@ export default class MessageEntity {
             image: true,
           },
         },
+        thread: {
+          select: {
+            _count: {
+              select: {
+                messages: true,
+              },
+            },
+          },
+        },
       },
     };
 
@@ -73,7 +97,17 @@ export default class MessageEntity {
     }
 
     const response = await prisma.message_TownSquare.findMany(_query);
-    return response;
+
+    return response.map((message) => ({
+      id: message.id,
+      content: message.content,
+      isReply: message.isReply,
+      threadId: message.threadId,
+      userId: message.userId,
+      createdAt: message.createdAt,
+      replyCount: message.thread ? message.thread?._count.messages - 1 : undefined,
+      user: message.user,
+    }));
   }
 
   async delete(id: string, userId: string) {

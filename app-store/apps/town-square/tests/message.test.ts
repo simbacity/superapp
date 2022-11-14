@@ -70,7 +70,7 @@ describe("Message", () => {
         where: { id: responseInThread.id },
       })) as MessageResponse;
 
-      const thread = (await prisma.messageThread_TownSquare.findUnique({
+      const thread = (await prisma.thread_TownSquare.findUnique({
         where: { messageId: messageResponse.id },
       })) as ThreadResponse;
 

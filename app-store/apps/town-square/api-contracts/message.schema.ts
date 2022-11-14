@@ -21,6 +21,7 @@ export const messageSchema = z.object({
       image: z.string().nullable(),
     })
     .optional(),
+  replyCount: z.number().optional(),
 });
 
 export const messageListRequestSchema = z.object({

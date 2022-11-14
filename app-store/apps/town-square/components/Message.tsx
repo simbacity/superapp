@@ -13,10 +13,9 @@ import { formatDate } from "../utils/days";
 
 interface MessageParams {
   message?: MessageResponse;
-  replyCount?: number;
 }
 
-export default function MessagePage({ message, replyCount }: MessageParams) {
+export default function MessagePage({ message }: MessageParams) {
   const router = useRouter();
   const [deleteButtonVisible, setIsDeleteButtonVisible] = useState<boolean>(false);
   const { data: session } = useSession();
@@ -84,9 +83,9 @@ export default function MessagePage({ message, replyCount }: MessageParams) {
                 <p className="text-xs text-gray-400 ml-2">{formatDate(message?.createdAt || "")}</p>
               </div>
               <p className="text-white text-left text-sm mt-1">{message?.content}</p>
-              {!!replyCount && replyCount !== 0 && (
+              {!!message?.replyCount && message?.replyCount !== 0 && (
                 <p className="text-xs text-left text-blue-300 mt-2">
-                  {replyCount} {replyCount > 1 ? "Replies" : "Reply"}
+                  {message?.replyCount} {message?.replyCount > 1 ? "Replies" : "Reply"}
                 </p>
               )}
             </div>
