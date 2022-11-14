@@ -110,12 +110,20 @@ export default function MessagePage({ message }: MessageParams) {
 }
 
 export function useCreateThread() {
+  const socket = useSocket();
+  const queryClient = useQueryClient();
+
   const createThread = async (data: ThreadRequest) => {
     const response = await axios.post("/api/apps/town-square/threads/create", data);
     return threadSchema.parse(response.data);
   };
 
-  return useMutation(createThread, {});
+  return useMutation(createThread, {
+    onSuccess: (response) => {
+      socket.emit("send_message", response);
+      queryClient.invalidateQueries(["town-square", "messages", "list"]);
+    },
+  });
 }
 
 export function useDeleteMessage() {

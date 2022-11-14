@@ -2,6 +2,7 @@ import { MessageResponse } from "@app-store/apps/town-square/api-contracts/messa
 import { threadSchema } from "@app-store/apps/town-square/api-contracts/thread.schema";
 import MessageComponent from "@app-store/apps/town-square/components/Message";
 import NewMessageForm from "@app-store/apps/town-square/components/NewMessageForm";
+import { useReactQuerySubscription } from "@app-store/apps/town-square/pages";
 import Shell from "@app-store/shared/components/Shell";
 import { ArrowLeftIcon } from "@heroicons/react/solid";
 import { useQuery } from "@tanstack/react-query";
@@ -13,6 +14,7 @@ interface ThreadParams {
 }
 
 export default function Thread({ id }: ThreadParams) {
+  useReactQuerySubscription();
   const router = useRouter();
   const { data: thread } = useThread(id);
 
