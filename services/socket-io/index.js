@@ -9,9 +9,10 @@ app.use(cors());
 
 const server = createServer(app);
 
+const origin = process.env.APP_URL;
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:3000",
+    origin,
     methods: ["GET", "POST"],
   },
 });
@@ -26,4 +27,5 @@ io.on("connection", (socket) => {
 
 server.listen(8080, () => {
   console.log("SERVER IS RUNNING");
+  console.log(`cors origin: ${origin}`);
 });

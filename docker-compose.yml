@@ -19,6 +19,8 @@ services:
 
   socket_io:
     image: node:16-alpine
+    environment:
+      APP_URL: "http://localhost:3000"
     ports:
       - "8080:8080"
     volumes:

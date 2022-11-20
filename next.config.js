@@ -4,6 +4,7 @@ const nextConfig = {
   reactStrictMode: true,
   env: {
     WEB_PUSH_VAPID_PUBLIC_KEY: process.env.WEB_PUSH_VAPID_PUBLIC_KEY,
+    SOCKET_IO_URL: process.env.SOCKET_IO_URL,
   },
 };
 

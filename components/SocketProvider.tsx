@@ -1,7 +1,7 @@
 import { createContext, ReactChild, useEffect, useState } from "react";
 import io from "socket.io-client";
 
-const socket = io("http://localhost:8080");
+const socket = io(process.env.SOCKET_IO_URL || "");
 
 export const SocketContext = createContext(socket);
 
