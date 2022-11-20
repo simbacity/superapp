@@ -98,18 +98,16 @@ export default class MessageEntity {
 
     const response = await prisma.message_TownSquare.findMany(_query);
 
-    return response
-      .map((message) => ({
-        id: message.id,
-        content: message.content,
-        isReply: message.isReply,
-        threadId: message.threadId,
-        userId: message.userId,
-        createdAt: message.createdAt,
-        replyCount: message.thread ? message.thread?._count.messages - 1 : undefined,
-        user: message.user,
-      }))
-      .sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
+    return response.map((message) => ({
+      id: message.id,
+      content: message.content,
+      isReply: message.isReply,
+      threadId: message.threadId,
+      userId: message.userId,
+      createdAt: message.createdAt,
+      replyCount: message.thread ? message.thread?._count.messages - 1 : undefined,
+      user: message.user,
+    }));
   }
 
   async delete(id: string, userId: string) {
