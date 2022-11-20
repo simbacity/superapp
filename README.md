@@ -78,3 +78,4 @@ We're using <a href="https://planetscale.com">PlanetScale</a> for our database. 
 We now always need to add an `@@index([...])` if we add a foreign key (otherwise certain queries would run slower).
 - find a detailed explaination in this video: https://youtu.be/iaHt5_hg44c?t=757
 - <img width="649" alt="image" src="https://user-images.githubusercontent.com/98182227/174460965-250d111e-ae44-49e2-befd-30ba235114b9.png">
+
