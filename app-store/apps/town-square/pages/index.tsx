@@ -32,7 +32,7 @@ export default function TownSquare() {
         <button
           onClick={() => fetchNextPage()}
           disabled={isFetching || isFetchingNextPage || !hasNextPage}
-          className="default-button--medium ml-2">
+          className="invisible-button--small ml-2">
           Load More
         </button>
         <NewMessageForm />
