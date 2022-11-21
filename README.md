@@ -56,6 +56,23 @@ docker-compose ps
 
 </details>
 
+## Development workflow
+
+Initial setup:
+```
+docker-compose up -d
+npx prisma db push
+npx prisma studio
+```
+
+Add a token to the `InviteCode` table.
+
+After that you can run these commands and sign up via Google with your invite code token:
+```
+yarn dev
+yarn dev:apps
+```
+
 ## Run tests
 ```
 yarn test
