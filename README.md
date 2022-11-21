@@ -56,6 +56,25 @@ docker-compose ps
 
 </details>
 
+## Development workflow
+
+Initial setup:
+```
+docker-compose up -d
+npx prisma db push
+npx prisma studio
+```
+
+Add a token to the `InviteCode` table.
+
+After that you can run these commands:
+```
+yarn dev
+yarn dev:apps
+```
+
+Then visit `http://localhost:3000` and sign up via Google with your invite code token.
+
 ## Run tests
 ```
 yarn test
@@ -78,4 +97,6 @@ We're using <a href="https://planetscale.com">PlanetScale</a> for our database. 
 We now always need to add an `@@index([...])` if we add a foreign key (otherwise certain queries would run slower).
 - find a detailed explaination in this video: https://youtu.be/iaHt5_hg44c?t=757
 - <img width="649" alt="image" src="https://user-images.githubusercontent.com/98182227/174460965-250d111e-ae44-49e2-befd-30ba235114b9.png">
+
+Here is a more detailed documentation on using Prisma with Planetscale: https://www.prisma.io/docs/guides/database/using-prisma-with-planetscale
 
