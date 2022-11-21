@@ -67,11 +67,13 @@ npx prisma studio
 
 Add a token to the `InviteCode` table.
 
-After that you can run these commands and sign up via Google with your invite code token:
+After that you can run these commands:
 ```
 yarn dev
 yarn dev:apps
 ```
+
+Then visit `http://localhost:3000` and sign up via Google with your invite code token.
 
 ## Run tests
 ```
