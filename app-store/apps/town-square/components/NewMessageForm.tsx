@@ -14,6 +14,7 @@ import { useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import { useForm, Controller } from "react-hook-form";
+import rehypeSanitize from "rehype-sanitize";
 
 interface MessageFormParams {
   threadId?: string;
@@ -46,36 +47,30 @@ export default function MessageForm({ threadId }: MessageFormParams) {
 
   return (
     <form onSubmit={form.handleSubmit(onSubmitHandler, (e) => console.log(e))}>
-      <div className="flex sm:w-full md:w-3/4">
+      <div className="flex sm:w-full md:w-3/4 bg-slate-800 fixed bottom-0">
         {userData?.user.image ? (
           <img
             src={userData?.user.image}
             referrerPolicy="no-referrer"
-            className="w-8 h-8 rounded-[16px] border border-white m-1"
+            className="w-8 h-8 rounded-full border border-white m-1"
           />
         ) : (
-          <PhotographIcon className="w-8 h-8 rounded-[16px] border border-white m-1 text-white" />
+          <PhotographIcon className="w-8 h-8 rounded-full border border-white m-1 text-white" />
         )}
-        {/* <input
-          className="border-2 border-gray-400 py-1 px-1 text-sm w-full"
-          placeholder="What's on your mind?"
-          {...form.register("content")}
-          name="content"
-          type="text"
-        /> */}
-        <div className="w-full">
+        <div className="xs:w-full sm:w-3/4">
           <Controller
             control={form.control}
             name="content"
             render={({ field }) => (
-              <div>
-                <MDEditor
-                  {...field}
-                  height={140}
-                  style={{ border: "2px solid gray", borderRadius: 0 }}
-                  preview="edit"
-                />
-              </div>
+              <MDEditor
+                {...field}
+                height={140}
+                style={{ border: "2px solid #a1a1aa", borderRadius: 0 }}
+                preview="edit"
+                previewOptions={{
+                  rehypePlugins: [[rehypeSanitize]],
+                }}
+              />
             )}
           />
           <button
