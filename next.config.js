@@ -16,6 +16,14 @@ const withPWA = require("next-pwa")({
   disable: process.env.NODE_ENV === "development",
 });
 
-module.exports = withPWA({
+// next.config.js - react-md-editor
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const removeImports = require("next-remove-imports")();
+
+const nextConfigWithPWA = withPWA({
   ...nextConfig,
+});
+
+module.exports = removeImports({
+  nextConfigWithPWA,
 });
