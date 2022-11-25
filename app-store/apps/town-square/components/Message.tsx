@@ -89,7 +89,13 @@ export default function MessagePage({ message }: MessageParams) {
               </div>
               <EditorMarkDown
                 source={message?.content}
-                style={{ fontSize: "0.8rem", textAlign: "left", marginTop: "0.25rem", color: "white" }}
+                style={{
+                  fontSize: "0.8rem",
+                  textAlign: "left",
+                  marginTop: "0.25rem",
+                  color: "white",
+                  wordBreak: "break-word",
+                }}
                 linkTarget="_blank"
               />
               {!!message?.replyCount && message?.replyCount !== 0 && (

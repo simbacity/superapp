@@ -70,6 +70,9 @@ export default function MessageForm({ threadId }: MessageFormParams) {
                 previewOptions={{
                   rehypePlugins: [[rehypeSanitize]],
                 }}
+                textareaProps={{
+                  placeholder: "What is on your mind?",
+                }}
               />
             )}
           />
