@@ -52,7 +52,7 @@ export default function MessageForm({ threadId }: MessageFormParams) {
           <PhotographIcon className="w-8 h-8 rounded-[16px] border border-white m-1 text-white" />
         )}
         <input
-          className="border-2 border-gray-400 py-1 px-1 text-sm w-full"
+          className="border-2 border-gray-400 py-1 px-1 w-full"
           placeholder="What's on your mind?"
           {...form.register("content")}
           name="content"
