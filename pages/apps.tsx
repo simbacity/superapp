@@ -1,7 +1,13 @@
 import Shell from "@app-store/shared/components/Shell";
+import { signOut } from "next-auth/react";
 import Link from "next/link";
+import router from "next/router";
 
 export default function Home() {
+  const signOutAndRedirectToHome = () => {
+    signOut().then(() => router.push("/"));
+  };
+
   return (
     <Shell>
       <div className="layout">
@@ -34,6 +40,9 @@ export default function Home() {
             </Link>
           </section>
         </div>
+        <a onClick={() => signOutAndRedirectToHome()} className="invisible-button--medium">
+          Sign out
+        </a>
       </div>
     </Shell>
   );
