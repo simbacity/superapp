@@ -72,8 +72,8 @@ export default function Shell(props: { children: ReactNode }) {
       </Disclosure>
 
       <main className="mb-8">{props.children}</main>
-      <nav className="fixed bottom-0 left-0 z-50 bg-black w-full h-8 flex items-center justify-center">
-        <a onClick={() => router.push("/apps")} className="text-white font-mono">
+      <nav className="fixed bottom-0 left-0 z-50 bg-slate-900 w-full h-12 flex items-center justify-center">
+        <a onClick={() => router.push("/apps")} className="text-white font-mono cursor-pointer px-8">
           Home
         </a>
       </nav>
