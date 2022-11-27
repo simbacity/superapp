@@ -14,6 +14,10 @@ export default function Shell(props: { children: ReactNode }) {
     if (!loading && !session) window.location.href = "/";
   }, [loading, session]);
 
+  const signOutAndRedirectToHome = () => {
+    signOut().then(() => router.push("/"));
+  };
+
   if (!session) {
     return <div className="h1 p-8">Loading...</div>;
   }
@@ -60,7 +64,7 @@ export default function Shell(props: { children: ReactNode }) {
                   <Menu.Item key="sign-out">
                     {({ active }) => (
                       <a
-                        onClick={() => signOut()}
+                        onClick={() => signOutAndRedirectToHome()}
                         className={`${
                           active ? "bg-slate-300" : "bg-white"
                         } text-slate-700 block px-6 py-4 font-mono cursor-pointer hover:bg-slate-200 focus:bg-slate-300 active:bg-slate-300`}>
