@@ -60,7 +60,7 @@ export default function MessagePage({ message }: MessageParams) {
   return (
     <div
       key={message?.id}
-      className="group flex sm:w-full md:w-3/4 my-2 p-2 hover:bg-gray-700"
+      className="group flex w-full my-2 p-2 hover:bg-gray-700"
       onMouseLeave={() => setIsDeleteButtonVisible(false)}>
       {message?.user?.image ? (
         <img
