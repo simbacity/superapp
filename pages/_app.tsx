@@ -44,14 +44,14 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   return (
     <>
       {installAppPromptEvent && (
-        <div className="flex w-full bg-indigo-600 text-white items-center px-4 py-4 justify-between">
+        <div className="flex w-full bg-indigo-600 text-white items-center px-4 py-4 justify-between md:hidden">
           <div>
             <div className="text-sm font-medium">Simba City</div>
             <div className="text-xs font-normal">Install the superapp.</div>
           </div>
           <a
             onClick={() => triggerInstallAppPrompt()}
-            className="bg-white py-2 px-6 rounded-full text-indigo-600 font-semibold text-sm">
+            className="bg-white py-2 px-6 rounded-full text-indigo-600 font-semibold text-sm cursor-pointer">
             Install
           </a>
         </div>
