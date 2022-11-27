@@ -23,12 +23,12 @@ export default function Shell(props: { children: ReactNode }) {
     <>
       <Disclosure as="nav">
         {() => (
-          <div className="fixed bottom-52 right-0 z-50">
+          <div className="fixed bottom-60 right-0 z-50">
             <Menu as="div" className="relative">
               <div>
                 <Menu.Button
                   tabIndex={10}
-                  className="bg-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-900 focus:ring-offset-2 h-16 focus:ring-offset-blue-500 flex items-center text-sm border-2 border-slate-600 border-r-0">
+                  className="bg-slate-900 h-16 flex items-center text-sm border-2 border-slate-600 border-r-0">
                   <span className="sr-only">Open user menu</span>
                   <div className="rotate-90 text-white font-mono">Menu</div>
                 </Menu.Button>
