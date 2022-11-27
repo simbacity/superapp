@@ -3,9 +3,6 @@ import { signOut, useSession } from "next-auth/react";
 import router from "next/router";
 import { ReactNode, useEffect, Fragment } from "react";
 
-const DEFAULT_PROFILE_IMAGE = "https://www.gravatar.com/avatar?d=mp&s=50";
-const DEFAULT_USER_NAME = "Simba user";
-
 export default function Shell(props: { children: ReactNode }) {
   const { data: session, status } = useSession();
   const loading = status === "loading";
@@ -26,19 +23,14 @@ export default function Shell(props: { children: ReactNode }) {
     <>
       <Disclosure as="nav">
         {() => (
-          <div className="fixed bottom-0 right-0 z-50">
-            <Menu as="div" className="relative mx-3 mb-4">
+          <div className="fixed bottom-52 right-0 z-50">
+            <Menu as="div" className="relative">
               <div>
                 <Menu.Button
                   tabIndex={10}
-                  className="bg-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-900 focus:ring-offset-2 focus:ring-offset-blue-500 flex items-center max-w-xs text-sm rounded-full border-2 border-slate-600">
+                  className="bg-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-900 focus:ring-offset-2 focus:ring-offset-blue-500 flex items-center max-w-xs text-sm border-2 border-slate-600 border-r-0">
                   <span className="sr-only">Open user menu</span>
-                  <img
-                    className="w-14 h-14 rounded-full"
-                    referrerPolicy="no-referrer"
-                    src={session?.user.image || DEFAULT_PROFILE_IMAGE}
-                    alt={session?.user.name || DEFAULT_USER_NAME}
-                  />
+                  <div className="rotate-90 py-4 text-white font-mono">Menu</div>
                 </Menu.Button>
               </div>
               <Transition
