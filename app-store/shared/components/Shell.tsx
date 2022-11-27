@@ -28,9 +28,9 @@ export default function Shell(props: { children: ReactNode }) {
               <div>
                 <Menu.Button
                   tabIndex={10}
-                  className="bg-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-900 focus:ring-offset-2 focus:ring-offset-blue-500 flex items-center max-w-xs text-sm border-2 border-slate-600 border-r-0">
+                  className="bg-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-900 focus:ring-offset-2 h-16 focus:ring-offset-blue-500 flex items-center text-sm border-2 border-slate-600 border-r-0">
                   <span className="sr-only">Open user menu</span>
-                  <div className="rotate-90 py-4 text-white font-mono">Menu</div>
+                  <div className="rotate-90 text-white font-mono">Menu</div>
                 </Menu.Button>
               </div>
               <Transition
@@ -41,7 +41,7 @@ export default function Shell(props: { children: ReactNode }) {
                 leave="transition ease-in duration-75"
                 leaveFrom="transform opacity-100 scale-100"
                 leaveTo="transform opacity-0 scale-95">
-                <Menu.Items className="-translate-y-full absolute right-0 -top-4 w-48 py-1 mt-2 origin-top-right bg-white border-2 border-slate-300">
+                <Menu.Items className="-translate-y-full absolute right-0 -top-2 w-48 py-1 mt-2 origin-top-right bg-white border-2 border-slate-300">
                   <Menu.Item key="close-app">
                     {({ active }) => (
                       <a
