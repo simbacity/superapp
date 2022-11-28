@@ -21,10 +21,10 @@ export const formatDate = (date: Date | string) => {
   }
 
   if (parsedDate.year() === dayjs().year()) {
-    return parsedDate.format(`MMM D`) + ` at ${hourAndMinute}`;
+    return `${parsedDate.format("MMM D")} at ${hourAndMinute}`;
   }
 
-  return parsedDate.format("MMM D YYYY") + `, ${hourAndMinute}`;
+  return `${parsedDate.format("MMM D YYYY")}, ${hourAndMinute}`;
 };
 
 export default dayjs;
