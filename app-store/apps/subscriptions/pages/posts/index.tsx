@@ -148,7 +148,7 @@ export function useGetAllPosts() {
     return postListSchema.parse(response.data);
   };
 
-  return useQuery(["mini-blog", "posts", "list"], () => getAllPosts());
+  return useQuery(["subscriptions", "posts", "list"], () => getAllPosts());
 }
 
 export function useGetPost(id: string) {
