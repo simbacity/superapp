@@ -7,8 +7,6 @@ import { useSocket } from "@app-store/shared/hooks/useSocket";
 import { PhotographIcon } from "@heroicons/react/solid";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import "@uiw/react-markdown-preview/markdown.css";
-import "@uiw/react-md-editor/markdown-editor.css";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
@@ -43,15 +41,15 @@ export default function MessageForm({ threadId }: MessageFormParams) {
 
   return (
     <form onSubmit={form.handleSubmit(onSubmitHandler, (e) => console.log(e))}>
-      <div className="flex sm:w-full md:w-3/4 bg-slate-800 fixed bottom-0">
+      <div className="flex sm:w-full md:w-3/4">
         {userData?.user.image ? (
           <img
             src={userData?.user.image}
             referrerPolicy="no-referrer"
-            className="w-8 h-8 rounded-full border border-white m-1"
+            className="w-8 h-8 rounded-[16px] border border-white m-1"
           />
         ) : (
-          <PhotographIcon className="w-8 h-8 rounded-full border border-white m-1 text-white" />
+          <PhotographIcon className="w-8 h-8 rounded-[16px] border border-white m-1 text-white" />
         )}
         <input
           className="border-2 border-gray-400 py-1 px-1 w-full"

@@ -2,7 +2,7 @@ import { UserSettingsRequest } from "@app-store/apps/subscriptions/api-contracts
 import ForbiddenError from "@app-store/shared/utils/errors/ForbiddenError";
 import prisma from "@app-store/shared/utils/prisma";
 
-export default class PostEntity {
+export default class UserSettingsEntity {
   async find(userId: string) {
     const userSettings = await prisma.subscriptions_User_Settings.findUnique({ where: { userId } });
 

@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 
-export default function PostEdit() {
+export default function Settings() {
   const { data: session } = useSession();
 
   const { data: userSettings } = useGetUserSettings(session?.user.id);

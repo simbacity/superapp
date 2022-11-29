@@ -1,7 +1,7 @@
 import Layout from "@app-store/apps/subscriptions/components/Layout";
 import { ExclamationCircleIcon } from "@heroicons/react/outline";
 
-export default function PostEdit() {
+export default function LandingPage() {
   return (
     <Layout>
       <div className="flex flex-col items-center">

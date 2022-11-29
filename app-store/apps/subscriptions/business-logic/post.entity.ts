@@ -21,7 +21,7 @@ export default class PostEntity {
         intro,
         title,
         content,
-        scheduledAt,
+        scheduledAt: scheduledAt || "",
         userId,
       },
     });

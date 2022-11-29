@@ -1,7 +1,7 @@
 import Layout from "@app-store/apps/subscriptions/components/Layout";
 import NewPostForm from "@app-store/apps/subscriptions/components/NewPostForm";
 
-export default function PostEdit() {
+export default function Post() {
   return (
     <Layout>
       <div className="bg-slate-800 rounded-md py-7">

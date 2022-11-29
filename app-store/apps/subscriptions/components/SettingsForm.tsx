@@ -14,7 +14,7 @@ interface SettingsFormParams {
   formValues?: UserSettingsResponse;
 }
 
-export default function PostForm({ formValues }: SettingsFormParams) {
+export default function SettingsForm({ formValues }: SettingsFormParams) {
   const form = useForm<UserSettingsRequest>({
     defaultValues: formValues || {},
     resolver: zodResolver(userSettingsRequestSchema),
