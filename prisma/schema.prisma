@@ -49,17 +49,19 @@ model Session {
 }
 
 model User {
-  id               String               @id @default(cuid())
-  name             String?
-  email            String?              @unique
-  emailVerified    DateTime?
-  image            String?
-  accounts         Account[]
-  sessions         Session[]
-  createdAt        DateTime             @default(now())
-  updatedAt        DateTime             @updatedAt
-  messages         Message_TownSquare[]
-  PushSubscription PushSubscription[]
+  id                          String                       @id @default(cuid())
+  name                        String?
+  email                       String?                      @unique
+  emailVerified               DateTime?
+  image                       String?
+  accounts                    Account[]
+  sessions                    Session[]
+  createdAt                   DateTime                     @default(now())
+  updatedAt                   DateTime                     @updatedAt
+  messages                    Message_TownSquare[]
+  PushSubscription            PushSubscription[]
+  Subscriptions_Post          Subscriptions_Post[]
+  Subscriptions_User_Settings Subscriptions_User_Settings?
 }
 
 model VerificationToken {
@@ -134,4 +136,29 @@ model Thread_TownSquare {
   mainMessage Message_TownSquare   @relation("main_message", fields: [messageId], references: [id], onUpdate: NoAction, onDelete: NoAction)
   messageId   String               @unique
   createdAt   DateTime             @default(now())
+}
+
+// *******************
+// /apps/subscriptions
+// *******************
+model Subscriptions_Post {
+  id          String   @id @default(cuid())
+  intro       String
+  title       String
+  content     String   @db.Text
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      String
+  scheduledAt String
+  createdAt   DateTime @default(now())
+}
+
+model Subscriptions_User_Settings {
+  id             String @id @default(cuid())
+  displayName    String
+  welcomeMessage String
+  name           String
+  surname        String
+  phone          String
+  userId         String @unique
+  user           User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

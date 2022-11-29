@@ -7,5 +7,7 @@ export async function teardown() {
     prisma.invitee.deleteMany({}),
     prisma.thread_TownSquare.deleteMany({}),
     prisma.message_TownSquare.deleteMany({}),
+    prisma.subscriptions_Post.deleteMany({}),
+    prisma.subscriptions_User_Settings.deleteMany({}),
   ]);
 }
