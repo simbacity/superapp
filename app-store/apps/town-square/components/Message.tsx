@@ -6,7 +6,6 @@ import { PhotographIcon } from "@heroicons/react/solid";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { useSession } from "next-auth/react";
-import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
@@ -15,10 +14,6 @@ import { formatDate } from "../utils/days";
 interface MessageParams {
   message?: MessageResponse;
 }
-
-const EditorMarkDown = dynamic(() => import("@uiw/react-markdown-preview"), {
-  ssr: false,
-});
 
 export default function MessagePage({ message }: MessageParams) {
   const router = useRouter();
@@ -65,7 +60,7 @@ export default function MessagePage({ message }: MessageParams) {
   return (
     <div
       key={message?.id}
-      className="group flex sm:w-full md:w-3/4 my-2 p-2 hover:bg-gray-700"
+      className="group flex w-full my-2 p-2 hover:bg-gray-700"
       onMouseLeave={() => setIsDeleteButtonVisible(false)}>
       {message?.user?.image ? (
         <img
@@ -87,17 +82,7 @@ export default function MessagePage({ message }: MessageParams) {
                 <p className="text-white text-xs font-bold">{message?.user?.name}</p>
                 <p className="text-xs text-gray-400 ml-2">{formatDate(message?.createdAt || "")}</p>
               </div>
-              <EditorMarkDown
-                source={message?.content}
-                style={{
-                  fontSize: "0.8rem",
-                  textAlign: "left",
-                  marginTop: "0.25rem",
-                  color: "white",
-                  wordBreak: "break-word",
-                }}
-                linkTarget="_blank"
-              />
+              <p className="text-white text-left text-sm mt-1 break-words">{message?.content}</p>
               {!!message?.replyCount && message?.replyCount !== 0 && (
                 <p className="text-xs text-left text-blue-300 mt-2">
                   {message?.replyCount} {message?.replyCount > 1 ? "Replies" : "Reply"}
