@@ -4,13 +4,13 @@ import {
   messageSchema,
 } from "@app-store/apps/town-square/api-contracts/message.schema";
 import { useSocket } from "@app-store/shared/hooks/useSocket";
-import { PhotographIcon } from "@heroicons/react/solid";
+import { PaperAirplaneIcon } from "@heroicons/react/solid";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import "@uiw/react-markdown-preview/markdown.css";
+import { commands } from "@uiw/react-md-editor";
 import "@uiw/react-md-editor/markdown-editor.css";
 import axios from "axios";
-import { useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import { useForm, Controller } from "react-hook-form";
@@ -28,7 +28,6 @@ export default function MessageForm({ threadId }: MessageFormParams) {
     resolver: zodResolver(messageRequestSchema),
     defaultValues: { content: "" },
   });
-  const { data: userData } = useSession();
   const createMessage = useCreateMessage();
 
   function onSubmitHandler(data: MessageRequest) {
@@ -46,26 +45,41 @@ export default function MessageForm({ threadId }: MessageFormParams) {
   }
 
   return (
-    <form onSubmit={form.handleSubmit(onSubmitHandler, (e) => console.log(e))}>
-      <div className="flex sm:w-full md:w-3/4 bg-slate-800 fixed bottom-0">
-        {userData?.user.image ? (
-          <img
-            src={userData?.user.image}
-            referrerPolicy="no-referrer"
-            className="w-8 h-8 rounded-full border border-white m-1"
-          />
-        ) : (
-          <PhotographIcon className="w-8 h-8 rounded-full border border-white m-1 text-white" />
-        )}
-        <div className="xs:w-full sm:w-3/4">
+    <form onSubmit={form.handleSubmit(onSubmitHandler)}>
+      <div className="flex w-full md:w-3/4 bg-slate-800 fixed bottom-3 pr-8 md:pr-0">
+        <div className="xs:w-full sm:w-3/4 bg-black w-full">
           <Controller
             control={form.control}
             name="content"
             render={({ field }) => (
               <MDEditor
                 {...field}
-                height={140}
+                height={90}
                 style={{ border: "2px solid #a1a1aa", borderRadius: 0 }}
+                commands={[
+                  commands.bold,
+                  commands.italic,
+                  commands.quote,
+                  commands.strikethrough,
+                  commands.codeEdit,
+                  commands.codePreview,
+                  commands.fullscreen,
+                ]}
+                extraCommands={[
+                  {
+                    name: "Share",
+                    keyCommand: "Share",
+                    render: () => {
+                      return (
+                        <button type="submit" disabled={createMessage.isLoading} className="w-full">
+                          <div className="bg-green-700 py-1 px-2 rounded-md">
+                            <PaperAirplaneIcon className="w-4 rotate-90 text-white" />
+                          </div>
+                        </button>
+                      );
+                    },
+                  },
+                ]}
                 preview="edit"
                 previewOptions={{
                   rehypePlugins: [[rehypeSanitize]],
@@ -73,15 +87,11 @@ export default function MessageForm({ threadId }: MessageFormParams) {
                 textareaProps={{
                   placeholder: "What is on your mind?",
                 }}
+                visibleDragbar={false}
+                toolbarBottom={true}
               />
             )}
           />
-          <button
-            type="submit"
-            disabled={createMessage.isLoading}
-            className="default-button--small w-full mt-2">
-            Share
-          </button>
         </div>
       </div>
     </form>

@@ -9,6 +9,7 @@ import { useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import rehypeSanitize from "rehype-sanitize";
 
 import { formatDate } from "../utils/days";
 
@@ -89,8 +90,10 @@ export default function MessagePage({ message }: MessageParams) {
               </div>
               <EditorMarkDown
                 source={message?.content}
+                rehypePlugins={[rehypeSanitize]}
                 style={{
-                  fontSize: "0.8rem",
+                  background: "transparent",
+                  fontSize: "1rem",
                   textAlign: "left",
                   marginTop: "0.25rem",
                   color: "white",

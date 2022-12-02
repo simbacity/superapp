@@ -22,7 +22,7 @@ export default function Thread({ id }: ThreadParams) {
 
   return (
     <Shell>
-      <div className="layout py-8 overflow-auto pb-[200px]">
+      <div className="layout py-8 overflow-auto pb-24">
         <div className="flex items-center">
           <ArrowLeftIcon
             className="w-10 h-5 text-white cursor-pointer"
