@@ -46,7 +46,7 @@ export default function MessageForm({ threadId }: MessageFormParams) {
 
   return (
     <form onSubmit={form.handleSubmit(onSubmitHandler)}>
-      <div className="flex w-full md:w-3/4 bg-slate-800 fixed bottom-3 pr-8 md:pr-0">
+      <div className="flex w-full md:w-3/4 bg-slate-800 fixed bottom-12 pr-6 md:pr-0">
         <div className="xs:w-full sm:w-3/4 bg-black w-full">
           <Controller
             control={form.control}
