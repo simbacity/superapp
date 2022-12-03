@@ -1,8 +1,4 @@
-import {
-  MessageRequest,
-  MessageListRequest,
-  MessageResponse,
-} from "@app-store/apps/town-square/api-contracts/message.schema";
+import { MessageRequest, MessageListRequest } from "@app-store/apps/town-square/api-contracts/message.schema";
 import PushNotificationEntity from "@app-store/shared/business-logic/push-notification.entity";
 import ForbiddenError from "@app-store/shared/utils/errors/ForbiddenError";
 import NotFoundError from "@app-store/shared/utils/errors/NotFoundError";
@@ -109,7 +105,7 @@ export default class MessageEntity {
       threadId: message.threadId,
       userId: message.userId,
       createdAt: message.createdAt,
-      replyCount: message.thread ? message.thread?._count.messages - 1 : undefined,
+      replyCount: message.thread ? message.thread._count.messages - 1 : undefined,
       user: message.user,
     }));
   }
