@@ -1,8 +1,9 @@
 import { MessageResponse, messageSchema } from "@app-store/apps/town-square/api-contracts/message.schema";
 import { ThreadRequest, threadSchema } from "@app-store/apps/town-square/api-contracts/thread.schema";
+import Avatar from "@app-store/apps/town-square/components/Avatar";
 import { useSocket } from "@app-store/shared/hooks/useSocket";
+import { Menu, Transition } from "@headlessui/react";
 import { DotsHorizontalIcon } from "@heroicons/react/outline";
-import { PhotographIcon } from "@heroicons/react/solid";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { useSession } from "next-auth/react";
@@ -11,25 +12,21 @@ import { useState } from "react";
 
 import { formatDate } from "../utils/days";
 
-interface MessageParams {
-  message?: MessageResponse;
-}
-
-export default function MessagePage({ message }: MessageParams) {
+export default function MessagePage({ message }: { message: MessageResponse }) {
   const router = useRouter();
   const [deleteButtonVisible, setIsDeleteButtonVisible] = useState<boolean>(false);
   const { data: session } = useSession();
-  const isCurrentUser = message?.user?.id === session?.user.id;
+  const isCurrentUser = message.userId === session?.user.id;
   const createThread = useCreateThread();
   const deleteMessage = useDeleteMessage();
   const deleteThread = useDeleteThread();
 
   const onNavigateToThreadsHandler = () => {
-    if (message?.threadId) {
+    if (message.threadId) {
       router.push(`/apps/town-square/threads/${message.threadId}`);
     } else {
       createThread.mutate(
-        { messageId: message?.id || "" },
+        { messageId: message.id || "" },
         {
           onSuccess: (response) => {
             if (response) {
@@ -42,14 +39,14 @@ export default function MessagePage({ message }: MessageParams) {
   };
 
   const onDeleteHandler = () => {
-    if (!message?.isReply && message?.threadId) {
+    if (!message.isReply && message.threadId) {
       deleteThread.mutate(message.threadId, {
         onSuccess: () => {
           router.push("/apps/town-square");
         },
       });
     } else {
-      deleteMessage.mutate(message?.id || "", {
+      deleteMessage.mutate(message.id || "", {
         onSuccess: () => {
           router.push("/apps/town-square");
         },
@@ -57,53 +54,69 @@ export default function MessagePage({ message }: MessageParams) {
     }
   };
 
+  //   <div className="flex mt-1 justify-between relative">
+  //   <div className="w-full items-start" onClick={onNavigateToThreadsHandler}>
+  //     <div className="w-11/12">
+  //       <div className="flex items-end">
+  //         <p className="text-white text-xs font-bold">{message.user?.name}</p>
+  //         <p className="text-xs text-gray-400 ml-2">{formatDate(message.createdAt || "")}</p>
+  //       </div>
+  //       <p className="text-white text-left text-sm mt-1 break-words">{message.content}</p>
+  //       {!!message.replyCount && message.replyCount !== 0 && (
+  //         <p className="text-xs text-left text-blue-300 mt-2">
+  //           {message.replyCount} {message.replyCount > 1 ? "Replies" : "Reply"}
+  //         </p>
+  //       )}
+  //     </div>
+  //   </div>
+  // </div>
   return (
-    <div
-      key={message?.id}
-      className="group flex w-full my-2 p-2 hover:bg-gray-700"
-      onMouseLeave={() => setIsDeleteButtonVisible(false)}>
-      {message?.user?.image ? (
-        <img
-          src={message.user.image}
-          referrerPolicy="no-referrer"
-          className="w-8 h-8 rounded-full border border-white m-1"
-        />
-      ) : (
-        <PhotographIcon className="w-8 h-8 rounded-full border border-white m-1 text-white" />
-      )}
+    <div key={message.id} className="flex relative px-2 py-4 gap-2 text-sm text-white break-words">
+      <div>
+        <Avatar src={message?.user?.image || ""} className="w-8 h-8 mt-1" />
+      </div>
       <div className="w-full">
-        <div className="flex mt-1 justify-between">
-          <button
-            className="w-full items-start"
-            onClick={onNavigateToThreadsHandler}
-            disabled={createThread.isLoading}>
-            <div className="w-11/12">
-              <div className="flex items-end">
-                <p className="text-white text-xs font-bold">{message?.user?.name}</p>
-                <p className="text-xs text-gray-400 ml-2">{formatDate(message?.createdAt || "")}</p>
-              </div>
-              <p className="text-white text-left text-sm mt-1 break-words">{message?.content}</p>
-              {!!message?.replyCount && message?.replyCount !== 0 && (
-                <p className="text-xs text-left text-blue-300 mt-2">
-                  {message?.replyCount} {message?.replyCount > 1 ? "Replies" : "Reply"}
-                </p>
-              )}
-            </div>
-          </button>
-          <div className="relative">
-            <DotsHorizontalIcon
-              className="w-4 h-4 text-white hidden group-hover:block hover:bg-gray-200 hover:text-black group"
-              onClick={() => setIsDeleteButtonVisible(true)}
-            />
-            {deleteButtonVisible && isCurrentUser && (
-              <div
-                className="bg-white text-sm absolute top-4 right-0 px-3 cursor-pointer"
-                onClick={() => onDeleteHandler()}>
-                Delete
-              </div>
-            )}
-          </div>
+        <div className="flex items-center">
+          <p className="font-bold">{message.user?.name}</p>
+          <p className="text-xs text-gray-400 ml-2">{formatDate(message.createdAt || "")}</p>
         </div>
+        <div>
+          <p>{message.content}</p>
+        </div>
+        {!!message.replyCount && message.replyCount !== 0 && (
+          <div className="pt-1">
+            <a className="link">
+              {message.replyCount} {message.replyCount > 1 ? "Replies" : "Reply"}
+            </a>
+          </div>
+        )}
+      </div>
+
+      <div className="absolute right-2 top-2">
+        <Menu>
+          <Menu.Button>
+            <div className="px-3 py-1 bg-slate-400 flex items-center">
+              <DotsHorizontalIcon className="w-6 h-6 text-white" />
+            </div>
+          </Menu.Button>
+          <Transition
+            enter="transition duration-100 ease-out"
+            enterFrom="transform scale-95 opacity-0"
+            enterTo="transform scale-100 opacity-100"
+            leave="transition duration-75 ease-out"
+            leaveFrom="transform scale-100 opacity-100"
+            leaveTo="transform scale-95 opacity-0">
+            <Menu.Items className="-translate-x-full">
+              <Menu.Item>
+                <a
+                  className="absolute px-6 py-2 cursor-pointer font-mono bg-white hover:bg-slate-200 text-slate-900"
+                  onClick={() => onDeleteHandler()}>
+                  Delete
+                </a>
+              </Menu.Item>
+            </Menu.Items>
+          </Transition>
+        </Menu>
       </div>
     </div>
   );
