@@ -46,89 +46,111 @@ export default function MessageForm({ threadId }: MessageFormParams) {
 
   return (
     <form onSubmit={form.handleSubmit(onSubmitHandler)}>
-      <div className="flex w-full md:w-3/4 bg-slate-800 fixed bottom-12 pr-6 md:pr-0">
-        <div className="xs:w-full sm:w-3/4 bg-black w-full">
-          <style jsx global>{`
-            .w-md-editor-toolbar.bottom {
-              border-top: 0;
-            }
+      <div className="w-full">
+        <style jsx global>{`
+          .w-md-editor {
+            box-shadow: none;
+          }
+
+          .w-md-editor-fullscreen .w-md-editor-content {
+            height: calc(100% - 82px);
+          }
+
+          .w-md-editor-toolbar.bottom {
+            border-top: 0;
+          }
+
+          .w-md-editor-toolbar li > button {
+            width: 35px;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+          }
+
+          .w-md-editor-toolbar li > button > svg {
+            height: 14px;
+            width: 12px;
+            color: #9c9c9c;
+          }
+
+          .w-md-editor-toolbar li.active > button {
+            background-color: transparent;
+          }
+
+          .w-md-editor-toolbar li.active > button svg {
+            color: black;
+          }
+
+          .w-md-editor-toolbar li > button:hover,
+          .w-md-editor-toolbar li > button:focus {
+            background-color: white;
+            opacity: 0.6;
+          }
+
+          @media screen and (min-width: 400px) {
             .w-md-editor-toolbar li > button {
-              width: 35px;
-              padding: 0;
-              display: flex;
-              justify-content: center;
-              align-items: center;
+              width: 45px;
             }
             .w-md-editor-toolbar li > button > svg {
-              height: 14px;
-              width: 12px;
-              color: #9c9c9c;
+              height: 15px;
+              width: 15px;
             }
+          }
 
-            @media screen and (min-width: 400px) {
-              .w-md-editor-toolbar li > button {
-                width: 45px;
-              }
-              .w-md-editor-toolbar li > button > svg {
-                height: 15px;
-                width: 15px;
-              }
+          @media screen and (min-width: 992px) {
+            .w-md-editor-toolbar li > button {
+              width: 65px;
             }
-
-            @media screen and (min-width: 992px) {
-              .w-md-editor-toolbar li > button {
-                width: 65px;
-              }
-              .w-md-editor-toolbar li > button > svg {
-                height: 17px;
-                width: 17px;
-              }
+            .w-md-editor-toolbar li > button > svg {
+              height: 17px;
+              width: 17px;
             }
-          `}</style>
-          <Controller
-            control={form.control}
-            name="content"
-            render={({ field }) => (
-              <MDEditor
-                {...field}
-                height={90}
-                style={{ border: "2px solid #a1a1aa", borderRadius: 0 }}
-                commands={[
-                  commands.bold,
-                  commands.italic,
-                  commands.quote,
-                  commands.strikethrough,
-                  commands.code,
-                  commands.fullscreen,
-                ]}
-                extraCommands={[
-                  {
-                    name: "Share",
-                    keyCommand: "Share",
-                    render: () => {
-                      return (
-                        <button type="submit" disabled={createMessage.isLoading} className="w-full">
-                          <div className="bg-green-700 py-1 px-2 rounded-md">
-                            <PaperAirplaneIcon className="w-4 rotate-90 text-white" />
-                          </div>
-                        </button>
-                      );
-                    },
+          }
+        `}</style>
+        <Controller
+          control={form.control}
+          name="content"
+          render={({ field }) => (
+            <MDEditor
+              {...field}
+              height={90}
+              style={{ border: "2px solid #a1a1aa", borderRadius: 0 }}
+              commands={[
+                commands.bold,
+                commands.quote,
+                commands.codeBlock,
+                commands.codeEdit,
+                commands.codeLive,
+                commands.fullscreen,
+              ]}
+              extraCommands={[
+                {
+                  name: "Share",
+                  keyCommand: "Share",
+                  render: () => {
+                    return (
+                      <button type="submit" disabled={createMessage.isLoading} className="w-full">
+                        <div className="bg-green-700 py-1 px-2 rounded-md">
+                          <PaperAirplaneIcon className="w-4 rotate-90 text-white" />
+                        </div>
+                      </button>
+                    );
                   },
-                ]}
-                preview="edit"
-                previewOptions={{
-                  rehypePlugins: [[rehypeSanitize]],
-                }}
-                textareaProps={{
-                  placeholder: "What is on your mind?",
-                }}
-                visibleDragbar={false}
-                toolbarBottom={true}
-              />
-            )}
-          />
-        </div>
+                },
+              ]}
+              preview="edit"
+              previewOptions={{
+                rehypePlugins: [[rehypeSanitize]],
+              }}
+              textareaProps={{
+                placeholder: "What's on your mind?",
+              }}
+              visibleDragbar={false}
+              toolbarBottom={true}
+            />
+          )}
+        />
       </div>
     </form>
   );

@@ -35,7 +35,9 @@ export default function TownSquare() {
           className="invisible-button--small ml-2">
           Load More
         </button>
-        <NewMessageForm />
+        <div className="fixed bottom-12">
+          <NewMessageForm />
+        </div>
       </div>
     </Shell>
   );

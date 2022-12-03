@@ -36,7 +36,9 @@ export default function Thread({ id }: ThreadParams) {
             <MessageComponent key={message.id} message={message} />
           ))}
         </div>
-        <NewMessageForm threadId={thread.id} />
+        <div className="fixed bottom-12">
+          <NewMessageForm threadId={thread.id} />
+        </div>
       </div>
     </Shell>
   );
