@@ -40,7 +40,9 @@ export default function MessagePage({ message }: { message: MessageResponse }) {
     }
   };
 
-  const onDeleteHandler = () => {
+  const onDeleteHandler = (event: React.MouseEvent<Element, MouseEvent>) => {
+    event.stopPropagation();
+
     if (!message.isReply && message.threadId) {
       deleteThread.mutate(message.threadId, {
         onSuccess: () => {
@@ -98,7 +100,7 @@ export default function MessagePage({ message }: { message: MessageResponse }) {
             <div className="-translate-x-full" onMouseLeave={() => setIsDeleteButtonVisible(false)}>
               <a
                 className="absolute px-6 py-2 cursor-pointer font-mono bg-white hover:bg-slate-200 text-slate-900"
-                onClick={() => onDeleteHandler()}>
+                onClick={onDeleteHandler}>
                 Delete
               </a>
             </div>
