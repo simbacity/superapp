@@ -39,7 +39,7 @@ export default function MessageForm({ threadId }: { threadId?: string }) {
   function handleKeyDown(event: React.KeyboardEvent<HTMLTextAreaElement>) {
     const textareaElement = event.target as HTMLTextAreaElement;
     textareaElement.style.height = "inherit";
-    textareaElement.style.height = `${textareaElement.scrollHeight}px`;
+    textareaElement.style.height = `${textareaElement.scrollHeight + 20}px`;
   }
 
   return (
