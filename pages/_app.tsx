@@ -3,6 +3,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { SessionProvider } from "next-auth/react";
 import type { AppProps } from "next/app";
+import Head from "next/head";
 import { useEffect, useState } from "react";
 
 import { SocketProvider } from "@components/SocketProvider";
@@ -43,6 +44,12 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
 
   return (
     <>
+      <Head>
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
+        />
+      </Head>
       {installAppPromptEvent && (
         <div className="flex w-full bg-indigo-600 text-white items-center px-4 py-4 justify-between md:hidden">
           <div>
