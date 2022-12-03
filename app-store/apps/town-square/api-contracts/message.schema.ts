@@ -2,7 +2,7 @@ import { z } from "zod";
 
 export const messageDefaultSchema = z.object({
   id: z.string(),
-  threadId: z.string().optional(),
+  threadId: z.string().nullable(),
 });
 
 export const messageSchema = z.object({
