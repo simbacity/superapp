@@ -20,7 +20,7 @@ export default function TownSquare() {
 
   return (
     <Shell>
-      <div className="layout py-8">
+      <div className="layout py-8 mb-24">
         <NotificationsPermissionRequest />
         {pagesData.pages.map((group, i) => (
           <React.Fragment key={i}>

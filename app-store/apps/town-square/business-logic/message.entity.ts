@@ -105,7 +105,7 @@ export default class MessageEntity {
       threadId: message.threadId,
       userId: message.userId,
       createdAt: message.createdAt,
-      replyCount: message.thread ? message.thread?._count.messages - 1 : undefined,
+      replyCount: message.thread ? message.thread._count.messages - 1 : undefined,
       user: message.user,
     }));
   }

@@ -1,10 +1,8 @@
 import { z } from "zod";
 
-export const messageRequestSchema = z.object({
-  content: z.string().min(1),
-  threadId: z.string().optional(),
-  userId: z.string().optional(),
-  isReply: z.boolean().optional(),
+export const messageDefaultSchema = z.object({
+  id: z.string(),
+  threadId: z.string().nullable(),
 });
 
 export const messageSchema = z.object({
@@ -14,13 +12,11 @@ export const messageSchema = z.object({
   threadId: z.string().nullable(),
   userId: z.string(),
   createdAt: z.date().or(z.string()),
-  user: z
-    .object({
-      id: z.string(),
-      name: z.string().nullable(),
-      image: z.string().nullable(),
-    })
-    .optional(),
+  user: z.object({
+    id: z.string(),
+    name: z.string().nullable(),
+    image: z.string().nullable(),
+  }),
   replyCount: z.number().optional(),
 });
 
@@ -31,6 +27,14 @@ export const messageListRequestSchema = z.object({
 
 export const messageListSchema = z.array(messageSchema);
 
+export const messageRequestSchema = z.object({
+  content: z.string().min(1),
+  threadId: z.string().optional(),
+  userId: z.string().optional(),
+  isReply: z.boolean().optional(),
+});
+
+export type MessageDefaultResponse = z.TypeOf<typeof messageDefaultSchema>;
 export type MessageResponse = z.TypeOf<typeof messageSchema>;
 export type MessageListResponse = z.TypeOf<typeof messageListSchema>;
 export type MessageRequest = z.TypeOf<typeof messageRequestSchema>;

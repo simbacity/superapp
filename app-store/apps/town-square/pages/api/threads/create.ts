@@ -1,4 +1,7 @@
-import { threadRequestSchema, ThreadResponse } from "@app-store/apps/town-square/api-contracts/thread.schema";
+import {
+  ThreadDefaultResponse,
+  threadRequestSchema,
+} from "@app-store/apps/town-square/api-contracts/thread.schema";
 import ThreadEntity from "@app-store/apps/town-square/business-logic/thread.entity";
 import HttpError from "@app-store/shared/utils/errors/HttpError";
 import { NextApiRequest, NextApiResponse } from "next";
@@ -14,7 +17,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   try {
     const requestBody = threadRequestSchema.parse(req.body);
-    const response: ThreadResponse = await entity.create(requestBody);
+    const response: ThreadDefaultResponse = await entity.create(requestBody);
     return res.status(200).json(response);
   } catch (error) {
     if (error instanceof HttpError) return res.status(error.code).json(error.message);

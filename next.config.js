@@ -2,6 +2,9 @@
 
 const nextConfig = {
   reactStrictMode: true,
+  images: {
+    domains: ["lh3.googleusercontent.com"],
+  },
   env: {
     WEB_PUSH_VAPID_PUBLIC_KEY: process.env.WEB_PUSH_VAPID_PUBLIC_KEY,
     SOCKET_IO_URL: process.env.SOCKET_IO_URL,

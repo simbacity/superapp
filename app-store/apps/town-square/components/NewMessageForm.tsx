@@ -1,10 +1,9 @@
 import {
   messageRequestSchema,
   MessageRequest,
-  messageSchema,
+  messageDefaultSchema,
 } from "@app-store/apps/town-square/api-contracts/message.schema";
 import { useSocket } from "@app-store/shared/hooks/useSocket";
-import { PhotographIcon } from "@heroicons/react/solid";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
@@ -12,17 +11,13 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 
-interface MessageFormParams {
-  threadId?: string;
-}
-
-export default function MessageForm({ threadId }: MessageFormParams) {
+export default function MessageForm({ threadId }: { threadId?: string }) {
   const router = useRouter();
   const form = useForm<MessageRequest>({
     resolver: zodResolver(messageRequestSchema),
     defaultValues: { content: "" },
   });
-  const { data: userData } = useSession();
+  const { data: currentSession } = useSession();
   const createMessage = useCreateMessage();
 
   function onSubmitHandler(data: MessageRequest) {
@@ -39,28 +34,27 @@ export default function MessageForm({ threadId }: MessageFormParams) {
     );
   }
 
+  if (!currentSession) return <div className="h1">Loading...</div>;
+
   return (
-    <form onSubmit={form.handleSubmit(onSubmitHandler, (e) => console.log(e))}>
-      <div className="flex sm:w-full md:w-3/4">
-        {userData?.user.image ? (
-          <img
-            src={userData?.user.image}
-            referrerPolicy="no-referrer"
-            className="w-8 h-8 rounded-[16px] border border-white m-1"
-          />
-        ) : (
-          <PhotographIcon className="w-8 h-8 rounded-[16px] border border-white m-1 text-white" />
-        )}
-        <input
-          className="border-2 border-gray-400 py-1 px-1 w-full"
-          placeholder="What's on your mind?"
-          {...form.register("content")}
-          name="content"
-          type="text"
-        />
-        <button type="submit" disabled={createMessage.isLoading} className="default-button--small m-0 ml-2">
-          Share
-        </button>
+    <form onSubmit={form.handleSubmit(onSubmitHandler)}>
+      <div className="fixed bottom-11 left-0 w-full">
+        <div className="flex layout px-0 lg:px-8 relative">
+          <textarea
+            {...form.register("content")}
+            className="textarea"
+            placeholder="What's on your mind?"
+            rows={2}
+            name="content"></textarea>
+          <div className="absolute bottom-0 right-0 lg:right-8">
+            <button
+              type="submit"
+              disabled={createMessage.isLoading}
+              className="default-button--small mb-0 mr-0">
+              Share
+            </button>
+          </div>
+        </div>
       </div>
     </form>
   );
@@ -72,7 +66,7 @@ export function useCreateMessage() {
 
   const createMessage = async (data: MessageRequest) => {
     const response = await axios.post("/api/apps/town-square/messages/create", data);
-    return messageSchema.parse(response.data);
+    return messageDefaultSchema.parse(response.data);
   };
 
   return useMutation(createMessage, {
