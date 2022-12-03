@@ -36,6 +36,12 @@ export default function MessageForm({ threadId }: { threadId?: string }) {
 
   if (!currentSession) return <div className="h1">Loading...</div>;
 
+  function handleKeyDown(event: React.KeyboardEvent<HTMLTextAreaElement>) {
+    const textareaElement = event.target as HTMLTextAreaElement;
+    textareaElement.style.height = "inherit";
+    textareaElement.style.height = `${textareaElement.scrollHeight}px`;
+  }
+
   return (
     <form onSubmit={form.handleSubmit(onSubmitHandler)}>
       <div className="fixed bottom-11 left-0 w-full">
@@ -45,6 +51,7 @@ export default function MessageForm({ threadId }: { threadId?: string }) {
             className="textarea"
             placeholder="What's on your mind?"
             rows={2}
+            onKeyDown={handleKeyDown}
             name="content"></textarea>
           <div className="absolute bottom-0 right-0 lg:right-8">
             <button
