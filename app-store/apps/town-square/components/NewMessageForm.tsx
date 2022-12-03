@@ -61,8 +61,7 @@ export default function MessageForm({ threadId }: MessageFormParams) {
                   commands.italic,
                   commands.quote,
                   commands.strikethrough,
-                  commands.codeEdit,
-                  commands.codePreview,
+                  commands.code,
                   commands.fullscreen,
                 ]}
                 extraCommands={[

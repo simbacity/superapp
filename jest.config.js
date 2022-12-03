@@ -23,4 +23,11 @@ const customJestConfig = {
 };
 
 // createJestConfig is exported this way to ensure that next/jest can load the Next.js config which is async
-module.exports = createJestConfig(customJestConfig);
+
+module.exports = async () => ({
+  ...(await createJestConfig(customJestConfig)()),
+  transformIgnorePatterns: [
+    // The regex below is just a guess, you might tweak it
+    "node_modules/(?!(rehype-parse|hast-util-from-parse5|hastscript|property-information|hast-util-parse-selector|space-separated-tokens|comma-separated-tokens|vfile-location|web-namespaces|rehype-sanitize|hast-util-sanitize|rehype-stringify|hast-util-to-html|html-void-elements|hast-util-is-element|unist-util-is|hast-util-whitespace|stringify-entities|character-entities-legacy|character-entities-html4|ccount|unified|bail|is-plain-obj|trough|vfile|vfile-message|unist-util-stringify-position)/)",
+  ],
+});
