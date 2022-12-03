@@ -23,12 +23,13 @@ export default function Thread({ id }: ThreadParams) {
   return (
     <Shell>
       <div className="layout py-8">
-        <div className="flex items-center">
-          <ArrowLeftIcon
-            className="w-10 h-5 text-white cursor-pointer"
-            onClick={() => router.push("/apps/town-square")}
-          />
-          <p className="text-white ">Thread</p>
+        <div className="flex">
+          <div
+            className="flex items-center gap-2 py-2 px-3 cursor-pointer hover:bg-slate-700"
+            onClick={() => router.push("/apps/town-square")}>
+            <ArrowLeftIcon className="w-4 h-4 text-white" />
+            <p className="text-white ">Thread</p>
+          </div>
         </div>
         <MessageComponent message={thread.mainMessage} />
         <div className="ml-4">
