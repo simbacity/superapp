@@ -22,7 +22,7 @@ export default function Thread({ id }: ThreadParams) {
 
   return (
     <Shell>
-      <div className="layout py-8">
+      <div className="layout py-8 mb-24">
         <div className="flex">
           <div
             className="flex items-center gap-2 py-2 px-3 cursor-pointer hover:bg-slate-700"

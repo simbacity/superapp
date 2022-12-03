@@ -4,7 +4,6 @@ import {
   messageDefaultSchema,
 } from "@app-store/apps/town-square/api-contracts/message.schema";
 import { useSocket } from "@app-store/shared/hooks/useSocket";
-import { PhotographIcon } from "@heroicons/react/solid";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
@@ -39,26 +38,23 @@ export default function MessageForm({ threadId }: { threadId?: string }) {
 
   return (
     <form onSubmit={form.handleSubmit(onSubmitHandler)}>
-      <div className="flex sm:w-full md:w-3/4">
-        {currentSession.user.image ? (
-          <img
-            src={currentSession.user.image}
-            referrerPolicy="no-referrer"
-            className="w-8 h-8 rounded-[16px] border border-white m-1"
-          />
-        ) : (
-          <PhotographIcon className="w-8 h-8 rounded-[16px] border border-white m-1 text-white" />
-        )}
-        <input
-          className="border-2 border-gray-400 py-1 px-1 w-full"
-          placeholder="What's on your mind?"
-          {...form.register("content")}
-          name="content"
-          type="text"
-        />
-        <button type="submit" disabled={createMessage.isLoading} className="default-button--small m-0 ml-2">
-          Share
-        </button>
+      <div className="fixed bottom-11 left-0 w-full">
+        <div className="flex layout px-0 lg:px-8 relative">
+          <textarea
+            {...form.register("content")}
+            className="textarea"
+            placeholder="What's on your mind?"
+            rows={2}
+            name="content"></textarea>
+          <div className="absolute bottom-0 right-0 lg:right-8">
+            <button
+              type="submit"
+              disabled={createMessage.isLoading}
+              className="default-button--small mb-0 mr-0">
+              Share
+            </button>
+          </div>
+        </div>
       </div>
     </form>
   );
