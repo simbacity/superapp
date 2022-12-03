@@ -70,7 +70,7 @@ export default function MessagePage({ message }: { message: MessageResponse }) {
       <div>
         <Avatar src={message.user.image || ""} className="w-9 h-9 mt-1" />
       </div>
-      <div className="w-full">
+      <div className="w-full overflow-hidden">
         <div className="flex items-center">
           <p className="font-bold">{message.user.name}</p>
           <p className="text-xs text-gray-400 ml-2">{formatDate(message.createdAt || "")}</p>
