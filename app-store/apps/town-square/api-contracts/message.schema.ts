@@ -35,7 +35,6 @@ export const messageRequestSchema = z.object({
 });
 
 export type MessageDefaultResponse = z.TypeOf<typeof messageDefaultSchema>;
-export type MessageResponse = z.TypeOf<typeof messageSchema>;
 export type MessageListResponse = z.TypeOf<typeof messageListSchema>;
 export type MessageRequest = z.TypeOf<typeof messageRequestSchema>;
 export type MessageListRequest = z.TypeOf<typeof messageListRequestSchema>;
