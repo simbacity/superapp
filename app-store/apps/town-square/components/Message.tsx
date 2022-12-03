@@ -1,8 +1,10 @@
-import { MessageResponse, messageSchema } from "@app-store/apps/town-square/api-contracts/message.schema";
-import { ThreadRequest, threadSchema } from "@app-store/apps/town-square/api-contracts/thread.schema";
+import {
+  messageDefaultSchema,
+  MessageResponse,
+} from "@app-store/apps/town-square/api-contracts/message.schema";
+import { threadDefaultSchema, ThreadRequest } from "@app-store/apps/town-square/api-contracts/thread.schema";
 import Avatar from "@app-store/apps/town-square/components/Avatar";
 import { useSocket } from "@app-store/shared/hooks/useSocket";
-import { Menu, Transition } from "@headlessui/react";
 import { DotsHorizontalIcon } from "@heroicons/react/outline";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
@@ -14,7 +16,7 @@ import { formatDate } from "../utils/days";
 
 export default function MessagePage({ message }: { message: MessageResponse }) {
   const router = useRouter();
-  const [deleteButtonVisible, setIsDeleteButtonVisible] = useState<boolean>(false);
+  const [isDeleteButtonVisible, setIsDeleteButtonVisible] = useState<boolean>(false);
   const { data: session } = useSession();
   const isCurrentUser = message.userId === session?.user.id;
   const createThread = useCreateThread();
@@ -54,30 +56,23 @@ export default function MessagePage({ message }: { message: MessageResponse }) {
     }
   };
 
-  //   <div className="flex mt-1 justify-between relative">
-  //   <div className="w-full items-start" onClick={onNavigateToThreadsHandler}>
-  //     <div className="w-11/12">
-  //       <div className="flex items-end">
-  //         <p className="text-white text-xs font-bold">{message.user?.name}</p>
-  //         <p className="text-xs text-gray-400 ml-2">{formatDate(message.createdAt || "")}</p>
-  //       </div>
-  //       <p className="text-white text-left text-sm mt-1 break-words">{message.content}</p>
-  //       {!!message.replyCount && message.replyCount !== 0 && (
-  //         <p className="text-xs text-left text-blue-300 mt-2">
-  //           {message.replyCount} {message.replyCount > 1 ? "Replies" : "Reply"}
-  //         </p>
-  //       )}
-  //     </div>
-  //   </div>
-  // </div>
+  const setDeleteButtonVisibility = (event: React.MouseEvent<Element, MouseEvent>, isVisible: boolean) => {
+    event.stopPropagation();
+    setIsDeleteButtonVisible(isVisible);
+  };
+
   return (
-    <div key={message.id} className="flex relative px-2 py-4 gap-2 text-sm text-white break-words">
+    <div
+      key={message.id}
+      onClick={onNavigateToThreadsHandler}
+      onMouseLeave={() => setIsDeleteButtonVisible(false)}
+      className="flex relative px-2 py-4 gap-2 text-sm text-white break-words group hover:bg-slate-700 cursor-pointer">
       <div>
-        <Avatar src={message?.user?.image || ""} className="w-8 h-8 mt-1" />
+        <Avatar src={message.user.image || ""} className="w-9 h-9 mt-1" />
       </div>
       <div className="w-full">
         <div className="flex items-center">
-          <p className="font-bold">{message.user?.name}</p>
+          <p className="font-bold">{message.user.name}</p>
           <p className="text-xs text-gray-400 ml-2">{formatDate(message.createdAt || "")}</p>
         </div>
         <div>
@@ -92,32 +87,24 @@ export default function MessagePage({ message }: { message: MessageResponse }) {
         )}
       </div>
 
-      <div className="absolute right-2 top-2">
-        <Menu>
-          <Menu.Button>
-            <div className="px-3 py-1 bg-slate-400 flex items-center">
-              <DotsHorizontalIcon className="w-6 h-6 text-white" />
+      {isCurrentUser && (
+        <div className="group-hover:block hidden absolute right-2 top-2">
+          <a
+            className="bg-slate-400 px-3 py-1 flex items-center"
+            onClick={(event) => setDeleteButtonVisibility(event, true)}>
+            <DotsHorizontalIcon className="w-6 h-6 text-white" />
+          </a>
+          {isDeleteButtonVisible && (
+            <div className="-translate-x-full" onMouseLeave={() => setIsDeleteButtonVisible(false)}>
+              <a
+                className="absolute px-6 py-2 cursor-pointer font-mono bg-white hover:bg-slate-200 text-slate-900"
+                onClick={() => onDeleteHandler()}>
+                Delete
+              </a>
             </div>
-          </Menu.Button>
-          <Transition
-            enter="transition duration-100 ease-out"
-            enterFrom="transform scale-95 opacity-0"
-            enterTo="transform scale-100 opacity-100"
-            leave="transition duration-75 ease-out"
-            leaveFrom="transform scale-100 opacity-100"
-            leaveTo="transform scale-95 opacity-0">
-            <Menu.Items className="-translate-x-full">
-              <Menu.Item>
-                <a
-                  className="absolute px-6 py-2 cursor-pointer font-mono bg-white hover:bg-slate-200 text-slate-900"
-                  onClick={() => onDeleteHandler()}>
-                  Delete
-                </a>
-              </Menu.Item>
-            </Menu.Items>
-          </Transition>
-        </Menu>
-      </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }
@@ -128,7 +115,7 @@ export function useCreateThread() {
 
   const createThread = async (data: ThreadRequest) => {
     const response = await axios.post("/api/apps/town-square/threads/create", data);
-    return threadSchema.parse(response.data);
+    return threadDefaultSchema.parse(response.data);
   };
 
   return useMutation(createThread, {
@@ -145,7 +132,7 @@ export function useDeleteMessage() {
 
   const deleteMessage = async (id: string) => {
     const response = await axios.delete(`/api/apps/town-square/messages/${id}/delete`);
-    return messageSchema.parse(response.data);
+    return messageDefaultSchema.parse(response.data);
   };
 
   return useMutation((id: string) => deleteMessage(id), {
@@ -162,7 +149,7 @@ export function useDeleteThread() {
 
   const deleteThread = async (id: string) => {
     const response = await axios.delete(`/api/apps/town-square/threads/${id}/delete`);
-    return threadSchema.parse(response.data);
+    return threadDefaultSchema.parse(response.data);
   };
 
   return useMutation((id: string) => deleteThread(id), {

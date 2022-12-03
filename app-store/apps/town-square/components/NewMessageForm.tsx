@@ -1,7 +1,7 @@
 import {
   messageRequestSchema,
   MessageRequest,
-  messageSchema,
+  messageDefaultSchema,
 } from "@app-store/apps/town-square/api-contracts/message.schema";
 import { useSocket } from "@app-store/shared/hooks/useSocket";
 import { PhotographIcon } from "@heroicons/react/solid";
@@ -12,17 +12,13 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 
-interface MessageFormParams {
-  threadId?: string;
-}
-
-export default function MessageForm({ threadId }: MessageFormParams) {
+export default function MessageForm({ threadId }: { threadId?: string }) {
   const router = useRouter();
   const form = useForm<MessageRequest>({
     resolver: zodResolver(messageRequestSchema),
     defaultValues: { content: "" },
   });
-  const { data: userData } = useSession();
+  const { data: currentSession } = useSession();
   const createMessage = useCreateMessage();
 
   function onSubmitHandler(data: MessageRequest) {
@@ -39,12 +35,14 @@ export default function MessageForm({ threadId }: MessageFormParams) {
     );
   }
 
+  if (!currentSession) return <div className="h1">Loading...</div>;
+
   return (
-    <form onSubmit={form.handleSubmit(onSubmitHandler, (e) => console.log(e))}>
+    <form onSubmit={form.handleSubmit(onSubmitHandler)}>
       <div className="flex sm:w-full md:w-3/4">
-        {userData?.user.image ? (
+        {currentSession.user.image ? (
           <img
-            src={userData?.user.image}
+            src={currentSession.user.image}
             referrerPolicy="no-referrer"
             className="w-8 h-8 rounded-[16px] border border-white m-1"
           />
@@ -72,7 +70,7 @@ export function useCreateMessage() {
 
   const createMessage = async (data: MessageRequest) => {
     const response = await axios.post("/api/apps/town-square/messages/create", data);
-    return messageSchema.parse(response.data);
+    return messageDefaultSchema.parse(response.data);
   };
 
   return useMutation(createMessage, {

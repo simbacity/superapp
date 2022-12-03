@@ -10,8 +10,6 @@ export default function Avatar({ src, className }: { src: string; className: str
         src={error ? "/default-avatar.svg" : src}
         onError={() => setError(true)}
         alt="Profile picture"
-        width={40}
-        height={40}
         layout="fill"
         objectFit="cover"
         className="rounded-full"

@@ -32,7 +32,7 @@ export default function Thread({ id }: ThreadParams) {
         </div>
         <MessageComponent message={thread.mainMessage} />
         <div className="ml-4">
-          {thread.messages?.map((message: MessageResponse) => (
+          {thread.messages.map((message: MessageResponse) => (
             <MessageComponent key={message.id} message={message} />
           ))}
         </div>
