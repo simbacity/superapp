@@ -48,6 +48,40 @@ export default function MessageForm({ threadId }: MessageFormParams) {
     <form onSubmit={form.handleSubmit(onSubmitHandler)}>
       <div className="flex w-full md:w-3/4 bg-slate-800 fixed bottom-12 pr-6 md:pr-0">
         <div className="xs:w-full sm:w-3/4 bg-black w-full">
+          <style jsx global>{`
+            .w-md-editor-toolbar li > button {
+              width: 35px;
+              padding: 0;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+            }
+            .w-md-editor-toolbar li > button > svg {
+              height: 14px;
+              width: 12px;
+              color: grey;
+            }
+
+            @media screen and (min-width: 400px) {
+              .w-md-editor-toolbar li > button {
+                width: 45px;
+              }
+              .w-md-editor-toolbar li > button > svg {
+                height: 15px;
+                width: 15px;
+              }
+            }
+
+            @media screen and (min-width: 992px) {
+              .w-md-editor-toolbar li > button {
+                width: 65px;
+              }
+              .w-md-editor-toolbar li > button > svg {
+                height: 17px;
+                width: 17px;
+              }
+            }
+          `}</style>
           <Controller
             control={form.control}
             name="content"
