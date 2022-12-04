@@ -37,11 +37,31 @@ export default function MessageForm({ threadId }: { threadId?: string }) {
 
   if (!currentSession) return <div className="h1">Loading...</div>;
 
-  function handleKeyDown(event: React.KeyboardEvent<HTMLTextAreaElement>) {
+  const onTextareaKeydown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
     const textareaElement = event.target as HTMLTextAreaElement;
+    setTextareaHeight(textareaElement, 180);
+  };
+
+  const onTextareaBlur = (event: React.FocusEvent<HTMLTextAreaElement>) => {
+    const textareaElement = event.target as HTMLTextAreaElement;
+
+    form.setValue("content", form.getValues("content").trim());
+    const formContent = form.getValues("content");
+
+    if (formContent.length === 0) {
+      textareaElement.style.height = `${0}px`;
+    } else {
+      setTextareaHeight(textareaElement, 180);
+    }
+  };
+
+  const setTextareaHeight = (textareaElement: HTMLTextAreaElement, height: number) => {
     textareaElement.style.height = "inherit";
-    textareaElement.style.height = `${textareaElement.scrollHeight}px`;
-  }
+
+    const scrollheight = textareaElement.scrollHeight;
+    const newHeight = scrollheight < height ? scrollheight : height;
+    textareaElement.style.height = `${newHeight}px`;
+  };
 
   return (
     <form onSubmit={form.handleSubmit(onSubmitHandler)}>
@@ -52,8 +72,9 @@ export default function MessageForm({ threadId }: { threadId?: string }) {
             className="w-full border-2 border-slate-300 px-2 py-2 pr-14"
             placeholder="What's on your mind?"
             rows={1}
-            style={{ minHeight: "42px" }}
-            onKeyDown={handleKeyDown}
+            style={{ minHeight: "42px", resize: "none" }}
+            onKeyDown={onTextareaKeydown}
+            onBlur={onTextareaBlur}
             name="content"></textarea>
           <div className="ml-2">
             <button
