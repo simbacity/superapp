@@ -71,7 +71,7 @@ export default function MessageForm({ threadId }: { threadId?: string }) {
             {...form.register("content")}
             className="w-full border-2 border-slate-300 px-2 py-2 pr-14"
             placeholder="What's on your mind?"
-            style={{ height: "0px", minHeight: "44px", resize: "none" }}
+            style={{ height: "0px", minHeight: "42px", resize: "none" }}
             onKeyDown={onTextareaKeydown}
             onBlur={onTextareaBlur}
             name="content"></textarea>
