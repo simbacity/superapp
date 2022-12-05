@@ -86,16 +86,16 @@ export default function MessagePage({
         <div className="pt-1 flex justify-between">
           <div>
             {!hideGoToRepliesLink && (
-              <a className="link" onClick={onNavigateToThreadsHandler}>
+              <button className="link" onClick={onNavigateToThreadsHandler}>
                 {getGoToThreadLinkText(message.replyCount)}
-              </a>
+              </button>
             )}
           </div>
           <div>
             {isCurrentUser && (
-              <a className="link" onClick={onDeleteHandler}>
+              <button className="link" onClick={onDeleteHandler}>
                 Delete
-              </a>
+              </button>
             )}
           </div>
         </div>
