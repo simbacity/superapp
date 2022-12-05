@@ -29,6 +29,8 @@ export default function MessageForm({ threadId }: { threadId?: string }) {
           form.reset();
           if (response.threadId) {
             router.push(`/apps/town-square/threads/${response.threadId}`);
+          } else {
+            window.scrollTo(0, 0);
           }
         },
       }
