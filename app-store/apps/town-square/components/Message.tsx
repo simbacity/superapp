@@ -14,7 +14,13 @@ import { useState } from "react";
 
 import { formatDate } from "../utils/days";
 
-export default function MessagePage({ message }: { message: MessageResponse }) {
+export default function MessagePage({
+  message,
+  hideGoToRepliesLink,
+}: {
+  message: MessageResponse;
+  hideGoToRepliesLink?: boolean;
+}) {
   const router = useRouter();
   const [isDeleteButtonVisible, setIsDeleteButtonVisible] = useState<boolean>(false);
   const { data: session } = useSession();
@@ -40,9 +46,7 @@ export default function MessagePage({ message }: { message: MessageResponse }) {
     }
   };
 
-  const onDeleteHandler = (event: React.MouseEvent<Element, MouseEvent>) => {
-    event.stopPropagation();
-
+  const onDeleteHandler = () => {
     if (!message.isReply && message.threadId) {
       deleteThread.mutate(message.threadId, {
         onSuccess: () => {
@@ -58,17 +62,16 @@ export default function MessagePage({ message }: { message: MessageResponse }) {
     }
   };
 
-  const setDeleteButtonVisibility = (event: React.MouseEvent<Element, MouseEvent>, isVisible: boolean) => {
-    event.stopPropagation();
-    setIsDeleteButtonVisible(isVisible);
+  const getGoToThreadLinkText = (replyCount: number | undefined) => {
+    if (!replyCount) return "Reply";
+    const replyMessage = replyCount > 1 ? "Replies" : "Reply";
+    return `${replyCount} ${replyMessage}`;
   };
 
   return (
     <div
       key={message.id}
-      onClick={onNavigateToThreadsHandler}
-      onMouseLeave={() => setIsDeleteButtonVisible(false)}
-      className="flex relative px-2 py-4 gap-2 text-sm text-white break-words group hover:bg-slate-700 cursor-pointer">
+      className="flex relative px-2 py-4 gap-2 text-sm text-white break-words group border-b border-slate-700">
       <div>
         <Avatar src={message.user.image || ""} className="w-9 h-9 mt-1" />
       </div>
@@ -80,33 +83,23 @@ export default function MessagePage({ message }: { message: MessageResponse }) {
         <div>
           <p>{message.content}</p>
         </div>
-        {!!message.replyCount && message.replyCount !== 0 && (
-          <div className="pt-1">
-            <a className="link">
-              {message.replyCount} {message.replyCount > 1 ? "Replies" : "Reply"}
-            </a>
+        <div className="pt-1 flex justify-between">
+          <div>
+            {!hideGoToRepliesLink && (
+              <a className="link" onClick={onNavigateToThreadsHandler}>
+                {getGoToThreadLinkText(message.replyCount)}
+              </a>
+            )}
           </div>
-        )}
-      </div>
-
-      {isCurrentUser && (
-        <div className="group-hover:block hidden absolute right-2 top-2">
-          <a
-            className="bg-slate-400 px-3 py-1 flex items-center"
-            onClick={(event) => setDeleteButtonVisibility(event, true)}>
-            <DotsHorizontalIcon className="w-6 h-6 text-white" />
-          </a>
-          {isDeleteButtonVisible && (
-            <div className="-translate-x-full" onMouseLeave={() => setIsDeleteButtonVisible(false)}>
-              <a
-                className="absolute px-6 py-2 cursor-pointer font-mono bg-white hover:bg-slate-200 text-slate-900"
-                onClick={onDeleteHandler}>
+          <div>
+            {isCurrentUser && (
+              <a className="link" onClick={onDeleteHandler}>
                 Delete
               </a>
-            </div>
-          )}
+            )}
+          </div>
         </div>
-      )}
+      </div>
     </div>
   );
 }

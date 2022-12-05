@@ -31,10 +31,10 @@ export default function Thread({ id }: ThreadParams) {
             <p className="text-white ">Thread</p>
           </div>
         </div>
-        <MessageComponent message={thread.mainMessage} />
+        <MessageComponent message={thread.mainMessage} hideGoToRepliesLink={true} />
         <div className="ml-4">
           {thread.messages.map((message: MessageResponse) => (
-            <MessageComponent key={message.id} message={message} />
+            <MessageComponent key={message.id} message={message} hideGoToRepliesLink={true} />
           ))}
         </div>
         <NewMessageForm threadId={thread.id} />
