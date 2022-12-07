@@ -16,7 +16,7 @@ describe("Thread", () => {
       const { user } = await setup();
 
       const requestParams: MessageRequest = {
-        content: "This is the content of the message",
+        content: "<p>This is the content of the message</p>",
       };
 
       const messageEntity = new MessageEntity();
@@ -38,7 +38,7 @@ describe("Thread", () => {
       const { user } = await setup();
 
       const requestParams: MessageRequest = {
-        content: "This is the content of the message",
+        content: "<p>This is the content of the message</p>",
       };
 
       const messageEntity = new MessageEntity();
@@ -59,7 +59,7 @@ describe("Thread", () => {
       const { user } = await setup();
 
       const requestParams: MessageRequest = {
-        content: "This is the content of the message",
+        content: "<p>This is the content of the message</p>",
       };
 
       const messageEntity = new MessageEntity();

@@ -16,7 +16,7 @@ describe("Message", () => {
       const { user } = await setup();
 
       const requestParams: MessageRequest = {
-        content: "This is content of the message",
+        content: "<p>This is content of the message</p>",
       };
 
       const entity = new MessageEntity();
@@ -33,7 +33,7 @@ describe("Message", () => {
       const { user } = await setup();
 
       const requestParams: MessageRequest = {
-        content: "This is the content of the message",
+        content: "<p>This is the content of the message</p>",
       };
 
       const entity = new MessageEntity();
@@ -50,7 +50,7 @@ describe("Message", () => {
       const { user } = await setup();
 
       const requestParams: MessageRequest = {
-        content: "This is the content of the message",
+        content: "<p>This is the content of the message</p>",
       };
 
       const messageEntity = new MessageEntity();
@@ -60,7 +60,7 @@ describe("Message", () => {
       const threadResponse = await threadEntity.create({ messageId: messageResponse.id });
 
       const requestParamsWithMessageId: MessageRequest = {
-        content: "This is the comment of the message",
+        content: "<p>This is the comment of the message</p>",
         threadId: threadResponse.id,
       };
 
@@ -84,7 +84,7 @@ describe("Message", () => {
       const { user } = await setup();
 
       const requestParams: MessageRequest = {
-        content: "This is the content of the message",
+        content: "<p>This is the content of the message</p>",
       };
 
       const entity = new MessageEntity();
@@ -103,7 +103,7 @@ describe("Message", () => {
       const { user } = await setup();
 
       const requestParams: MessageRequest = {
-        content: "This is the content of the message",
+        content: "<p>This is the content of the message</p>",
       };
 
       const entity = new MessageEntity();
@@ -129,7 +129,7 @@ describe("Message", () => {
       const { user } = await setup();
 
       const requestParams: MessageRequest = {
-        content: "This is the content of the message",
+        content: "<p>This is the content of the message</p>",
       };
 
       const entity = new MessageEntity();
@@ -146,7 +146,7 @@ describe("Message", () => {
       const { user } = await setup();
 
       const requestParams: MessageRequest = {
-        content: "This is the content of the message",
+        content: "<p>This is the content of the message</p>",
       };
 
       const entity = new MessageEntity();
