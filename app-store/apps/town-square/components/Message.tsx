@@ -4,17 +4,12 @@ import {
 } from "@app-store/apps/town-square/api-contracts/message.schema";
 import { threadDefaultSchema, ThreadRequest } from "@app-store/apps/town-square/api-contracts/thread.schema";
 import Avatar from "@app-store/apps/town-square/components/Avatar";
+import sanitizeContent from "@app-store/apps/town-square/utils/sanitize";
 import { useSocket } from "@app-store/shared/hooks/useSocket";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import rehypeRaw from "rehype-raw";
-import rehypeSanitize from "rehype-sanitize";
-import rehypeStringify from "rehype-stringify";
-import { remark } from "remark";
-import remarkParse from "remark-parse";
-import remarkRehype from "remark-rehype";
 
 import { formatDate } from "../utils/days";
 
@@ -32,14 +27,7 @@ export default function MessagePage({
   const deleteMessage = useDeleteMessage();
   const deleteThread = useDeleteThread();
 
-  const sanitizedHtmlContent = remark()
-    .use(remarkParse)
-    .use(remarkRehype, { allowDangerousHtml: true })
-    .use(rehypeRaw)
-    .use(rehypeSanitize)
-    .use(rehypeStringify)
-    .processSync(message.content)
-    .toString();
+  const sanitizedHtmlContent = sanitizeContent(message.content);
 
   const onNavigateToThreadsHandler = () => {
     if (message.threadId) {

@@ -1,15 +1,10 @@
 import { MessageRequest, MessageListRequest } from "@app-store/apps/town-square/api-contracts/message.schema";
+import sanitizeContent from "@app-store/apps/town-square/utils/sanitize";
 import PushNotificationEntity from "@app-store/shared/business-logic/push-notification.entity";
 import ForbiddenError from "@app-store/shared/utils/errors/ForbiddenError";
 import NotFoundError from "@app-store/shared/utils/errors/NotFoundError";
 import prisma from "@app-store/shared/utils/prisma";
 import { Prisma, User } from "@prisma/client";
-import rehypeRaw from "rehype-raw";
-import rehypeSanitize from "rehype-sanitize";
-import rehypeStringify from "rehype-stringify";
-import remarkParse from "remark-parse";
-import remarkRehype from "remark-rehype";
-import { unified } from "unified";
 
 type MessageListQuerySchema = {
   orderBy: {
@@ -129,17 +124,11 @@ export default class MessageEntity {
   private async createReply(params: MessageRequest, userId: string) {
     const { content, isReply = true } = params;
 
-    const sanitizedContent = await unified()
-      .use(remarkParse)
-      .use(remarkRehype, { allowDangerousHtml: true })
-      .use(rehypeRaw)
-      .use(rehypeSanitize)
-      .use(rehypeStringify)
-      .process(content);
+    const sanitizedContent = sanitizeContent(content);
 
     const response = await prisma.message_TownSquare.create({
       data: {
-        content: sanitizedContent.toString(),
+        content: sanitizedContent,
         isReply,
         user: {
           connect: {
@@ -160,13 +149,7 @@ export default class MessageEntity {
   private async createMessage(params: MessageRequest, userId: string) {
     const { content, isReply = false } = params;
 
-    const sanitizedContent = await unified()
-      .use(remarkParse)
-      .use(remarkRehype, { allowDangerousHtml: true })
-      .use(rehypeRaw)
-      .use(rehypeSanitize)
-      .use(rehypeStringify)
-      .process(content);
+    const sanitizedContent = sanitizeContent(content);
 
     const response = await prisma.message_TownSquare.create({
       data: {
