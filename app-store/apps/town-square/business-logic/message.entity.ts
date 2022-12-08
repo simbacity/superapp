@@ -1,4 +1,5 @@
 import { MessageRequest, MessageListRequest } from "@app-store/apps/town-square/api-contracts/message.schema";
+import sanitizeContent from "@app-store/apps/town-square/utils/sanitize";
 import PushNotificationEntity from "@app-store/shared/business-logic/push-notification.entity";
 import ForbiddenError from "@app-store/shared/utils/errors/ForbiddenError";
 import NotFoundError from "@app-store/shared/utils/errors/NotFoundError";
@@ -122,9 +123,12 @@ export default class MessageEntity {
 
   private async createReply(params: MessageRequest, userId: string) {
     const { content, isReply = true } = params;
+
+    const sanitizedContent = sanitizeContent(content);
+
     const response = await prisma.message_TownSquare.create({
       data: {
-        content,
+        content: sanitizedContent,
         isReply,
         user: {
           connect: {
@@ -144,9 +148,12 @@ export default class MessageEntity {
 
   private async createMessage(params: MessageRequest, userId: string) {
     const { content, isReply = false } = params;
+
+    const sanitizedContent = sanitizeContent(content);
+
     const response = await prisma.message_TownSquare.create({
       data: {
-        content,
+        content: sanitizedContent.toString(),
         isReply,
         user: {
           connect: {

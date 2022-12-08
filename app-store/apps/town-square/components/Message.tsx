@@ -4,13 +4,12 @@ import {
 } from "@app-store/apps/town-square/api-contracts/message.schema";
 import { threadDefaultSchema, ThreadRequest } from "@app-store/apps/town-square/api-contracts/thread.schema";
 import Avatar from "@app-store/apps/town-square/components/Avatar";
+import sanitizeContent from "@app-store/apps/town-square/utils/sanitize";
 import { useSocket } from "@app-store/shared/hooks/useSocket";
-import { DotsHorizontalIcon } from "@heroicons/react/outline";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import { useState } from "react";
 
 import { formatDate } from "../utils/days";
 
@@ -22,12 +21,13 @@ export default function MessagePage({
   hideGoToRepliesLink?: boolean;
 }) {
   const router = useRouter();
-  const [isDeleteButtonVisible, setIsDeleteButtonVisible] = useState<boolean>(false);
   const { data: session } = useSession();
   const isCurrentUser = message.userId === session?.user.id;
   const createThread = useCreateThread();
   const deleteMessage = useDeleteMessage();
   const deleteThread = useDeleteThread();
+
+  const sanitizedHtmlContent = sanitizeContent(message.content);
 
   const onNavigateToThreadsHandler = () => {
     if (message.threadId) {
@@ -81,7 +81,7 @@ export default function MessagePage({
           <p className="text-xs text-gray-400 ml-2">{formatDate(message.createdAt || "")}</p>
         </div>
         <div>
-          <p>{message.content}</p>
+          <div dangerouslySetInnerHTML={{ __html: sanitizedHtmlContent }} />
         </div>
         <div className="pt-1 flex justify-between">
           <div>

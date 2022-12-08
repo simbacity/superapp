@@ -23,4 +23,9 @@ const customJestConfig = {
 };
 
 // createJestConfig is exported this way to ensure that next/jest can load the Next.js config which is async
-module.exports = createJestConfig(customJestConfig);
+module.exports = async () => ({
+  ...(await createJestConfig(customJestConfig)()),
+  transformIgnorePatterns: [
+    "\node_modules/(?!(rehype-raw|hast-util-raw|unist-util-position|unist-util-visit|unist-util-visit-parents|hast-util-to-parse5|hast-to-hyperscript|zwitch|remark-parse|mdast-util-from-markdown|mdast-util-to-string|micromark|/micromark-util-combine-extensions|micromark-util-combine-extensions|micromark-util-chunked|micromark-factory-space|micromark-util-character|micromark-core-commonmark|micromark-util-classify-character|micromark-util-resolve-all|decode-named-character-reference|character-entities|micromark-util-subtokenize|micromark-factory-destination|micromark-factory-label|micromark-factory-title|micromark-factory-whitespace|micromark-util-normalize-identifier|micromark-util-html-tag-name|micromark-util-decode-numeric-character-reference|micromark-util-decode-string|remark-rehype|mdast-util-to-hast|unist-builder|unist-util-generated|mdast-util-definitions|micromark-util-sanitize-uri|micromark-util-encode|trim-lines|hast-util-from-parse5|hastscript|property-information|hast-util-parse-selector|space-separated-tokens|comma-separated-tokens|vfile-location|web-namespaces|rehype-sanitize|hast-util-sanitize|rehype-stringify|hast-util-to-html|html-void-elements|hast-util-is-element|unist-util-is|hast-util-whitespace|stringify-entities|character-entities-legacy|character-entities-html4|ccount|unified|bail|is-plain-obj|trough|vfile|vfile-message|unist-util-stringify-position)/)",
+  ],
+});
