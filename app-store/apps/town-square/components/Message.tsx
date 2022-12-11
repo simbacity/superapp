@@ -6,6 +6,7 @@ import { threadDefaultSchema, ThreadRequest } from "@app-store/apps/town-square/
 import Avatar from "@app-store/apps/town-square/components/Avatar";
 import sanitizeContent from "@app-store/apps/town-square/utils/sanitize";
 import { useSocket } from "@app-store/shared/hooks/useSocket";
+import { EmojiHappyIcon } from "@heroicons/react/outline";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { useSession } from "next-auth/react";
@@ -71,19 +72,24 @@ export default function MessagePage({
   return (
     <div
       key={message.id}
-      className="flex relative px-2 py-4 gap-2 text-sm text-white break-words group border-b border-slate-700">
+      className="relative flex gap-2 px-2 py-4 text-sm text-white break-words border-b group border-slate-700">
       <div>
-        <Avatar src={message.user.image || ""} className="w-9 h-9 mt-1" />
+        <Avatar src={message.user.image || ""} className="mt-1 w-9 h-9" />
       </div>
       <div className="w-full overflow-hidden">
         <div className="flex items-center">
           <p className="font-bold">{message.user.name}</p>
-          <p className="text-xs text-gray-400 ml-2">{formatDate(message.createdAt || "")}</p>
+          <p className="ml-2 text-xs text-gray-400">{formatDate(message.createdAt || "")}</p>
         </div>
         <div>
           <div dangerouslySetInnerHTML={{ __html: sanitizedHtmlContent }} />
         </div>
-        <div className="pt-1 flex justify-between">
+        <div className="mt-2 ml-0.5">
+          <button className="px-1.5 py-1 rounded-xl bg-slate-600 hover:brightness-125 focus:ring focus:ring-white">
+            <EmojiHappyIcon className="w-5 h-5 text-white" />
+          </button>
+        </div>
+        <div className="flex justify-between pt-1">
           <div>
             {!hideGoToRepliesLink && (
               <button className="link" onClick={onNavigateToThreadsHandler}>

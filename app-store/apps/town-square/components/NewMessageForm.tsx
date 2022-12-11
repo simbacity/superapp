@@ -3,6 +3,7 @@ import {
   MessageRequest,
   messageDefaultSchema,
 } from "@app-store/apps/town-square/api-contracts/message.schema";
+import EmojiPicker from "@app-store/apps/town-square/components/EmojiPicker";
 import { useSocket } from "@app-store/shared/hooks/useSocket";
 import { PaperAirplaneIcon } from "@heroicons/react/solid";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -64,14 +65,13 @@ export default function MessageForm({ threadId }: { threadId?: string }) {
     const newHeight = scrollheight < height ? scrollheight : height;
     textareaElement.style.height = `${newHeight}px`;
   };
-
   return (
-    <form onSubmit={form.handleSubmit(onSubmitHandler)}>
-      <div className="fixed bottom-11 left-0 w-full bg-slate-900 py-2">
-        <div className="flex relative max-w-6xl m-auto px-1 lg:px-8 items-center">
+    <div className="fixed left-0 w-full py-2 text-2xl bottom-11 bg-slate-900">
+      <form onSubmit={form.handleSubmit(onSubmitHandler)}>
+        <div className="relative flex items-center max-w-6xl px-1 m-auto lg:px-8">
           <textarea
             {...form.register("content")}
-            className="w-full border-2 border-slate-300 px-2 py-2 pr-14"
+            className="w-full px-2 py-2 border-2 border-slate-300 pr-14"
             placeholder="What's on your mind?"
             style={{ height: "0px", minHeight: "45px", resize: "none" }}
             onKeyDown={onTextareaKeydown}
@@ -81,13 +81,14 @@ export default function MessageForm({ threadId }: { threadId?: string }) {
             <button
               type="submit"
               disabled={createMessage.isLoading}
-              className="w-10 h-10 rounded-full bg-green-600 hover:bg-green-700 flex items-center justify-center">
-              <PaperAirplaneIcon className="w-5 h-5 rotate-90 text-white" />
+              className="flex items-center justify-center w-10 h-10 bg-green-600 rounded-full hover:bg-green-700">
+              <PaperAirplaneIcon className="w-5 h-5 text-white rotate-90" />
             </button>
           </div>
         </div>
-      </div>
-    </form>
+      </form>
+      {/* <EmojiPicker /> */}
+    </div>
   );
 }
 
