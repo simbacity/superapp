@@ -10,7 +10,7 @@ interface SignInProps {
 
 export default function SignIn({ providers }: SignInProps) {
   return (
-    <div className="bg-slate-800 flex items-center justify-center min-h-screen">
+    <div className="bg-gray-900 flex items-center justify-center min-h-screen">
       <div className="text-center">
         {Object.values(providers).map((provider) => {
           return (

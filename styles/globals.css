@@ -2,7 +2,7 @@
 @tailwind components;
 
 body {
-  @apply bg-slate-800;
+  @apply bg-gray-900;
 }
 
 .layout {
@@ -230,11 +230,11 @@ body {
 }
 
 .input {
-  @apply w-full rounded-none border-4 border-slate-300 px-2 py-2 font-mono focus:border-slate-400 focus:ring-slate-400;
+  @apply w-full rounded-none border-4 border-gray-300 px-2 py-2 font-mono focus:border-gray-400 focus:ring-gray-400;
 }
 
 .textarea {
-  @apply w-full rounded-none border-4 border-slate-300 px-2 py-2 font-mono focus:border-slate-400 focus:ring-slate-400;
+  @apply w-full rounded-none border-4 border-gray-300 px-2 py-2 font-mono focus:border-gray-400 focus:ring-gray-400;
 }
 
 .error-text {
@@ -243,7 +243,7 @@ body {
 }
 
 .select > div:first-of-type {
-  @apply w-full rounded-none border-4 border-slate-300 py-0.5 font-mono;
+  @apply w-full rounded-none border-4 border-gray-300 py-0.5 font-mono;
 }
 
 @tailwind utilities;

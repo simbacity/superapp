@@ -45,7 +45,7 @@ export default function SignIn({ providers }: SignInProps) {
 
   if (!isInvited) {
     return (
-      <div className="bg-slate-800 flex items-center justify-center min-h-screen">
+      <div className="bg-gray-900 flex items-center justify-center min-h-screen">
         <div className="w-72">
           <form onSubmit={handleSubmit}>
             <div>
@@ -85,8 +85,8 @@ export default function SignIn({ providers }: SignInProps) {
           </form>
           <div className="text-center">
             <p className="paragraph text-sm">
-              <Link href="/auth/signin">
-                <a className="link">Already have an account?</a>
+              <Link href="/auth/signin" className="link">
+                Already have an account?
               </Link>
             </p>
           </div>
@@ -95,7 +95,7 @@ export default function SignIn({ providers }: SignInProps) {
     );
   }
   return (
-    <div className="bg-slate-800 flex items-center justify-center min-h-screen">
+    <div className="bg-gray-900 flex items-center justify-center min-h-screen">
       <Confetti width={windowWidth} height={windowHeight} recycle={false} numberOfPieces={400} />
       <div className="">
         {Object.values(providers).map((provider) => {

@@ -67,11 +67,11 @@ export default function MessageForm({ threadId }: { threadId?: string }) {
 
   return (
     <form onSubmit={form.handleSubmit(onSubmitHandler)}>
-      <div className="fixed bottom-11 left-0 w-full bg-slate-900 py-2">
+      <div className="fixed bottom-11 left-0 w-full bg-gray-900 py-2">
         <div className="flex relative max-w-6xl m-auto px-1 lg:px-8 items-center">
           <textarea
             {...form.register("content")}
-            className="w-full border-2 border-slate-300 px-2 py-2 pr-14"
+            className="w-full border-2 border-gray-300 px-2 py-2 pr-14"
             placeholder="What's on your mind?"
             style={{ height: "0px", minHeight: "45px", resize: "none" }}
             onKeyDown={onTextareaKeydown}

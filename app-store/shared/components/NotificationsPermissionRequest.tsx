@@ -41,7 +41,7 @@ export default function NotificationsPermissionBox() {
   if (subscription) return null;
 
   return (
-    <div className="border-t-2 border-b-2 border-slate-400 p-4">
+    <div className="border-t-2 border-b-2 border-gray-400 p-4">
       <h2 className="h2">Enable push notifications</h2>
       <button
         onClick={onEnableNotificationsClick}

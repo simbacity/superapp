@@ -17,8 +17,8 @@ export default function Home() {
           <section className="py-6 border-b-4 border-white border-dotted">
             <h2 className="h2">Town Square</h2>
             <p className="lead-paragraph">The place where we communicate. Similar to Discord, Slack, etc.</p>
-            <Link href="/apps/town-square">
-              <a className="default-button--medium">Open App</a>
+            <Link href="/apps/town-square" className="default-button--medium">
+              Open App
             </Link>
           </section>
           <section className="py-6 border-b-4 border-white border-dotted">
@@ -26,8 +26,8 @@ export default function Home() {
             <p className="lead-paragraph">
               A minimalistic blog. You can use it as a boilerplate when building a Simba App.
             </p>
-            <Link href="/apps/mini-blog">
-              <a className="default-button--medium">Open App</a>
+            <Link href="/apps/mini-blog" className="default-button--medium">
+              Open App
             </Link>
           </section>
           <section className="py-6 border-b-4 border-white border-dotted">
@@ -35,8 +35,8 @@ export default function Home() {
             <p className="lead-paragraph">
               Learn about the design language and components we use for Simba Apps.
             </p>
-            <Link href="/apps/simba-design-system">
-              <a className="default-button--medium">Open App</a>
+            <Link href="/apps/simba-design-system" className="default-button--medium">
+              Open App
             </Link>
           </section>
         </div>

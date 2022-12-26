@@ -72,7 +72,7 @@ export default function MessagePage({
   return (
     <div
       key={message.id}
-      className="flex relative px-2 py-4 gap-2 text-sm text-white break-words group border-b border-slate-700">
+      className="flex relative px-2 py-4 gap-2 text-sm text-white break-words group border-b border-gray-700">
       <div>
         <Avatar src={message.user.image || ""} className="w-9 h-9 mt-1" />
       </div>
