@@ -5,7 +5,7 @@ import Link from "next/link";
 export default function Home() {
   return (
     <Shell>
-      <div className="grid grid-cols-4 gap-4 max-w-3xl px-2 m-auto pt-8 text-white text-xs text-center">
+      <div className="grid grid-cols-4 gap-4 gap-y-14 max-w-3xl px-2 m-auto pt-14 text-white text-xs text-center">
         <div>
           <Link href="/apps/town-square">
             <Image
@@ -29,6 +29,10 @@ export default function Home() {
             />
           </Link>
           <div className="pt-2">University</div>
+        </div>
+        <div>
+          <Image src="/home-screen/jobs.svg" height={60} width={60} alt="jobs" className="m-auto" />
+          <div className="pt-2">Jobs</div>
         </div>
         <div>
           <Image src="/home-screen/wallet.svg" height={60} width={60} alt="wallet" className="m-auto" />
