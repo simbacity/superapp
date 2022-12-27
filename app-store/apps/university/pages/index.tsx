@@ -58,7 +58,7 @@ export default function University() {
               <div className="max-w-sm">
                 <Card imgSrc="https://dummyimage.com/600x220/224699/224699.png">
                   <div>
-                    <h3 className="text-xl font-bold tracking-tight pb-2">CSS Mastery</h3>
+                    <h3 className="text-xl font-bold tracking-tight pb-2">Advanced Full-Stack</h3>
                     <p className="font-normal text-sm text-gray-400">5/20 credits</p>
                   </div>
                   <div>
