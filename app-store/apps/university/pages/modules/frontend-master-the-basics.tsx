@@ -28,7 +28,7 @@ export default function Module() {
   return (
     <Shell>
       <nav className="fixed w-full bg-gray-900 border-b border-gray-800 border-white">
-        <div className="flex items-center h-16 mx-auto max-w-3xl px-3 md:px-0">
+        <div className="flex items-center h-14 mx-auto max-w-3xl px-3 md:px-0">
           <Link href="/apps/university/">
             <button
               type="button"
