@@ -1,7 +1,18 @@
+import CodingMoonImage from "@app-store/apps/university/assets/coding-moon.png";
+import LockedBackgroundImage from "@app-store/apps/university/assets/locked-background.png";
 import Logo from "@app-store/apps/university/assets/logo.svg";
 import Shell from "@app-store/shared/components/Shell";
 import { ChartBarIcon } from "@heroicons/react/solid";
 import { Button, Card, Progress } from "flowbite-react";
+import Link from "next/link";
+
+const cards = [
+  { title: "Frontend: Master the basics", imgSrc: CodingMoonImage.src },
+  { title: "Full-Stack: Master the basics", imgSrc: LockedBackgroundImage.src },
+  { title: "Full-Stack: Advanced concepts", imgSrc: LockedBackgroundImage.src },
+  { title: "Working in complex environments", imgSrc: LockedBackgroundImage.src },
+  { title: "Final project", imgSrc: LockedBackgroundImage.src },
+];
 
 export default function University() {
   return (
@@ -11,7 +22,7 @@ export default function University() {
           <img src={Logo.src} className="mr-3 h-8" />
         </div>
       </nav>
-      <div className="text-white">
+      <div className="text-white pb-12">
         <div className="mx-auto max-w-3xl px-3 md:px-0">
           <header>
             <div className="py-8">
@@ -26,22 +37,22 @@ export default function University() {
           </header>
           <section>
             <div className="flex flex-col md:flex-row gap-4">
-              <div className="max-w-sm">
+              <div className="w-full">
                 <Card>
                   <h3 className="text-xl font-bold tracking-tight">Your credits</h3>
                   <p className="font-normal text-sm text-gray-400">
                     Earn 100 credits for receiving your MiniMasters degree.
                   </p>
                   <Progress
-                    progress={20}
+                    progress={0}
                     size="lg"
                     color="dark"
-                    label="20/100 credits"
+                    label="0/100 credits"
                     labelPosition="outside"
                   />
                 </Card>
               </div>
-              <div className="max-w-sm">
+              <div className="w-full">
                 <Card>
                   <ChartBarIcon className="w-8 h-8 text-gray-400" />
                   <h3 className="text-xl font-bold tracking-tight">Advanced level</h3>
@@ -54,18 +65,27 @@ export default function University() {
           </section>
           <section>
             <h2 className="text-2xl font-bold pb-4 pt-8">Modules</h2>
-            <div className="flex flex-col md:flex-row gap-4">
-              <div className="max-w-sm">
-                <Card imgSrc="https://dummyimage.com/600x220/224699/224699.png">
-                  <div>
-                    <h3 className="text-xl font-bold tracking-tight pb-2">Advanced Full-Stack</h3>
-                    <p className="font-normal text-sm text-gray-400">5/20 credits</p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 gap-y-8">
+              {cards.map((card, index) => {
+                return (
+                  <div className="w-full" key={index}>
+                    <Card imgSrc={card.imgSrc}>
+                      <div>
+                        <h3 className="text-xl font-bold tracking-tight pb-2">{card.title}</h3>
+                        <p className="font-normal text-sm text-gray-400">0/20 credits</p>
+                      </div>
+                      <div>
+                        <Link
+                          href={index === 0 ? "/apps/university/modules/frontend-master-the-basics" : "#"}>
+                          <Button color="light" disabled={index !== 0}>
+                            Open
+                          </Button>
+                        </Link>
+                      </div>
+                    </Card>
                   </div>
-                  <div>
-                    <Button color="light">Open</Button>
-                  </div>
-                </Card>
-              </div>
+                );
+              })}
             </div>
           </section>
         </div>
