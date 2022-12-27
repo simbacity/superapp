@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+export const isClientSide = typeof window !== "undefined";
+
 export const messageDefaultSchema = z.object({
   id: z.string(),
   threadId: z.string().nullable(),
@@ -8,6 +10,7 @@ export const messageDefaultSchema = z.object({
 export const messageSchema = z.object({
   id: z.string(),
   content: z.string(),
+  imageAttachment: z.string().nullable(),
   isReply: z.boolean(),
   threadId: z.string().nullable(),
   userId: z.string(),
@@ -29,6 +32,7 @@ export const messageListSchema = z.array(messageSchema);
 
 export const messageRequestSchema = z.object({
   content: z.string().min(1),
+  imageAttachment: isClientSide ? z.instanceof(File).or(z.optional(z.any())) : z.any(),
   threadId: z.string().optional(),
   userId: z.string().optional(),
   isReply: z.boolean().optional(),

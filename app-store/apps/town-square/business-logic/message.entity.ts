@@ -49,6 +49,7 @@ export default class MessageEntity {
   }
 
   async create(params: MessageRequest, userId: string) {
+    console.log("PARAMSSSS=======================", params);
     const createMessage = params.threadId ? this.createReply : this.createMessage;
 
     const user = await prisma.user.findUnique({ where: { id: userId } });
@@ -102,6 +103,7 @@ export default class MessageEntity {
     return response.map((message) => ({
       id: message.id,
       content: message.content,
+      imageAttachment: message.imageAttachment,
       isReply: message.isReply,
       threadId: message.threadId,
       userId: message.userId,
@@ -122,13 +124,19 @@ export default class MessageEntity {
   }
 
   private async createReply(params: MessageRequest, userId: string) {
-    const { content, isReply = true } = params;
+    const { content, imageAttachment, isReply = true } = params;
 
+    let imageUrl = "";
     const sanitizedContent = sanitizeContent(content);
+    if (imageAttachment) {
+      // set image url to file name because formidable is currently saving to the public folder
+      imageUrl = imageAttachment.newFilename;
+    }
 
     const response = await prisma.message_TownSquare.create({
       data: {
         content: sanitizedContent,
+        imageAttachment: imageUrl,
         isReply,
         user: {
           connect: {
@@ -147,13 +155,19 @@ export default class MessageEntity {
   }
 
   private async createMessage(params: MessageRequest, userId: string) {
-    const { content, isReply = false } = params;
+    const { content, imageAttachment, isReply = false } = params;
 
+    let imageUrl = "";
     const sanitizedContent = sanitizeContent(content);
+    if (imageAttachment) {
+      // set image url to file name because formidable is currently saving to the public folder
+      imageUrl = imageAttachment.newFilename;
+    }
 
     const response = await prisma.message_TownSquare.create({
       data: {
         content: sanitizedContent.toString(),
+        imageAttachment: imageUrl,
         isReply,
         user: {
           connect: {
@@ -172,5 +186,9 @@ export default class MessageEntity {
 
     const pushNotification = new PushNotificationEntity();
     pushNotification.send(userIds, title, body);
+  }
+
+  private async saveToObjectStorage(file: File) {
+    // save to object database, return url
   }
 }

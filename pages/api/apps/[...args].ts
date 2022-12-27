@@ -2,6 +2,12 @@ import HttpError from "@app-store/shared/utils/errors/HttpError";
 import AppStoreApiProxyEntity from "@business-logic/app-store-api-proxy.entity";
 import { NextApiRequest, NextApiResponse } from "next";
 
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+};
+
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const entity = new AppStoreApiProxyEntity();
 
