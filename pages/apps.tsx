@@ -5,7 +5,7 @@ import Link from "next/link";
 export default function Home() {
   return (
     <Shell>
-      <div className="grid grid-cols-4 gap-4 gap-y-14 max-w-3xl px-2 m-auto pt-14 text-white text-xs text-center">
+      <div className="grid grid-cols-4 gap-4 gap-y-10 max-w-3xl px-2 m-auto pt-10 md:pt-14 md:gap-y-14 text-white text-xs text-center">
         <div>
           <Link href="/apps/town-square">
             <Image
