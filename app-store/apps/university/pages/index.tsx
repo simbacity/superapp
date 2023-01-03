@@ -12,6 +12,7 @@ const cards = [
   { title: "Full-Stack: Advanced concepts", imgSrc: LockedBackgroundImage.src },
   { title: "Working in complex environments", imgSrc: LockedBackgroundImage.src },
   { title: "Final project", imgSrc: LockedBackgroundImage.src },
+  { title: "Career coaching & job hunt", imgSrc: LockedBackgroundImage.src },
 ];
 
 export default function University() {
@@ -41,13 +42,13 @@ export default function University() {
                 <Card>
                   <h3 className="text-xl font-bold tracking-tight">Your credits</h3>
                   <p className="font-normal text-sm text-gray-400">
-                    Earn 100 credits for receiving your Mastery degree.
+                    Earn 120 credits for receiving your Mastery degree.
                   </p>
                   <Progress
                     progress={0}
                     size="lg"
                     color="dark"
-                    label="0/100 credits"
+                    label="0/120 credits"
                     labelPosition="outside"
                   />
                 </Card>
