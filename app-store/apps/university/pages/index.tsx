@@ -76,7 +76,8 @@ export default function University() {
                       </div>
                       <div>
                         <Link
-                          href={index === 0 ? "/apps/university/modules/frontend-master-the-basics" : "#"}>
+                          href={index === 0 ? "/apps/university/modules/frontend-master-the-basics" : "#"}
+                          className="inline-block">
                           <Button color="light" disabled={index !== 0}>
                             Open
                           </Button>

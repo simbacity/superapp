@@ -79,7 +79,7 @@ export default function Module() {
                       <h3 className="text-xl font-bold tracking-tight pb-2">{card.title}</h3>
                     </div>
                     <div>
-                      <Link href={card.url || "#"}>
+                      <Link href={card.url || "#"} className="inline-block">
                         <Button color="light">Open</Button>
                       </Link>
                     </div>
