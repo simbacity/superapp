@@ -7,6 +7,7 @@ import dynamic from "next/dynamic";
 type Imports = { [key: string]: React.ElementType };
 
 export const AppImports: Imports = {
+  "jobs": dynamic(() => import("@app-store/apps/jobs/pages/index")),
   "mini-blog": dynamic(() => import("@app-store/apps/mini-blog/pages/index")),
   "mini-blog/posts/[id]/edit": dynamic(() => import("@app-store/apps/mini-blog/pages/posts/[id]/edit")),
   "mini-blog/posts/[id]": dynamic(() => import("@app-store/apps/mini-blog/pages/posts/[id]/index")),
@@ -22,4 +23,5 @@ export const AppImports: Imports = {
   "university/modules/frontend-master-the-basics/lessons/react-foundations": dynamic(() => import("@app-store/apps/university/pages/modules/frontend-master-the-basics/lessons/react-foundations")),
   "university/modules/frontend-master-the-basics/lessons/react-with-typescript-foundations": dynamic(() => import("@app-store/apps/university/pages/modules/frontend-master-the-basics/lessons/react-with-typescript-foundations")),
   "university/modules/frontend-master-the-basics/lessons/ui-design-foundations": dynamic(() => import("@app-store/apps/university/pages/modules/frontend-master-the-basics/lessons/ui-design-foundations")),
+  "wallet": dynamic(() => import("@app-store/apps/wallet/pages/index")),
 };

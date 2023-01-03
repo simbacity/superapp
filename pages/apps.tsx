@@ -31,11 +31,15 @@ export default function Home() {
           <div className="pt-2">University</div>
         </div>
         <div>
-          <Image src="/home-screen/jobs.svg" height={60} width={60} alt="jobs" className="m-auto" />
+          <Link href="/apps/jobs">
+            <Image src="/home-screen/jobs.svg" height={60} width={60} alt="jobs" className="m-auto" />
+          </Link>
           <div className="pt-2">Jobs</div>
         </div>
         <div>
-          <Image src="/home-screen/wallet.svg" height={60} width={60} alt="wallet" className="m-auto" />
+          <Link href="/apps/wallet">
+            <Image src="/home-screen/wallet.svg" height={60} width={60} alt="wallet" className="m-auto" />
+          </Link>
           <div className="pt-2">Wallet</div>
         </div>
         <div>
