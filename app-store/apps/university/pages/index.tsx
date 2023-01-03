@@ -27,11 +27,11 @@ export default function University() {
           <header>
             <div className="py-8">
               <h1 className="text-3xl font-normal pb-2">
-                MiniMasters Program in <span className="font-bold">Software Engineering</span>
+                Mastery Program in <span className="font-bold">Software Engineering</span>
               </h1>
               <p>
-                Our MiniMasters program is designed to give you deep learning and expertise in Software
-                Engineering, making you highly qualified and competitive in the job market.
+                Our Mastery program is designed to give you deep learning and expertise in Software
+                Engineering, making you highly qualified and competitive in the global job market.
               </p>
             </div>
           </header>
@@ -41,7 +41,7 @@ export default function University() {
                 <Card>
                   <h3 className="text-xl font-bold tracking-tight">Your credits</h3>
                   <p className="font-normal text-sm text-gray-400">
-                    Earn 100 credits for receiving your MiniMasters degree.
+                    Earn 100 credits for receiving your Mastery degree.
                   </p>
                   <Progress
                     progress={0}

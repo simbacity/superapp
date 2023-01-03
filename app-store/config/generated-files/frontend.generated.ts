@@ -15,5 +15,11 @@ export const AppImports: Imports = {
   "town-square": dynamic(() => import("@app-store/apps/town-square/pages/index")),
   "town-square/threads/[id]": dynamic(() => import("@app-store/apps/town-square/pages/threads/[id]/index")),
   "university": dynamic(() => import("@app-store/apps/university/pages/index")),
-  "university/modules/frontend-master-the-basics": dynamic(() => import("@app-store/apps/university/pages/modules/frontend-master-the-basics")),
+  "university/modules/frontend-master-the-basics": dynamic(() => import("@app-store/apps/university/pages/modules/frontend-master-the-basics/index")),
+  "university/modules/frontend-master-the-basics/lessons/css-foundations": dynamic(() => import("@app-store/apps/university/pages/modules/frontend-master-the-basics/lessons/css-foundations")),
+  "university/modules/frontend-master-the-basics/lessons/final-project": dynamic(() => import("@app-store/apps/university/pages/modules/frontend-master-the-basics/lessons/final-project")),
+  "university/modules/frontend-master-the-basics/lessons/javascript-and-typescript-foundations": dynamic(() => import("@app-store/apps/university/pages/modules/frontend-master-the-basics/lessons/javascript-and-typescript-foundations")),
+  "university/modules/frontend-master-the-basics/lessons/react-foundations": dynamic(() => import("@app-store/apps/university/pages/modules/frontend-master-the-basics/lessons/react-foundations")),
+  "university/modules/frontend-master-the-basics/lessons/react-with-typescript-foundations": dynamic(() => import("@app-store/apps/university/pages/modules/frontend-master-the-basics/lessons/react-with-typescript-foundations")),
+  "university/modules/frontend-master-the-basics/lessons/ui-design-foundations": dynamic(() => import("@app-store/apps/university/pages/modules/frontend-master-the-basics/lessons/ui-design-foundations")),
 };
