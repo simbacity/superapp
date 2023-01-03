@@ -20,7 +20,7 @@ To help you get started, here's have a quick tutorial that will teach you how to
 
 ### The task
 
-Your task is to build a simple and functional component library using React, TypeScript, and CSS. To get started, check out the components on the <a href="https://atlassian.design/components/" target="_blank">Atlassian Design System site</a> and pick your 10 favorites. Use these to build your own project, and remember to focus on creating high-quality code – you never know when a senior developer might review it as part of a job application process.
+Your task is to build a simple and functional component library using React, TypeScript, and CSS. To get started, check out the components on the <a href="https://atlassian.design/components/" target="_blank">Atlassian Design System site</a> and pick your 10 favorites. Use the examples and specifications they provide to build your own components from scratch, and remember to focus on creating high-quality code – you never know when a senior developer might review it as part of a job application process.
 
 For inspiration and guidance, take a look at the structure and code of other successful component libraries. One great resource is the <a href="https://github.com/themesberg/flowbite-react/tree/main/src/lib/components" target="_blank">Flowbite Github repository</a> – spend some time exploring the source code and see how it's been built. It can serve as a valuable reference as you build your own components – you'll likely find a lot of useful insights and patterns.
 
