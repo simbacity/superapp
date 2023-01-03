@@ -1,8 +1,12 @@
+import { useGetAllMessages } from "@app-store/apps/town-square/pages";
 import Shell from "@app-store/shared/components/Shell";
 import Image from "next/image";
 import Link from "next/link";
 
 export default function Home() {
+  // Prefetch & cache messages from Town Square for a faster navigation experience
+  useGetAllMessages();
+
   return (
     <Shell>
       <div className="grid grid-cols-4 gap-4 gap-y-10 max-w-3xl px-2 m-auto pt-10 md:pt-14 md:gap-y-14 text-white text-xs text-center">
