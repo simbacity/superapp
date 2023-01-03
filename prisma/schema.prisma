@@ -54,12 +54,18 @@ model User {
   email            String?              @unique
   emailVerified    DateTime?
   image            String?
+  role             Role                 @default(GUEST)
   accounts         Account[]
   sessions         Session[]
   createdAt        DateTime             @default(now())
   updatedAt        DateTime             @updatedAt
   messages         Message_TownSquare[]
   PushSubscription PushSubscription[]
+}
+
+enum Role {
+  USER
+  GUEST
 }
 
 model VerificationToken {

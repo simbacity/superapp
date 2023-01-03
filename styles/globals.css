@@ -183,7 +183,7 @@ body {
   /* SIZE ATTRIBUTES */
   @apply my-4 mr-4 px-3 py-1 text-sm;
   /* COLOR ATTRIBUTES */
-  @apply border-transparent bg-transparent text-blue-300 hover:bg-gray-900 focus:ring-gray-900 focus:ring-offset-gray-500;
+  @apply border-transparent bg-transparent text-blue-300 hover:bg-gray-800 focus:ring-gray-800 focus:ring-offset-gray-500;
 }
 
 .invisible-button--medium {
@@ -192,7 +192,7 @@ body {
   /* SIZE ATTRIBUTES */
   @apply my-4 mr-4 px-4 py-2 text-base;
   /* COLOR ATTRIBUTES */
-  @apply border-transparent bg-transparent text-blue-300 hover:bg-gray-900 focus:ring-gray-900 focus:ring-offset-gray-500;
+  @apply border-transparent bg-transparent text-blue-300 hover:bg-gray-800 focus:ring-gray-800 focus:ring-offset-gray-500;
 }
 
 .invisible-button--large {
@@ -201,7 +201,7 @@ body {
   /* SIZE ATTRIBUTES */
   @apply my-4 mr-4 px-8 py-4 text-base;
   /* COLOR ATTRIBUTES */
-  @apply border-transparent bg-transparent text-blue-300 hover:bg-gray-900 focus:ring-gray-900 focus:ring-offset-gray-500;
+  @apply border-transparent bg-transparent text-blue-300 hover:bg-gray-800 focus:ring-gray-800 focus:ring-offset-gray-500;
 }
 
 .invisible-button--large--disabled {

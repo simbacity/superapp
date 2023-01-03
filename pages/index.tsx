@@ -39,6 +39,9 @@ export default function Index() {
           <Link href="auth/signup">
             <button className="primary-button--large">Become an E-Resident</button>
           </Link>
+          <Link href="auth/signin">
+            <button className="invisible-button--large">Sign in as Student</button>
+          </Link>
         </div>
       </div>
     </div>
