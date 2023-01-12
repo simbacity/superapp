@@ -1,48 +1,63 @@
+import { useGetAllMessages } from "@app-store/apps/town-square/pages";
 import Shell from "@app-store/shared/components/Shell";
-import { signOut } from "next-auth/react";
+import Image from "next/image";
 import Link from "next/link";
-import router from "next/router";
 
 export default function Home() {
-  const signOutAndRedirectToHome = () => {
-    signOut().then(() => router.push("/"));
-  };
+  // Prefetch & cache messages from Town Square for a faster navigation experience
+  useGetAllMessages();
 
   return (
     <Shell>
-      <div className="layout">
-        <div className="py-8">
-          <h1 className="h1">Apps | Simba City</h1>
-          <section className="pb-6 border-b-4 border-white border-dotted"></section>
-          <section className="py-6 border-b-4 border-white border-dotted">
-            <h2 className="h2">Town Square</h2>
-            <p className="lead-paragraph">The place where we communicate. Similar to Discord, Slack, etc.</p>
-            <Link href="/apps/town-square">
-              <a className="default-button--medium">Open App</a>
-            </Link>
-          </section>
-          <section className="py-6 border-b-4 border-white border-dotted">
-            <h2 className="h2">Mini Blog</h2>
-            <p className="lead-paragraph">
-              A minimalistic blog. You can use it as a boilerplate when building a Simba App.
-            </p>
-            <Link href="/apps/mini-blog">
-              <a className="default-button--medium">Open App</a>
-            </Link>
-          </section>
-          <section className="py-6 border-b-4 border-white border-dotted">
-            <h2 className="h2">Simba Design System</h2>
-            <p className="lead-paragraph">
-              Learn about the design language and components we use for Simba Apps.
-            </p>
-            <Link href="/apps/simba-design-system">
-              <a className="default-button--medium">Open App</a>
-            </Link>
-          </section>
+      <div className="grid grid-cols-4 gap-4 gap-y-10 max-w-3xl px-2 m-auto pt-10 md:pt-14 md:gap-y-14 text-white text-xs text-center">
+        <div>
+          <Link href="/apps/town-square">
+            <Image
+              src="/home-screen/town_square.svg"
+              height={60}
+              width={60}
+              alt="town square"
+              className="m-auto"
+            />
+          </Link>
+          <div className="pt-2">Town Square</div>
         </div>
-        <a onClick={() => signOutAndRedirectToHome()} className="invisible-button--medium">
-          Sign out
-        </a>
+        <div>
+          <Link href="/apps/university">
+            <Image
+              src="/home-screen/university.svg"
+              height={60}
+              width={60}
+              alt="university"
+              className="m-auto"
+            />
+          </Link>
+          <div className="pt-2">University</div>
+        </div>
+        <div>
+          <Link href="/apps/jobs">
+            <Image src="/home-screen/jobs.svg" height={60} width={60} alt="jobs" className="m-auto" />
+          </Link>
+          <div className="pt-2">Jobs</div>
+        </div>
+        <div>
+          <Link href="/apps/wallet">
+            <Image src="/home-screen/wallet.svg" height={60} width={60} alt="wallet" className="m-auto" />
+          </Link>
+          <div className="pt-2">Wallet</div>
+        </div>
+        <div>
+          <Link href="/app-store">
+            <Image
+              src="/home-screen/app_store.svg"
+              height={60}
+              width={60}
+              alt="app store"
+              className="m-auto"
+            />
+          </Link>
+          <div className="pt-2">App Store</div>
+        </div>
       </div>
     </Shell>
   );

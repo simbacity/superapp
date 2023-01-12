@@ -4,6 +4,7 @@ import {
 } from "@app-store/apps/town-square/api-contracts/message.schema";
 import { threadDefaultSchema, ThreadRequest } from "@app-store/apps/town-square/api-contracts/thread.schema";
 import Avatar from "@app-store/apps/town-square/components/Avatar";
+import markdownStyle from "@app-store/apps/town-square/styles/Markdown.module.css";
 import sanitizeContent from "@app-store/apps/town-square/utils/sanitize";
 import { useSocket } from "@app-store/shared/hooks/useSocket";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -71,7 +72,7 @@ export default function MessagePage({
   return (
     <div
       key={message.id}
-      className="flex relative px-2 py-4 gap-2 text-sm text-white break-words group border-b border-slate-700">
+      className="flex relative px-2 py-4 gap-2 text-sm text-white break-words group border-b border-gray-700">
       <div>
         <Avatar src={message.user.image || ""} className="w-9 h-9 mt-1" />
       </div>
@@ -86,7 +87,10 @@ export default function MessagePage({
               <img src={`/images/${message.imageAttachment}`} alt="Image attachment" />
             </div>
           )}
-          <div dangerouslySetInnerHTML={{ __html: sanitizedHtmlContent }} />
+          <div
+            className={markdownStyle["markdown-body"]}
+            dangerouslySetInnerHTML={{ __html: sanitizedHtmlContent }}
+          />
         </div>
         <div className="pt-1 flex justify-between">
           <div>

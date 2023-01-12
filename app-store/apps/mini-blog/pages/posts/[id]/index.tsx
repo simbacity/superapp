@@ -31,14 +31,14 @@ export default function Post({ id }: PostParams) {
     <Shell>
       <div className="layout py-8">
         <nav className="border-b-4 border-white border-dotted pb-4 mb-6">
-          <Link href="/apps/mini-blog">
-            <a className="link">All posts</a>
+          <Link href="/apps/mini-blog" className="link">
+            All posts
           </Link>
         </nav>
         <main>
           <div className="flex space-x-2">
-            <Link href={`/apps/mini-blog/posts/${id}/edit`}>
-              <a className="link">[edit]</a>
+            <Link href={`/apps/mini-blog/posts/${id}/edit`} className="link">
+              [edit]
             </Link>
             <a className="link" onClick={() => onDeleteHandler(id)}>
               [delete]

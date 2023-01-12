@@ -6,15 +6,6 @@ import ThreadEntity from "@app-store/apps/town-square/business-logic/thread.enti
 import HttpError from "@app-store/shared/utils/errors/HttpError";
 import { NextApiRequest, NextApiResponse } from "next";
 import { getSession } from "next-auth/react";
-import type { Readable } from "node:stream";
-
-async function buffer(readable: Readable) {
-  const chunks = [];
-  for await (const chunk of readable) {
-    chunks.push(typeof chunk === "string" ? Buffer.from(chunk) : chunk);
-  }
-  return Buffer.concat(chunks);
-}
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "POST") return;
@@ -25,10 +16,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const entity = new ThreadEntity();
 
   try {
-    const reqBuffer = await buffer(req);
-    const reqBody = reqBuffer.toString();
-    const parsedReqBody = JSON.parse(reqBody);
-    const requestBody = threadRequestSchema.parse(parsedReqBody);
+    const requestBody = threadRequestSchema.parse(req.body);
     const response: ThreadDefaultResponse = await entity.create(requestBody);
     return res.status(200).json(response);
   } catch (error) {

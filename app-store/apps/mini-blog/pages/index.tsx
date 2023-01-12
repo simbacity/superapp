@@ -29,8 +29,8 @@ export default function Index() {
             <div key={post.id} className="py-6 border-b-4 border-white border-dotted">
               <h2 className="h2">{post.title}</h2>
               <p className="paragraph">{buildPostExcerpt(post.content)}</p>
-              <Link href={`/apps/mini-blog/posts/${post.id}`}>
-                <a className="link">Read more</a>
+              <Link href={`/apps/mini-blog/posts/${post.id}`} className="link">
+                Read more
               </Link>
             </div>
           ))}

@@ -49,7 +49,6 @@ export default class MessageEntity {
   }
 
   async create(params: MessageRequest, userId: string) {
-    console.log("PARAMSSSS=======================", params);
     const createMessage = params.threadId ? this.createReply : this.createMessage;
 
     const user = await prisma.user.findUnique({ where: { id: userId } });
@@ -188,7 +187,7 @@ export default class MessageEntity {
     pushNotification.send(userIds, title, body);
   }
 
-  private async saveToObjectStorage(file: File) {
-    // save to object database, return url
-  }
+  // private async saveToObjectStorage(file: File) {
+  //   // save to object database, return url
+  // }
 }

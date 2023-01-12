@@ -117,7 +117,7 @@ export default function MessageForm({ threadId }: { threadId?: string }) {
           </div>
           <textarea
             {...form.register("content")}
-            className="w-full border-2 border-slate-300 px-2 py-2 pr-14"
+            className="w-full border-2 border-gray-300 px-2 py-2 pr-14"
             placeholder="What's on your mind?"
             style={{ height: "0px", minHeight: "45px", resize: "none" }}
             onKeyDown={onTextareaKeydown}
