@@ -94,7 +94,7 @@ export default function MessageForm({ threadId }: { threadId?: string }) {
                 className="w-8 absolute -right-4 -top-4 z-20 cursor-pointer text-red-600"
                 onClick={onClearImageAttachment}
               />
-              <Image src={imagePreviewUrl} layout="fill" objectFit="cover" className="rounded-lg" />
+              <Image alt="" src={imagePreviewUrl} layout="fill" objectFit="cover" className="rounded-lg" />
             </div>
           </div>
         )}
