@@ -2,7 +2,7 @@ import formidable from "formidable";
 import { NextApiRequest } from "next";
 import type { Readable } from "node:stream";
 
-export default class CustomBodyParser {
+export default class BodyParserEntity {
   async parseRequestFormData(
     req: NextApiRequest
   ): Promise<{ fields: formidable.Fields; files: formidable.Files }> {
