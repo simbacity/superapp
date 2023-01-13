@@ -32,7 +32,7 @@ export const messageListSchema = z.array(messageSchema);
 
 export const messageRequestSchema = z.object({
   content: z.string().min(1),
-  imageAttachment: isClientSide ? z.instanceof(File).or(z.any()) : z.any(),
+  imageAttachment: isClientSide ? z.instanceof(File).or(z.instanceof(FileList)) : z.any(),
   threadId: z.string().optional(),
   userId: z.string().optional(),
   isReply: z.boolean().optional(),
