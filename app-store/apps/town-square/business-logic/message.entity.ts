@@ -125,12 +125,9 @@ export default class MessageEntity {
   private async createReply(params: MessageRequest, userId: string) {
     const { content, imageAttachment, isReply = true } = params;
 
-    let imageUrl = "";
     const sanitizedContent = sanitizeContent(content);
-    if (imageAttachment) {
-      // set image url to file name because formidable is currently saving to the public folder
-      imageUrl = imageAttachment.newFilename;
-    }
+    // set image url to file name because formidable is currently saving to the public folder
+    const imageUrl = imageAttachment?.imageFile?.newFilename;
 
     const response = await prisma.message_TownSquare.create({
       data: {
@@ -156,16 +153,13 @@ export default class MessageEntity {
   private async createMessage(params: MessageRequest, userId: string) {
     const { content, imageAttachment, isReply = false } = params;
 
-    let imageUrl = "";
     const sanitizedContent = sanitizeContent(content);
-    if (imageAttachment) {
-      // set image url to file name because formidable is currently saving to the public folder
-      imageUrl = imageAttachment.newFilename;
-    }
+    // set image url to file name because formidable is currently saving to the public folder
+    const imageUrl = imageAttachment?.imageFile?.newFilename;
 
     const response = await prisma.message_TownSquare.create({
       data: {
-        content: sanitizedContent.toString(),
+        content: sanitizedContent,
         imageAttachment: imageUrl,
         isReply,
         user: {
@@ -187,6 +181,7 @@ export default class MessageEntity {
     pushNotification.send(userIds, title, body);
   }
 
+  // @Todo: We'll still need to save this to an object database
   // private async saveToObjectStorage(file: File) {
   //   // save to object database, return url
   // }

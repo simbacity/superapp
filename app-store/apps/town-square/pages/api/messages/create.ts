@@ -4,7 +4,7 @@ import {
 } from "@app-store/apps/town-square/api-contracts/message.schema";
 import MessageEntity from "@app-store/apps/town-square/business-logic/message.entity";
 import HttpError from "@app-store/shared/utils/errors/HttpError";
-import { NextApiRequestWithFile } from "@pages/api/apps/[...args]";
+import { NextApiRequestWithFile } from "@business-logic/body-parser.entity";
 import { NextApiResponse } from "next";
 import { getSession } from "next-auth/react";
 import fs from "node:fs";
@@ -18,7 +18,8 @@ export default async function handler(req: NextApiRequestWithFile, res: NextApiR
   const entity = new MessageEntity();
 
   try {
-    // formidable throws error if uploadDir doesn't exist
+    // formidable throws error if uploadDir doesn't exist (only when using file system as the database)
+    // @TODO: Remove when going to production, to let formidable use the default os.tmpdir() option
     if (!fs.existsSync("public/images")) {
       fs.mkdirSync("public/images");
     }
@@ -26,7 +27,7 @@ export default async function handler(req: NextApiRequestWithFile, res: NextApiR
     const data = {
       content: req.body.content,
       threadId: req.body.threadId,
-      imageAttachment: req.files.imageAttachment,
+      imageAttachment: req.files,
     };
 
     const requestBody = messageRequestSchema.parse(data);

@@ -102,7 +102,7 @@ export default function MessageForm({ threadId }: { threadId?: string }) {
         <div className="flex relative max-w-6xl m-auto px-1 lg:px-8 items-center">
           <div className="mr-1">
             <label htmlFor="file" className="cursor-pointer">
-              <div className="bg-slate-600 flex items-center justify-center h-10 w-10">
+              <div className="bg-gray-600 flex items-center justify-center h-10 w-10">
                 <PlusIcon className="w-5 h-5 text-white" />
               </div>
             </label>
@@ -150,7 +150,7 @@ export function useCreateMessage() {
     }
 
     if (data.imageAttachment) {
-      formData.append("imageAttachment", data.imageAttachment);
+      formData.append("imageFile", data.imageAttachment);
     }
 
     const response = await axios.post("/api/apps/town-square/messages/create", formData, {
