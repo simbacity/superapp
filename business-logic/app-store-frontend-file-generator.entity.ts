@@ -1,20 +1,22 @@
 import fs from "fs";
 import glob from "glob";
-
-import { APPS_PATH, GENERATED_FILES_PATH } from "../constants";
+import path from "path";
 
 export default class AppStoreFrontendFileGenerator {
+  APP_STORE_PATH = path.join(__dirname, "..", "app-store");
+  APPS_PATH = path.join(this.APP_STORE_PATH, "apps");
+  GENERATED_FILES_PATH = path.join(this.APP_STORE_PATH, "config", "generated-files");
   FILE_NAME = "frontend.generated.ts";
 
   generateFile() {
-    glob(APPS_PATH + "/**/pages/**", (error, files) => {
+    glob(this.APPS_PATH + "/**/pages/**", (error, files) => {
       if (error) this.generateFileErrorHandling(error);
 
       const allFilesInCorrectFormat = files
         .filter((file) => this.isFrontendComponent(file))
         .map((file) => this.formatFilePath(file));
 
-      const filePath = `${GENERATED_FILES_PATH}/${this.FILE_NAME}`;
+      const filePath = `${this.GENERATED_FILES_PATH}/${this.FILE_NAME}`;
       const fileContent = this.generateAppImportsFile(allFilesInCorrectFormat);
 
       fs.writeFile(filePath, fileContent, this.generateFileErrorHandling);
@@ -47,7 +49,7 @@ export default class AppStoreFrontendFileGenerator {
   }
 
   private formatFilePath(file: string) {
-    // '/app/app-store/apps/mini-blog/pages/index.tsx'
+    // '/Users/daniel/dev/superapp/app-store/apps/mini-blog/pages/index.tsx'
     // becomes
     // 'mini-blog/pages/index'
     const relativePath = this.getRelativePathFromFile(file);
@@ -62,10 +64,10 @@ export default class AppStoreFrontendFileGenerator {
   }
 
   private getRelativePathFromFile(file: string) {
-    // '/app/app-store/apps/mini-blog/pages/index.tsx'
+    // '/Users/daniel/dev/superapp/app-store/apps/mini-blog/pages/index.tsx'
     // becomes
     // 'mini-blog/pages/index.tsx'
-    return file.split("app-store/apps/")[1];
+    return file.split("superapp/app-store/apps/")[1];
   }
 
   private buildUrlPathFromFilePath(file: string) {

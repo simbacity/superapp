@@ -1,20 +1,22 @@
 import fs from "fs";
 import glob from "glob";
-
-import { APPS_PATH, GENERATED_FILES_PATH } from "../constants";
+import path from "path";
 
 export default class AppStoreApiFileGenerator {
+  APP_STORE_PATH = path.join(__dirname, "..", "app-store");
+  APPS_PATH = path.join(this.APP_STORE_PATH, "apps");
+  GENERATED_FILES_PATH = path.join(this.APP_STORE_PATH, "config", "generated-files");
   FILE_NAME = "api.generated.ts";
 
   generateFile() {
-    glob(APPS_PATH + "/**/pages/api/**", (error, files) => {
+    glob(this.APPS_PATH + "/**/pages/api/**", (error, files) => {
       if (error) this.generateFileErrorHandling(error);
 
       const allFilesInCorrectFormat = files
         .filter((file) => this.isFileWithTsJsEnding(file))
         .map((file) => this.formatFilePath(file));
 
-      const filePath = `${GENERATED_FILES_PATH}/${this.FILE_NAME}`;
+      const filePath = `${this.GENERATED_FILES_PATH}/${this.FILE_NAME}`;
       const fileContent = this.generateAppImportsFile(allFilesInCorrectFormat);
 
       fs.writeFile(filePath, fileContent, this.generateFileErrorHandling);
@@ -39,7 +41,7 @@ export default class AppStoreApiFileGenerator {
   }
 
   private formatFilePath(file: string) {
-    // '/app/app-store/apps/mini-blog/pages/api/create.ts'
+    // '/Users/daniel/dev/superapp/app-store/apps/mini-blog/pages/api/create.ts'
     // becomes
     // 'mini-blog/pages/api/create'
     const relativePath = this.getRelativePathFromFile(file);
@@ -54,10 +56,10 @@ export default class AppStoreApiFileGenerator {
   }
 
   private getRelativePathFromFile(file: string) {
-    // '/app/app-store/apps/mini-blog/pages/api/create.ts'
+    // '/Users/daniel/dev/superapp/app-store/apps/mini-blog/pages/api/create.ts'
     // becomes
     // 'mini-blog/pages/api/create.ts'
-    return file.split("app/app-store/apps/")[1];
+    return file.split("superapp/app-store/apps/")[1];
   }
 
   private buildApiPathFromFilePath(file: string) {

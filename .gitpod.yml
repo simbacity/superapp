@@ -4,4 +4,4 @@ tasks:
 
   - name: Dev
     init: bash setup-dev-environment
-    command: npm install && npx prisma db push
+    command: yarn && npx prisma db push
