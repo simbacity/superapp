@@ -24,7 +24,7 @@ We are going to use firebase to create the credentials for us. We can use Google
 - <img width="612" alt="image" src="https://user-images.githubusercontent.com/98182227/174501714-304e2add-b736-4074-b755-d66b22323e76.png">
 
 **Part 2:**
-1. Stop and start your dev server `npm run dev`
+1. Stop and start your dev server `yarn dev`
 2. Click on "Sign in with Google" in the app
 3. You'll get an error screen. Now copy the link at which is at the bottom of the error and paste the link into a new tab. Scroll down and you will be able to see redirect URI’s.
 - <img width="942" alt="image" src="https://user-images.githubusercontent.com/98182227/174501964-c5e89e2b-dc35-4b50-b43f-4b3dee8ff647.png">
@@ -69,24 +69,24 @@ Add a token to the `InviteCode` table.
 
 After that you can run these commands:
 ```
-npm run dev
-npm run dev:apps
+yarn dev
+yarn dev:apps
 ```
 
 Then visit `http://localhost:3000` and sign up via Google with your invite code token.
 
 ## Run tests
 ```
-npm run test
+yarn test
 ```
 
 Optionally, you can add a name pattern of the file name:
 ```
-npm run test User
+yarn test User
 ```
 
 **Check test coverage:**
-1. `npm run test:coverage`
+1. `yarn test:coverage`
 2. open file `./coverage/lcov-report/index.html`
 
 ## Database

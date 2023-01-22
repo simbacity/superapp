@@ -1,8 +1,8 @@
 "use strict";
 
 // Build and start PWA with service worker (dev mode doesn't work):
-// npm run build
-// npm run start
+// yarn build
+// yarn start
 
 // Basic example for Next-PWA:
 // https://github.com/shadowwalker/next-pwa/tree/master/examples/web-push

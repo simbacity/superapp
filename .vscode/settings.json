@@ -45,6 +45,8 @@
     "setup-dev-environment": true,
     "tailwind.config.js": true,
     "tsconfig.json": true,
+    "yarn-error.log": true,
+    "yarn.lock": true
   },
   "debug.javascript.autoAttachFilter": "onlyWithFlag"
 }
