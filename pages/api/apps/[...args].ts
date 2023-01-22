@@ -16,12 +16,10 @@ export default async function appStoreApiProxyEntity(req: NextApiRequestWithFile
 
   const parsedRequest = await bodyParserEntity.parse(req);
 
-  req = parsedRequest;
-
   try {
-    const { apiHandler, id } = await entity.run(req.query.args);
-    req.query.id = id;
-    return apiHandler(req, res);
+    const { apiHandler, id } = await entity.run(parsedRequest.query.args);
+    parsedRequest.query.id = id;
+    return apiHandler(parsedRequest, res);
   } catch (error) {
     if (error instanceof HttpError) return res.status(error.code).json(error.message);
   }

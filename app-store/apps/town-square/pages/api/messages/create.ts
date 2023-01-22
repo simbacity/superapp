@@ -7,7 +7,6 @@ import HttpError from "@app-store/shared/utils/errors/HttpError";
 import { NextApiRequestWithFile } from "@business-logic/body-parser.entity";
 import { NextApiResponse } from "next";
 import { getSession } from "next-auth/react";
-import fs from "node:fs";
 
 export default async function handler(req: NextApiRequestWithFile, res: NextApiResponse) {
   if (req.method !== "POST") return;
@@ -18,12 +17,6 @@ export default async function handler(req: NextApiRequestWithFile, res: NextApiR
   const entity = new MessageEntity();
 
   try {
-    // formidable throws error if uploadDir doesn't exist (only when using file system as the database)
-    // @TODO: Remove when going to production, to let formidable use the default os.tmpdir() option
-    if (!fs.existsSync("public/images")) {
-      fs.mkdirSync("public/images");
-    }
-
     const data = {
       content: req.body.content,
       threadId: req.body.threadId,

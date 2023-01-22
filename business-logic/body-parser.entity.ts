@@ -26,11 +26,10 @@ export default class BodyParserEntity {
   ): Promise<{ fields: formidable.Fields; files: formidable.Files }> {
     return new Promise((resolve, reject) => {
       const form = formidable({
-        uploadDir: "public/images",
         keepExtensions: true,
         multiples: false,
         allowEmptyFiles: true,
-      }); // save the file locally
+      });
       form.parse(req, (err, fields, files) => {
         if (err) {
           reject(err);

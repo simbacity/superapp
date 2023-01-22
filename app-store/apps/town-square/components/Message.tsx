@@ -84,7 +84,7 @@ export default function MessagePage({
         <div>
           {message.imageAttachment && (
             <div className="w-1/2 min-h-max mt-1">
-              <img src={`/images/${message.imageAttachment}`} alt="Image attachment" />
+              <img src={message.imageAttachment} alt="Image attachment" />
             </div>
           )}
           <div

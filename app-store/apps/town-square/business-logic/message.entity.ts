@@ -1,9 +1,14 @@
-import { MessageRequest, MessageListRequest } from "@app-store/apps/town-square/api-contracts/message.schema";
+import {
+  MessageRequest,
+  MessageListRequest,
+  ServerSideImage,
+} from "@app-store/apps/town-square/api-contracts/message.schema";
 import sanitizeContent from "@app-store/apps/town-square/utils/sanitize";
 import PushNotificationEntity from "@app-store/shared/business-logic/push-notification.entity";
 import ForbiddenError from "@app-store/shared/utils/errors/ForbiddenError";
 import NotFoundError from "@app-store/shared/utils/errors/NotFoundError";
 import prisma from "@app-store/shared/utils/prisma";
+import ImageStorageEntity from "@business-logic/image-storage.entity";
 import { Prisma, User } from "@prisma/client";
 
 type MessageListQuerySchema = {
@@ -122,12 +127,12 @@ export default class MessageEntity {
     return await prisma.message_TownSquare.delete({ where: { id } });
   }
 
-  private async createReply(params: MessageRequest, userId: string) {
-    const { content, imageAttachment, isReply = true } = params;
+  private createReply = async (params: MessageRequest, userId: string) => {
+    const { content, isReply = true } = params;
 
     const sanitizedContent = sanitizeContent(content);
-    // set image url to file name because formidable is currently saving to the public folder
-    const imageUrl = imageAttachment?.imageFile?.newFilename;
+    const imageAttachment = params.imageAttachment as ServerSideImage | undefined;
+    const imageUrl = await this.saveToObjectStorage(imageAttachment);
 
     const response = await prisma.message_TownSquare.create({
       data: {
@@ -148,14 +153,18 @@ export default class MessageEntity {
     });
 
     return response;
-  }
+  };
 
-  private async createMessage(params: MessageRequest, userId: string) {
-    const { content, imageAttachment, isReply = false } = params;
+  /**
+   * This function loses its reference to 'this' from create().
+   * Using arrow function so that reference to 'this' is not lost from line 57
+   */
+  private createMessage = async (params: MessageRequest, userId: string) => {
+    const { content, isReply = false } = params;
 
     const sanitizedContent = sanitizeContent(content);
-    // set image url to file name because formidable is currently saving to the public folder
-    const imageUrl = imageAttachment?.imageFile?.newFilename;
+    const imageAttachment = params.imageAttachment as ServerSideImage | undefined;
+    const imageUrl = await this.saveToObjectStorage(imageAttachment);
 
     const response = await prisma.message_TownSquare.create({
       data: {
@@ -171,7 +180,7 @@ export default class MessageEntity {
     });
 
     return response;
-  }
+  };
 
   private async sendPushNotificationToAllOtherUsers(currentUserId: string, title: string, body: string) {
     const users = await prisma.user.findMany();
@@ -181,8 +190,12 @@ export default class MessageEntity {
     pushNotification.send(userIds, title, body);
   }
 
-  // @Todo: We'll still need to save this to an object database
-  // private async saveToObjectStorage(file: File) {
-  //   // save to object database, return url
-  // }
+  private async saveToObjectStorage(file?: ServerSideImage) {
+    const imageStorageEntity = new ImageStorageEntity();
+
+    if (file && file.imageFile) {
+      const url = await imageStorageEntity.save(file);
+      return url;
+    }
+  }
 }

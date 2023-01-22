@@ -150,7 +150,7 @@ export function useCreateMessage() {
     }
 
     if (data.imageAttachment) {
-      formData.append("imageFile", data.imageAttachment);
+      formData.append("imageFile", data.imageAttachment as File);
     }
 
     const response = await axios.post("/api/apps/town-square/messages/create", formData, {
