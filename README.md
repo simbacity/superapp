@@ -7,7 +7,10 @@
 
 ## Project setup
 
-run `docker-compose up -d`
+```
+npm install
+docker-compose up -d
+```
 
 <details>
 <summary>You haven't installed docker and docker-compose on your system?</summary>
@@ -33,7 +36,6 @@ docker-compose ps
 Initial setup:
 ```
 docker-compose up -d
-npm install
 npx prisma db push
 ```
 
