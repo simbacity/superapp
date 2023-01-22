@@ -9,7 +9,7 @@ export default function SignInWithGoogleButton({ text, onClick }: SignInWithGoog
   return (
     <button
       onClick={onClick}
-      className="hover:opacity-90 flex items-center py-1 pl-1 pr-3 space-x-3 text-gray-600 bg-white rounded shadow-md">
+      className="m-auto hover:opacity-90 flex items-center py-1 pl-1 pr-3 space-x-3 text-gray-600 bg-white rounded shadow-md">
       <div className="py-2 pl-2 pr-1 bg-white rounded">
         <GoogleIconSVG />
       </div>

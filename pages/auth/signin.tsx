@@ -1,24 +1,26 @@
+import { IS_PRODUCTION } from "@app-store/shared/utils/config/constants";
 import { CtxOrReq } from "next-auth/client/_utils";
-import { AppProviders } from "next-auth/providers";
+import { Provider } from "next-auth/providers";
 import { getProviders, signIn, getSession, getCsrfToken } from "next-auth/react";
 
+import SignInAsDummyUser from "@components/shared/SignInAsDummyUser";
 import SignInWithGoogleButton from "@components/shared/SignInWithGoogleButton";
 
 interface SignInProps {
-  providers: AppProviders;
+  providers: Providers;
+}
+
+interface Providers {
+  google: Provider;
+  credentials: Provider;
 }
 
 export default function SignIn({ providers }: SignInProps) {
   return (
     <div className="bg-gray-900 flex items-center justify-center min-h-screen">
       <div className="text-center">
-        {Object.values(providers).map((provider) => {
-          return (
-            <div key={provider.name}>
-              <SignInWithGoogleButton text="Sign in with Google" onClick={() => signIn(provider.id)} />
-            </div>
-          );
-        })}
+        {!IS_PRODUCTION && <SignInAsDummyUser providerId={providers.credentials.id} />}
+        <SignInWithGoogleButton text="Sign in with Google" onClick={() => signIn(providers.google.id)} />
       </div>
     </div>
   );
