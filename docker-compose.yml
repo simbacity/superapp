@@ -33,5 +33,6 @@ services:
     command: >
       sh -c
       "(cd app && sh setup-dev-environment)
+      & (cd app && npm install && npx prisma db push)
       & (cd app/services/socket-io && npm install && npm run start)
       & (cd app/services/cli && npm install && npm run dev)"
