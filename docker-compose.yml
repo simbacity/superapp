@@ -32,5 +32,6 @@ services:
     # command: tail -f /dev/null
     command: >
       sh -c
-      "(cd app/services/socket-io && npm install && npm run start)
+      "(cd app && sh setup-dev-environment)
+      & (cd app/services/socket-io && npm install && npm run start)
       & (cd app/services/cli && npm install && npm run dev)"
