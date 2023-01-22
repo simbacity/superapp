@@ -45,12 +45,15 @@ npm run dev
 Then visit `http://localhost:3000`.
 
 ## Debug mode
+
+Stop your current running dev server.
+
 Add the `debugger;` keyword to your code:
 
 <img width="630" alt="image" src="https://user-images.githubusercontent.com/98182227/213936474-242c5a14-834c-43f1-bcf9-a2df0970bc76.png">
 
 
-Go to debug tab in VSCode and click on the green `Start debugging` button:
+Go to debug tab in VSCode and click on the green `Start debugging` button. This will start a dev server in debug mode and you can visit `localhost:3000`:
 
 <img width="605" alt="image" src="https://user-images.githubusercontent.com/98182227/213936429-98532f93-a142-417e-8188-f7b7c48e10f2.png">
 
