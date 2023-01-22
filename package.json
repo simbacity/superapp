@@ -3,17 +3,19 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "test": "npm run test:db:reset && node --inspect node_modules/.bin/jest --runInBand --testPathPattern",
-    "lint": "eslint . --ext .ts,.js,.tsx,.jsx",
-    "check-types": "tsc --noemit",
+    "dev:apps": "yarn app-store:generate-files --watch",
     "build": "next build",
     "postinstall": "prisma generate",
     "start": "next start",
+    "lint": "eslint . --ext .ts,.js,.tsx,.jsx",
+    "check-types": "tsc --noemit",
     "prettier": "prettier --write .",
     "prepare": "husky install",
     "pre-commit": "lint-staged",
-    "test:coverage": "npm run test:db:reset && node --inspect node_modules/.bin/jest --runInBand --coverage",
-    "test:db:reset": "dotenv -e .env.test -- npx prisma migrate reset --force --skip-seed && dotenv -e .env.test -- npx prisma db push"
+    "test": "yarn test:db:reset && node --inspect node_modules/.bin/jest --runInBand --testPathPattern",
+    "test:coverage": "yarn test:db:reset && node --inspect node_modules/.bin/jest --runInBand --coverage",
+    "test:db:reset": "dotenv -e .env.test -- npx prisma migrate reset --force --skip-seed && dotenv -e .env.test -- npx prisma db push",
+    "app-store:generate-files": "ts-node --transpile-only cli/app-store-generate-files"
   },
   "dependencies": {
     "@google-cloud/storage": "^6.9.0",
