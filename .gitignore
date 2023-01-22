@@ -21,8 +21,6 @@
 
 # debug
 npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
 
 # env files
 .env
@@ -35,7 +33,7 @@ yarn-error.log*
 *.tsbuildinfo
 
 # services
-/services/socket-io/node_modules
+**/node_modules
 
 # Auto Generated PWA files
 **/public/sw.js

@@ -35,6 +35,8 @@ export default function Globe3D() {
 
   function setGlobeControls() {
     setTimeout(() => {
+      if (!globeRef.current) return;
+
       globeRef.current.controls().autoRotate = true;
       globeRef.current.controls().autoRotateSpeed = 1;
       globeRef.current.controls().enableZoom = false;
