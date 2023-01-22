@@ -18,7 +18,7 @@ services:
       - "33062:3306"
 
   node_server:
-    image: node:16-alpine
+    image: node:14-alpine
     environment:
       APP_URL: "http://localhost:3000"
     ports:
