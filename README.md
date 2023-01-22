@@ -44,6 +44,17 @@ npm run dev
 
 Then visit `http://localhost:3000`.
 
+## Debug mode
+Add the `debugger;` keyword to your code:
+
+<img width="630" alt="image" src="https://user-images.githubusercontent.com/98182227/213936474-242c5a14-834c-43f1-bcf9-a2df0970bc76.png">
+
+
+Go to debug tab in VSCode and click on the green `Start debugging` button:
+
+<img width="605" alt="image" src="https://user-images.githubusercontent.com/98182227/213936429-98532f93-a142-417e-8188-f7b7c48e10f2.png">
+
+
 ## Run tests
 ```
 npm run test
