@@ -35,7 +35,7 @@ yarn-error.log*
 *.tsbuildinfo
 
 # services
-/services/socket-io/node_modules
+**/node_modules
 
 # Auto Generated PWA files
 **/public/sw.js
