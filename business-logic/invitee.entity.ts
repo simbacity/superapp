@@ -13,7 +13,7 @@ export default class InviteeEntity {
     const inviteCode = await new InviteCodeEntity().find(token);
     if (!inviteCode?.valid) throw new NotFoundError("Not found");
 
-    const invitee = this.createInvitee(email);
+    const invitee = await this.createInvitee(email);
 
     const response = { ...invitee, token };
     return response;
