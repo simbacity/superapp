@@ -3,19 +3,17 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "dev:apps": "yarn app-store:generate-files --watch",
+    "test": "npm run test:db:reset && node --inspect node_modules/.bin/jest --runInBand --testPathPattern",
+    "lint": "eslint . --ext .ts,.js,.tsx,.jsx",
+    "check-types": "tsc --noemit",
     "build": "next build",
     "postinstall": "prisma generate",
     "start": "next start",
-    "lint": "eslint . --ext .ts,.js,.tsx,.jsx",
-    "check-types": "tsc --noemit",
     "prettier": "prettier --write .",
     "prepare": "husky install",
     "pre-commit": "lint-staged",
-    "test": "yarn test:db:reset && node --inspect node_modules/.bin/jest --runInBand --testPathPattern",
-    "test:coverage": "yarn test:db:reset && node --inspect node_modules/.bin/jest --runInBand --coverage",
-    "test:db:reset": "dotenv -e .env.test -- npx prisma migrate reset --force --skip-seed && dotenv -e .env.test -- npx prisma db push",
-    "app-store:generate-files": "ts-node --transpile-only cli/app-store-generate-files"
+    "test:coverage": "npm run test:db:reset && node --inspect node_modules/.bin/jest --runInBand --coverage",
+    "test:db:reset": "dotenv -e .env.test -- npx prisma migrate reset --force --skip-seed && dotenv -e .env.test -- npx prisma db push"
   },
   "dependencies": {
     "@google-cloud/storage": "^6.9.0",
@@ -31,7 +29,6 @@
     "eslint-config-next": "^13.1.1",
     "flowbite": "^1.5.5",
     "flowbite-react": "^0.3.7",
-    "formidable": "^2.1.1",
     "lodash": "^4.17.21",
     "next": "^13.1.1",
     "next-auth": "^4.0.6",
@@ -57,7 +54,6 @@
   "devDependencies": {
     "@faker-js/faker": "^6.0.0-alpha.7",
     "@trivago/prettier-plugin-sort-imports": "^3.1.1",
-    "@types/formidable": "^2.0.5",
     "@types/glob": "^7.2.0",
     "@types/jest": "^27.4.0",
     "@types/lodash": "^4.14.182",

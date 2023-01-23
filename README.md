@@ -64,18 +64,18 @@ Go to debug tab in VSCode and click on the green `Start debugging` button. This 
 ## Run tests
 
 ```
-yarn test
+npm run test
 ```
 
 Optionally, you can add a name pattern of the file name:
 
 ```
-yarn test User
+npm run test User
 ```
 
 **Check test coverage:**
 
-1. `yarn test:coverage`
+1. `npm run test:coverage`
 2. open file `./coverage/lcov-report/index.html`
 
 ## Database
