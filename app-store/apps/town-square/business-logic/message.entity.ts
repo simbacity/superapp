@@ -155,10 +155,6 @@ export default class MessageEntity {
     return response;
   };
 
-  /**
-   * This function loses its reference to 'this' from create().
-   * Using arrow function so that reference to 'this' is not lost from line 57
-   */
   private createMessage = async (params: MessageRequest, userId: string) => {
     const { content, isReply = false } = params;
 

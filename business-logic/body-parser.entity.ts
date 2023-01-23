@@ -1,4 +1,6 @@
+import { IS_PRODUCTION } from "@app-store/shared/utils/config/constants";
 import formidable from "formidable";
+import fs from "fs";
 import { NextApiRequest } from "next";
 import type { Readable } from "node:stream";
 
@@ -25,11 +27,23 @@ export default class BodyParserEntity {
     req: NextApiRequest
   ): Promise<{ fields: formidable.Fields; files: formidable.Files }> {
     return new Promise((resolve, reject) => {
-      const form = formidable({
+      const options: formidable.Options = {
         keepExtensions: true,
         multiples: false,
         allowEmptyFiles: true,
-      });
+      };
+
+      if (!IS_PRODUCTION) {
+        // save file locally to public/devModeImages folder
+        options.uploadDir = "public/devModeImages";
+
+        // formidable throws error if uploadDir doesn't exist (when saving to local directory)
+        if (!fs.existsSync("public/devModeImages")) {
+          fs.mkdirSync("public/devModeImages");
+        }
+      }
+
+      const form = formidable(options);
       form.parse(req, (err, fields, files) => {
         if (err) {
           reject(err);

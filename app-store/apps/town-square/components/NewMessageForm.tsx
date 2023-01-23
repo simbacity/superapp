@@ -86,7 +86,7 @@ export default function MessageForm({ threadId }: { threadId?: string }) {
 
   return (
     <form onSubmit={form.handleSubmit(onSubmitHandler)}>
-      <div className="fixed bottom-11 left-0 w-full bg-slate-900 py-2">
+      <div className="fixed bottom-11 left-0 w-full bg-gray-900 py-2">
         {imagePreviewUrl && (
           <div className="max-w-6xl h m-auto px-1 lg:px-8">
             <div className="w-16 h-16 my-2 pl-12 relative">
