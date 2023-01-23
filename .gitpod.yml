@@ -1,7 +1,11 @@
 tasks:
+<<<<<<< HEAD
   - name: Docker
     command: docker-compose up -d
 
   - name: Dev
     init: bash setup-dev-environment
     command: yarn && npx prisma db push
+=======
+  - name: Dev console
+>>>>>>> origin/main
