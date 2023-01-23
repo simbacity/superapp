@@ -29,6 +29,7 @@
     "eslint-config-next": "^13.1.1",
     "flowbite": "^1.5.5",
     "flowbite-react": "^0.3.7",
+    "formidable": "^2.1.1",
     "lodash": "^4.17.21",
     "next": "^13.1.1",
     "next-auth": "^4.0.6",
@@ -54,6 +55,7 @@
   "devDependencies": {
     "@faker-js/faker": "^6.0.0-alpha.7",
     "@trivago/prettier-plugin-sort-imports": "^3.1.1",
+    "@types/formidable": "^2.0.5",
     "@types/glob": "^7.2.0",
     "@types/jest": "^27.4.0",
     "@types/lodash": "^4.14.182",
