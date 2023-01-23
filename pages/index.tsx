@@ -1,3 +1,4 @@
+import { IS_PRODUCTION } from "@app-store/shared/utils/config/constants";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 
@@ -35,6 +36,11 @@ export default function Index() {
           </p>
           <h2 className="h2">Ready to build the future?</h2>
         </div>
+        {!IS_PRODUCTION && (
+          <Link href="auth/signin" className="danger-button--large">
+            Development mode sign in
+          </Link>
+        )}
         <div>
           <Link href="auth/signup">
             <button className="primary-button--large">Become an E-Resident</button>

@@ -8,7 +8,7 @@ generator client {
   // We handle foreign keys on the application level via Prisma now
   // This means there's one thing we need to consider now: We now always need
   // to add an @@index([...]) if we add a foreign key (otherwise certain queries would run slower).
-  // more: https://github.com/simbacity/superapp#database-1
+  // more: https://www.prisma.io/docs/guides/database/using-prisma-with-planetscale#how-to-emulate-relations-in-prisma-client
   previewFeatures = ["referentialIntegrity"]
 }
 
@@ -93,6 +93,8 @@ model PushSubscription {
   userId             String
   user               User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt          DateTime @default(now())
+
+  @@index([userId])
 }
 
 model App {
@@ -133,6 +135,9 @@ model Message_TownSquare {
   mainMessage     Thread_TownSquare? @relation("main_message")
   isReply         Boolean
   createdAt       DateTime           @default(now())
+
+  @@index([threadId])
+  @@index([userId])
 }
 
 model Thread_TownSquare {
