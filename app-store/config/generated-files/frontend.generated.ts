@@ -7,6 +7,7 @@ import dynamic from "next/dynamic";
 type Imports = { [key: string]: React.ElementType };
 
 export const AppImports: Imports = {
+  "ai-chat": dynamic(() => import("@app-store/apps/ai-chat/pages/index")),
   "jobs": dynamic(() => import("@app-store/apps/jobs/pages/index")),
   "mini-blog": dynamic(() => import("@app-store/apps/mini-blog/pages/index")),
   "mini-blog/posts/[id]/edit": dynamic(() => import("@app-store/apps/mini-blog/pages/posts/[id]/edit")),
