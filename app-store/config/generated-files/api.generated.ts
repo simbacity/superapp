@@ -6,6 +6,7 @@ type ApiEndpoints = { [key: string]: unknown };
 
 export const apiEndpoints: ApiEndpoints = {
   "ai-chat/chat/create": import("../../apps/ai-chat/pages/api/chat/create"),
+  "ai-chat/models/list": import("../../apps/ai-chat/pages/api/models/list"),
   "mini-blog/posts/[id]/delete": import("../../apps/mini-blog/pages/api/posts/[id]/delete"),
   "mini-blog/posts/[id]/show": import("../../apps/mini-blog/pages/api/posts/[id]/show"),
   "mini-blog/posts/[id]/update": import("../../apps/mini-blog/pages/api/posts/[id]/update"),

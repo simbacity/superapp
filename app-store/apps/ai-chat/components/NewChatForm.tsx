@@ -1,35 +1,20 @@
-import {
-  AIChatRequest,
-  aiChatRequestSchema,
-  aiChatSchema,
-} from "@app-store/apps/ai-chat/api-contracts/ai-chat.schema";
-import { Chat } from "@app-store/apps/ai-chat/pages";
+import { AIChatRequest, aiChatRequestSchema } from "@app-store/apps/ai-chat/api-contracts/ai-chat.schema";
 import { PaperAirplaneIcon } from "@heroicons/react/solid";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
 import { useSession } from "next-auth/react";
 import React from "react";
 import { useForm } from "react-hook-form";
 
-export default function NewChatForm({ updateChat }: { updateChat: (chat: Chat) => void }) {
+export default function NewChatForm({ submitHandler }: { submitHandler: (chat: AIChatRequest) => void }) {
   const form = useForm<AIChatRequest>({
     resolver: zodResolver(aiChatRequestSchema),
     defaultValues: { message: "" },
   });
   const { data: currentSession } = useSession();
-  const createChat = useCreateChat();
 
   function onSubmitHandler(data: AIChatRequest) {
-    updateChat({ id: data.message, user: "me", message: data.message });
-    createChat.mutate(data, {
-      onSuccess: (response) => {
-        form.reset();
-        if (response) {
-          updateChat({ id: response.id, user: "ai", message: response.message || "" });
-        }
-      },
-    });
+    submitHandler(data);
+    form.reset();
   }
 
   if (!currentSession) return <div className="h1">Loading...</div>;
@@ -84,13 +69,4 @@ export default function NewChatForm({ updateChat }: { updateChat: (chat: Chat) =
       </div>
     </form>
   );
-}
-
-export function useCreateChat() {
-  const createChat = async (data: AIChatRequest) => {
-    const response = await axios.post("/api/apps/ai-chat/chat/create", data);
-    return aiChatSchema.parse(response.data);
-  };
-
-  return useMutation(createChat);
 }

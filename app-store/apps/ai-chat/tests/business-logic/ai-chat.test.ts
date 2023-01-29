@@ -11,12 +11,23 @@ describe("Post", () => {
     it("creates post", async () => {
       const requestParams: AIChatRequest = {
         message: "Hello AI",
+        model: "text-davinci-003",
       };
 
       const entity = new AIChatEntity();
       const result = await entity.create(requestParams);
 
       expect(result.message?.length).toBeGreaterThan(1);
+    });
+  });
+
+  describe("#lists", () => {
+    it("lists models", async () => {
+      const entity = new AIChatEntity();
+
+      const result = await entity.listModels();
+
+      expect(result.length).toBeGreaterThan(1);
     });
   });
 });
