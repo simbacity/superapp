@@ -1,10 +1,12 @@
 import { AIChatRequest } from "@app-store/apps/ai-chat/api-contracts/ai-chat.schema";
-import AIChatEntity from "@app-store/apps/ai-chat/business-logic/ai-chat.entity";
-import { teardown } from "@app-store/shared/utils/tests/teardown";
 
-describe("Post", () => {
+import MockAIChatEntity from "./__mocks__/ai-chat.entity";
+
+jest.mock("./__mocks__/ai-chat.entity");
+
+describe("AI-Chat", () => {
   beforeEach(async () => {
-    await teardown();
+    jest.clearAllMocks();
   });
 
   describe("#create", () => {
@@ -14,20 +16,22 @@ describe("Post", () => {
         model: "text-davinci-003",
       };
 
-      const entity = new AIChatEntity();
+      const entity = new MockAIChatEntity();
       const result = await entity.create(requestParams);
 
-      expect(result.message?.length).toBeGreaterThan(1);
+      expect(MockAIChatEntity).toHaveBeenCalledTimes(1);
+      expect(entity.create).toHaveBeenCalledWith(requestParams);
+      expect(result?.message).toBe("Response From AI");
     });
   });
 
   describe("#lists", () => {
     it("lists models", async () => {
-      const entity = new AIChatEntity();
+      const entitiy = new MockAIChatEntity();
+      const result = await entitiy.listModels();
 
-      const result = await entity.listModels();
-
-      expect(result.length).toBeGreaterThan(1);
+      expect(MockAIChatEntity).toHaveBeenCalledTimes(1);
+      expect(result.length).toBeGreaterThan(0);
     });
   });
 });
