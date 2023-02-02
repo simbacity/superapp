@@ -13,21 +13,24 @@ export default class AIChatEntity {
 
     const response = await openai.createCompletion({
       model: model || "",
-      prompt: message,
-      max_tokens: 100,
+      prompt: `
+      I want you to reply to all my questions in markdown format, wrap code examples in <code></code>, start each new code line on a new line. 
+      Q: ${message}.
+      `,
+      max_tokens: 500,
       temperature: 0.5,
+      top_p: 1,
     });
 
     return { id: response.data.id, message: response.data.choices[0].text };
   }
 
   async listModels() {
-    const response = await openai.listEngines();
+    const response = await openai.listModels();
 
     const models = response.data.data.map((model) => ({
       id: model.id,
       object: model.object,
-      ready: model.ready,
     }));
 
     return models;

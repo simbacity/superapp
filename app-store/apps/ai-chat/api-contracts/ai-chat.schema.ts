@@ -15,7 +15,6 @@ export const aiChatRequestSchema = z.object({
 export const aiModelSchema = z.object({
   id: z.string(),
   object: z.string(),
-  ready: z.boolean(),
 });
 
 export const aiModelsListSchema = z.array(aiModelSchema);

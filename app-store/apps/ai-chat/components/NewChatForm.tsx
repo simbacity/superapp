@@ -47,7 +47,7 @@ export default function NewChatForm({ submitHandler }: { submitHandler: (chat: A
 
   return (
     <form onSubmit={form.handleSubmit(onSubmitHandler)}>
-      <div className="absolute bottom-11 left-0 w-full bg-gray-900 py-2">
+      <div className="fixed bottom-11 right-0 w-4/5 py-2">
         <div className="flex relative max-w-6xl m-auto px-1 lg:px-8 items-center">
           <textarea
             {...form.register("message")}

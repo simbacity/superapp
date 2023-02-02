@@ -5,9 +5,7 @@ export const mockCreate = jest.fn((params: AIChatRequest) => {
     return Promise.resolve({ message: "Response From AI" });
   }
 });
-export const mockListModels = jest.fn(() =>
-  Promise.resolve([{ id: "davinci", object: "engine", ready: true }])
-);
+export const mockListModels = jest.fn(() => Promise.resolve([{ id: "davinci", object: "engine" }]));
 
 const mockAIChatEntity = jest.fn().mockImplementation(function () {
   return {

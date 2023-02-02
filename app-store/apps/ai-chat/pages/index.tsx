@@ -5,7 +5,6 @@ import {
 } from "@app-store/apps/ai-chat/api-contracts/ai-chat.schema";
 import NewChatForm from "@app-store/apps/ai-chat/components/NewChatForm";
 import Shell from "@app-store/shared/components/Shell";
-import { PlusIcon } from "@heroicons/react/solid";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import ChatMessage from "app-store/apps/ai-chat/components/ChatMessage";
 import axios from "axios";
@@ -56,7 +55,6 @@ export default function Index() {
           <div
             className="flex items-center p-3 rounded-md border border-white text-left hover:bg-gray-700 transition-all"
             onClick={clearChatLogs}>
-            <PlusIcon color="#ffffff" className="w-5 mr-2" />
             <p className="text-white">New Chat</p>
           </div>
           <div className="mt-5">
@@ -68,7 +66,7 @@ export default function Index() {
             </Select>
           </div>
         </aside>
-        <section className="flex-1 relative">
+        <section className="flex-1 relative overflow-y-auto pb-28">
           {chatLogs.map((chat) => (
             <ChatMessage key={chat.id} isFromAIChat={chat.user === "ai"} message={chat} />
           ))}
