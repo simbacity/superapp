@@ -82,6 +82,11 @@ export default function MessagePage({
           <p className="text-xs text-gray-400 ml-2">{formatDate(message.createdAt || "")}</p>
         </div>
         <div>
+          {message.imageAttachment && (
+            <div className="w-1/2 min-h-max mt-1">
+              <img src={message.imageAttachment} alt="Image attachment" />
+            </div>
+          )}
           <div
             className={markdownStyle["markdown-body"]}
             dangerouslySetInnerHTML={{ __html: sanitizedHtmlContent }}

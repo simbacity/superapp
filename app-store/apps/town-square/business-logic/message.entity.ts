@@ -1,9 +1,14 @@
-import { MessageRequest, MessageListRequest } from "@app-store/apps/town-square/api-contracts/message.schema";
+import {
+  MessageRequest,
+  MessageListRequest,
+  ServerSideImage,
+} from "@app-store/apps/town-square/api-contracts/message.schema";
 import sanitizeContent from "@app-store/apps/town-square/utils/sanitize";
 import PushNotificationEntity from "@app-store/shared/business-logic/push-notification.entity";
 import ForbiddenError from "@app-store/shared/utils/errors/ForbiddenError";
 import NotFoundError from "@app-store/shared/utils/errors/NotFoundError";
 import prisma from "@app-store/shared/utils/prisma";
+import ImageStorageEntity from "@business-logic/image-storage.entity";
 import { Prisma, User } from "@prisma/client";
 
 type MessageListQuerySchema = {
@@ -102,6 +107,7 @@ export default class MessageEntity {
     return response.map((message) => ({
       id: message.id,
       content: message.content,
+      imageAttachment: message.imageAttachment,
       isReply: message.isReply,
       threadId: message.threadId,
       userId: message.userId,
@@ -121,14 +127,17 @@ export default class MessageEntity {
     return await prisma.message_TownSquare.delete({ where: { id } });
   }
 
-  private async createReply(params: MessageRequest, userId: string) {
+  private createReply = async (params: MessageRequest, userId: string) => {
     const { content, isReply = true } = params;
 
     const sanitizedContent = sanitizeContent(content);
+    const imageAttachment = params.imageAttachment as ServerSideImage | undefined;
+    const imageUrl = imageAttachment?.imageFile ? await this.saveToObjectStorage(imageAttachment) : undefined;
 
     const response = await prisma.message_TownSquare.create({
       data: {
         content: sanitizedContent,
+        imageAttachment: imageUrl,
         isReply,
         user: {
           connect: {
@@ -144,16 +153,19 @@ export default class MessageEntity {
     });
 
     return response;
-  }
+  };
 
-  private async createMessage(params: MessageRequest, userId: string) {
+  private createMessage = async (params: MessageRequest, userId: string) => {
     const { content, isReply = false } = params;
 
     const sanitizedContent = sanitizeContent(content);
+    const imageAttachment = params.imageAttachment as ServerSideImage | undefined;
+    const imageUrl = imageAttachment?.imageFile ? await this.saveToObjectStorage(imageAttachment) : undefined;
 
     const response = await prisma.message_TownSquare.create({
       data: {
-        content: sanitizedContent.toString(),
+        content: sanitizedContent,
+        imageAttachment: imageUrl,
         isReply,
         user: {
           connect: {
@@ -164,7 +176,7 @@ export default class MessageEntity {
     });
 
     return response;
-  }
+  };
 
   private async sendPushNotificationToAllOtherUsers(currentUserId: string, title: string, body: string) {
     const users = await prisma.user.findMany();
@@ -172,5 +184,12 @@ export default class MessageEntity {
 
     const pushNotification = new PushNotificationEntity();
     pushNotification.send(userIds, title, body);
+  }
+
+  private async saveToObjectStorage(file: ServerSideImage) {
+    const imageStorageEntity = new ImageStorageEntity();
+
+    const url = await imageStorageEntity.save(file);
+    return url;
   }
 }
