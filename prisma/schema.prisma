@@ -49,18 +49,20 @@ model Session {
 }
 
 model User {
-  id               String               @id @default(cuid())
-  name             String?
-  email            String?              @unique
-  emailVerified    DateTime?
-  image            String?
-  role             Role                 @default(GUEST)
-  accounts         Account[]
-  sessions         Session[]
-  createdAt        DateTime             @default(now())
-  updatedAt        DateTime             @updatedAt
-  messages         Message_TownSquare[]
-  PushSubscription PushSubscription[]
+  id                  String                @id @default(cuid())
+  name                String?
+  email               String?               @unique
+  emailVerified       DateTime?
+  image               String?
+  role                Role                  @default(GUEST)
+  accounts            Account[]
+  sessions            Session[]
+  createdAt           DateTime              @default(now())
+  updatedAt           DateTime              @updatedAt
+  messages            Message_TownSquare[]
+  PushSubscription    PushSubscription[]
+  Post_TownSquare     Post_TownSquare[]
+  Reaction_TownSquare Reaction_TownSquare[]
 }
 
 enum Role {
@@ -145,4 +147,41 @@ model Thread_TownSquare {
   mainMessage Message_TownSquare   @relation("main_message", fields: [messageId], references: [id], onUpdate: NoAction, onDelete: NoAction)
   messageId   String               @unique
   createdAt   DateTime             @default(now())
+}
+
+model Post_TownSquare {
+  id          String                  @id @default(cuid())
+  content     String
+  user        User                    @relation(fields: [userId], references: [id])
+  userId      String
+  reactions   Reaction_TownSquare[]
+  parentId    String?
+  parent      Post_TownSquare?        @relation(name: "ParentReplies", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  replies     Post_TownSquare[]       @relation(name: "ParentReplies")
+  createdAt   DateTime                @default(now())
+  attachments Attachment_TownSquare[]
+
+  @@index([userId])
+  @@index([parentId])
+}
+
+model Attachment_TownSquare {
+  id     String          @id @default(uuid())
+  url    String
+  post   Post_TownSquare @relation(fields: [postId], references: [id])
+  postId String
+
+  @@index([postId])
+}
+
+model Reaction_TownSquare {
+  id     String          @id @default(uuid())
+  icon   String
+  user   User            @relation(fields: [userId], references: [id])
+  userId String
+  post   Post_TownSquare @relation(fields: [postId], references: [id])
+  postId String
+
+  @@index([userId])
+  @@index([postId])
 }

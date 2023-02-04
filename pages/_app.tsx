@@ -1,8 +1,9 @@
 import { IS_PRODUCTION } from "@app-store/shared/utils/config/constants";
+import { trpc } from "@app-store/shared/utils/trpc";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { SessionProvider } from "next-auth/react";
-import type { AppProps } from "next/app";
+import type { AppProps, AppType } from "next/app";
 import Head from "next/head";
 import { useEffect, useState } from "react";
 
@@ -16,7 +17,7 @@ interface InstallAppPromptEvent extends Event {
 
 const queryClient = new QueryClient();
 
-function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
+const MyApp: AppType = ({ Component, pageProps: { session, ...pageProps } }: AppProps) => {
   const [installAppPromptEvent, setInstallAppPromptEvent] = useState<InstallAppPromptEvent | null>(null);
 
   useEffect(() => {
@@ -73,6 +74,6 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
       </QueryClientProvider>
     </>
   );
-}
+};
 
-export default MyApp;
+export default trpc.withTRPC(MyApp);

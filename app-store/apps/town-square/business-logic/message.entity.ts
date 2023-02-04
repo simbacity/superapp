@@ -52,6 +52,7 @@ export default class MessageEntity {
     const createMessage = params.threadId ? this.createReply : this.createMessage;
 
     const user = await prisma.user.findUnique({ where: { id: userId } });
+
     const messageTitle = user?.name || "New message";
 
     const response = await createMessage(params, userId);
