@@ -17,6 +17,11 @@ export interface ServerSideImage {
 
 export default class ImageStorageEntity {
   async save(file: ServerSideImage) {
+    const fileToUpload = file.imageFile;
+
+    if (!fileToUpload) throw new Error("No Image file to upload");
+    if (!IS_PRODUCTION) return `/devModeImages/${fileToUpload.newFilename}`;
+
     const storage = new Storage({
       projectId: process.env.GOOGLE_PROJECT_ID,
       credentials: {
@@ -26,20 +31,13 @@ export default class ImageStorageEntity {
     });
 
     const bucket = storage.bucket(BUCKET_NAME);
-    const fileToUpload = file.imageFile;
 
-    if (!IS_PRODUCTION) return `/devModeImages/${fileToUpload?.newFilename}`;
+    const options = {
+      destination: `messages/${fileToUpload.newFilename}`,
+    };
 
-    if (fileToUpload) {
-      const options = {
-        destination: `messages/${fileToUpload.newFilename}`,
-      };
-
-      await bucket.upload(fileToUpload.filepath, options);
-      const imageUrl = `https://storage.googleapis.com/${BUCKET_NAME}/messages/${fileToUpload.newFilename}`;
-      return imageUrl;
-    } else {
-      throw new Error("No Image file to upload");
-    }
+    await bucket.upload(fileToUpload.filepath, options);
+    const imageUrl = `https://storage.googleapis.com/${BUCKET_NAME}/messages/${fileToUpload.newFilename}`;
+    return imageUrl;
   }
 }
