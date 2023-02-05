@@ -125,15 +125,16 @@ model Post_MiniBlog {
 // /apps/town-square
 // *******************
 model Message_TownSquare {
-  id          String             @id @default(cuid())
-  content     String             @db.Text
-  thread      Thread_TownSquare? @relation(fields: [threadId], references: [id], onDelete: Cascade)
-  threadId    String?
-  user        User               @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId      String
-  mainMessage Thread_TownSquare? @relation("main_message")
-  isReply     Boolean
-  createdAt   DateTime           @default(now())
+  id              String             @id @default(cuid())
+  content         String             @db.Text
+  imageAttachment String?
+  thread          Thread_TownSquare? @relation(fields: [threadId], references: [id], onDelete: Cascade)
+  threadId        String?
+  user            User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId          String
+  mainMessage     Thread_TownSquare? @relation("main_message")
+  isReply         Boolean
+  createdAt       DateTime           @default(now())
 
   @@index([threadId])
   @@index([userId])
