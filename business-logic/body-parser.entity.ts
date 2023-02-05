@@ -1,5 +1,5 @@
 import { IS_PRODUCTION } from "@app-store/shared/utils/config/constants";
-import { IMAGE_FOLDER_PATH_FOR_DEV_MODE } from "@app-store/shared/utils/config/constants";
+import { IMAGE_FOLDER_PATH_FOR_DEV_MODE } from "@business-logic/image-storage.entity";
 import formidable from "formidable";
 import fs from "fs";
 import { NextApiRequest } from "next";

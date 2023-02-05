@@ -11,13 +11,13 @@ export const config = {
 };
 
 export default async function handler(req: NextApiRequestWithFile, res: NextApiResponse) {
-  const entity = new AppStoreApiProxyEntity();
+  const appStoreApiProxyEntity = new AppStoreApiProxyEntity();
   const bodyParserEntity = new BodyParserEntity();
 
   const parsedRequest = await bodyParserEntity.parse(req);
 
   try {
-    const { apiHandler, id } = await entity.run(parsedRequest.query.args);
+    const { apiHandler, id } = await appStoreApiProxyEntity.run(parsedRequest.query.args);
     parsedRequest.query.id = id;
     return apiHandler(parsedRequest, res);
   } catch (error) {

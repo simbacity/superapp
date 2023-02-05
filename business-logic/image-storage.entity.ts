@@ -1,8 +1,19 @@
-import { ServerSideImage } from "@app-store/apps/town-square/api-contracts/message.schema";
 import { IS_PRODUCTION } from "@app-store/shared/utils/config/constants";
 import { Storage } from "@google-cloud/storage";
 
 const BUCKET_NAME = process.env.GOOGLE_STORAGE_BUCKET_NAME || "";
+export const IMAGE_FOLDER_PATH_FOR_DEV_MODE = "devModeImages/";
+
+export interface ServerSideImage {
+  imageFile?: {
+    filepath: string;
+    mimetype: string;
+    newFilename: string;
+    originalFilename: string;
+    size: number;
+    lastModifiedDate: Date;
+  };
+}
 
 export default class ImageStorageEntity {
   async save(file: ServerSideImage) {
@@ -17,23 +28,18 @@ export default class ImageStorageEntity {
     const bucket = storage.bucket(BUCKET_NAME);
     const fileToUpload = file.imageFile;
 
-    if (fileToUpload) {
-      if (IS_PRODUCTION) {
-        const options = {
-          destination: `messages/${fileToUpload.newFilename}`,
-        };
+    if (!IS_PRODUCTION) return `/devModeImages/${fileToUpload?.newFilename}`;
 
-        try {
-          await bucket.upload(fileToUpload.filepath, options);
-          const imageUrl = `https://storage.googleapis.com/${BUCKET_NAME}/messages/${fileToUpload.newFilename}`;
-          return imageUrl;
-        } catch (err) {
-          console.log(err);
-        }
-      } else {
-        // image already saved locally to formidable's uploadDir (public/devModeImages)
-        return `/devModeImages/${fileToUpload?.newFilename}`;
-      }
+    if (fileToUpload) {
+      const options = {
+        destination: `messages/${fileToUpload.newFilename}`,
+      };
+
+      await bucket.upload(fileToUpload.filepath, options);
+      const imageUrl = `https://storage.googleapis.com/${BUCKET_NAME}/messages/${fileToUpload.newFilename}`;
+      return imageUrl;
+    } else {
+      throw new Error("No Image file to upload");
     }
   }
 }
