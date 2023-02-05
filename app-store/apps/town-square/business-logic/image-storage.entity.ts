@@ -1,19 +1,8 @@
+import { ServerSideImage } from "@app-store/apps/town-square/api-contracts/message.schema";
 import { IS_PRODUCTION } from "@app-store/shared/utils/config/constants";
 import { Storage } from "@google-cloud/storage";
 
 const BUCKET_NAME = process.env.GOOGLE_STORAGE_BUCKET_NAME || "";
-export const IMAGE_FOLDER_PATH_FOR_DEV_MODE = "devModeImages/";
-
-export interface ServerSideImage {
-  imageFile?: {
-    filepath: string;
-    mimetype: string;
-    newFilename: string;
-    originalFilename: string;
-    size: number;
-    lastModifiedDate: Date;
-  };
-}
 
 export default class ImageStorageEntity {
   async save(file: ServerSideImage) {

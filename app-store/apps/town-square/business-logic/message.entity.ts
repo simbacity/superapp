@@ -3,12 +3,12 @@ import {
   MessageListRequest,
   ServerSideImage,
 } from "@app-store/apps/town-square/api-contracts/message.schema";
+import ImageStorageEntity from "@app-store/apps/town-square/business-logic/image-storage.entity";
 import sanitizeContent from "@app-store/apps/town-square/utils/sanitize";
 import PushNotificationEntity from "@app-store/shared/business-logic/push-notification.entity";
 import ForbiddenError from "@app-store/shared/utils/errors/ForbiddenError";
 import NotFoundError from "@app-store/shared/utils/errors/NotFoundError";
 import prisma from "@app-store/shared/utils/prisma";
-import ImageStorageEntity from "@business-logic/image-storage.entity";
 import { Prisma, User } from "@prisma/client";
 
 type MessageListQuerySchema = {
