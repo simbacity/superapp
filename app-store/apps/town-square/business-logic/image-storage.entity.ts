@@ -11,13 +11,13 @@ export default class ImageStorageEntity {
     if (!fileToUpload) throw new Error("No Image file to upload");
     if (!IS_PRODUCTION) return `/devModeImages/${fileToUpload.newFilename}`;
 
-    console.info("**Uploading image to Google Cloud Storage**");
-    console.info(process.env.GOOGLE_PRIVATE_KEY);
-    console.info("**END/Uploading image to Google Cloud Storage**");
     const storage = new Storage({
       projectId: process.env.GOOGLE_PROJECT_ID,
       credentials: {
         client_email: process.env.GOOGLE_CLIENT_EMAIL,
+        // adding the private key via the vercel dashbaord didn't work because it formats the key incorrectly
+        // related comment on github:
+        // https://github.com/auth0/node-jsonwebtoken/issues/642#issuecomment-585173594
         private_key: (process.env.GOOGLE_PRIVATE_KEY || "").replace(/\\n/gm, "\n"),
       },
     });
