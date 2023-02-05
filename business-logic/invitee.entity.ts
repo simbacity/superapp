@@ -13,11 +13,7 @@ export default class InviteeEntity {
     const inviteCode = await new InviteCodeEntity().find(token);
     if (!inviteCode?.valid) throw new NotFoundError("Not found");
 
-    const invitee = await prisma.invitee.create({
-      data: {
-        email,
-      },
-    });
+    const invitee = await this.createInvitee(email);
 
     const response = { ...invitee, token };
     return response;
@@ -34,5 +30,13 @@ export default class InviteeEntity {
   async isInvited(email: string) {
     const invitee = await this.find(email);
     return Boolean(invitee);
+  }
+
+  async createInvitee(email: string) {
+    return prisma.invitee.create({
+      data: {
+        email,
+      },
+    });
   }
 }

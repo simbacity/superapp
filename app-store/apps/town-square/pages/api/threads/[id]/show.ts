@@ -9,6 +9,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   const session = await getSession({ req });
   if (!session?.user?.id) return res.status(401).json("Not authenticated");
+  if (!req.query.id) return res.status(400).json("Missing id parameter");
 
   const entity = new ThreadEntity();
 

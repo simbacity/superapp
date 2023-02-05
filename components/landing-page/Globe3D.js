@@ -10,6 +10,20 @@ if (typeof window !== "undefined") Globe = require("react-globe.gl").default;
 export default function Globe3D() {
   const globeRef = useRef(null);
   const [tabFocussed, setTabFocussed] = useState(true);
+  const [showGlobe, setShowGlobe] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowGlobe(true);
+      setGlobeControls();
+      document.addEventListener("visibilitychange", onTabFocusChange);
+
+      return function cleanup() {
+        document.removeEventListener("visibilitychange", onTabFocusChange);
+      };
+    }, 10);
+    return () => clearTimeout(timer);
+  });
 
   const arcsData = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15].map(() => ({
     startLat: (Math.random() - 0.5) * 180,
@@ -20,9 +34,13 @@ export default function Globe3D() {
   }));
 
   function setGlobeControls() {
-    globeRef.current.controls().autoRotate = true;
-    globeRef.current.controls().autoRotateSpeed = 1;
-    globeRef.current.controls().enableZoom = false;
+    setTimeout(() => {
+      if (!globeRef.current) return;
+
+      globeRef.current.controls().autoRotate = true;
+      globeRef.current.controls().autoRotateSpeed = 1;
+      globeRef.current.controls().enableZoom = false;
+    }, 10);
   }
 
   function onTabFocusChange() {
@@ -34,20 +52,9 @@ export default function Globe3D() {
     }
   }
 
-  useEffect(() => {
-    onTabFocusChange();
-
-    document.addEventListener("visibilitychange", onTabFocusChange);
-
-    return function cleanup() {
-      document.removeEventListener("visibilitychange", onTabFocusChange);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   return (
     <div style={{ marginLeft: "-35px" }} suppressHydrationWarning={true}>
-      {tabFocussed && (
+      {showGlobe && tabFocussed && (
         <Globe
           ref={globeRef}
           width={200}

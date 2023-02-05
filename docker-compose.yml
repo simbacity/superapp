@@ -17,12 +17,21 @@ services:
     ports:
       - "33062:3306"
 
-  socket_io:
-    image: node:16-alpine
+  node_server:
+    image: node:14-alpine
     environment:
       APP_URL: "http://localhost:3000"
     ports:
       - "8080:8080"
     volumes:
-      - ./services/socket-io:/app/server
-    command: sh -c "cd /app/server && yarn && yarn start"
+      - .:/app
+    # for debugging and manually running commands inside of the node_server
+    # replace the command to: tail -f /dev/null
+    # and then run: docker-compose exec node_server sh
+    #
+    # command: tail -f /dev/null
+    command: >
+      sh -c
+      "(cd app && sh setup-dev-environment)
+      & (cd app/services/socket-io && npm install && npm run start)
+      & (cd app/services/cli && npm install && npm run dev)"

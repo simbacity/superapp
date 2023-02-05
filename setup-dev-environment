@@ -1,2 +1,10 @@
-cp .env.example .env
-cp .env.test.example .env.test
+ENV_FILE=.env
+TEST_ENV_FILE=.env.test
+
+if [ ! -f "$ENV_FILE" ]; then
+  cp .env.example "$ENV_FILE"
+fi
+
+if [ ! -f "$TEST_ENV_FILE" ]; then
+  cp .env.example "$TEST_ENV_FILE"
+fi

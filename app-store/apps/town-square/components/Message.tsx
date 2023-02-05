@@ -4,6 +4,7 @@ import {
 } from "@app-store/apps/town-square/api-contracts/message.schema";
 import { threadDefaultSchema, ThreadRequest } from "@app-store/apps/town-square/api-contracts/thread.schema";
 import Avatar from "@app-store/apps/town-square/components/Avatar";
+import markdownStyle from "@app-store/apps/town-square/styles/Markdown.module.css";
 import sanitizeContent from "@app-store/apps/town-square/utils/sanitize";
 import { useSocket } from "@app-store/shared/hooks/useSocket";
 import { EmojiHappyIcon } from "@heroicons/react/outline";
@@ -72,7 +73,7 @@ export default function MessagePage({
   return (
     <div
       key={message.id}
-      className="relative flex gap-2 px-2 py-4 text-sm text-white break-words border-b group border-slate-700">
+      className="flex relative px-2 py-4 gap-2 text-sm text-white break-words group border-b border-gray-700">
       <div>
         <Avatar src={message.user.image || ""} className="mt-1 w-9 h-9" />
       </div>
@@ -82,7 +83,15 @@ export default function MessagePage({
           <p className="ml-2 text-xs text-gray-400">{formatDate(message.createdAt || "")}</p>
         </div>
         <div>
-          <div dangerouslySetInnerHTML={{ __html: sanitizedHtmlContent }} />
+          {message.imageAttachment && (
+            <div className="w-1/2 min-h-max mt-1">
+              <img src={message.imageAttachment} alt="Image attachment" />
+            </div>
+          )}
+          <div
+            className={markdownStyle["markdown-body"]}
+            dangerouslySetInnerHTML={{ __html: sanitizedHtmlContent }}
+          />
         </div>
         <div className="mt-2 ml-0.5">
           <button className="px-1.5 py-1 rounded-xl bg-slate-600 hover:brightness-125 focus:ring focus:ring-white">

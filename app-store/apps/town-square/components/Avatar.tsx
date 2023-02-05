@@ -5,7 +5,7 @@ export default function Avatar({ src, className }: { src: string; className: str
   const [error, setError] = useState(false);
 
   return (
-    <div className={`relative border border-slate-500 border-solid rounded-full ${className}`}>
+    <div className={`relative border border-gray-500 border-solid rounded-full ${className}`}>
       <Image
         src={error ? "/default-avatar.svg" : src}
         onError={() => setError(true)}
