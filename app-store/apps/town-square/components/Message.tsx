@@ -90,12 +90,12 @@ export default function MessagePage({
         </div>
         <div>
           {message.imageAttachment && (
-            <div className="w-1/2 min-h-max mt-1 cursor-pointer" onClick={toggleImagePreview}>
+            <div className="max-w-xs mt-1 cursor-pointer" onClick={toggleImagePreview}>
               <img src={message.imageAttachment} alt="Image attachment" />
             </div>
           )}
           {message.imageAttachment && (
-            <Modal onClick={toggleImagePreview} show={imagePreviewVisible} size="4xl">
+            <Modal onClick={toggleImagePreview} show={imagePreviewVisible} size="xl">
               <img
                 src={message.imageAttachment}
                 className="w-full object-contain"
