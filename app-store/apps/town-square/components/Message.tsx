@@ -95,7 +95,7 @@ export default function MessagePage({
             </div>
           )}
           {message.imageAttachment && (
-            <Modal onClick={toggleImagePreview} show={imagePreviewVisible} size="4xl" className="bg-black/90">
+            <Modal onClick={toggleImagePreview} show={imagePreviewVisible} size="4xl">
               <img
                 src={message.imageAttachment}
                 className="w-full object-contain"
