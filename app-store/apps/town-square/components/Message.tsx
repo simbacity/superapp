@@ -9,8 +9,10 @@ import sanitizeContent from "@app-store/apps/town-square/utils/sanitize";
 import { useSocket } from "@app-store/shared/hooks/useSocket";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
+import { Modal } from "flowbite-react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
+import { useState } from "react";
 
 import { formatDate } from "../utils/days";
 
@@ -27,6 +29,7 @@ export default function MessagePage({
   const createThread = useCreateThread();
   const deleteMessage = useDeleteMessage();
   const deleteThread = useDeleteThread();
+  const [imagePreviewVisible, setImagePreviewVisible] = useState(false);
 
   const sanitizedHtmlContent = sanitizeContent(message.content);
 
@@ -69,6 +72,10 @@ export default function MessagePage({
     return `${replyCount} ${replyMessage}`;
   };
 
+  const toggleImagePreview = () => {
+    setImagePreviewVisible(!imagePreviewVisible);
+  };
+
   return (
     <div
       key={message.id}
@@ -83,9 +90,18 @@ export default function MessagePage({
         </div>
         <div>
           {message.imageAttachment && (
-            <div className="w-1/2 min-h-max mt-1">
+            <div className="w-1/2 min-h-max mt-1 cursor-pointer" onClick={toggleImagePreview}>
               <img src={message.imageAttachment} alt="Image attachment" />
             </div>
+          )}
+          {message.imageAttachment && (
+            <Modal onClick={toggleImagePreview} show={imagePreviewVisible} size="4xl">
+              <img
+                src={message.imageAttachment}
+                className="w-full object-contain"
+                onClick={(e) => e.stopPropagation()}
+              />
+            </Modal>
           )}
           <div
             className={markdownStyle["markdown-body"]}
