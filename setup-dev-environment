@@ -1,0 +1,5 @@
+ENV_FILE=.env
+
+if [ ! -f "$ENV_FILE" ]; then
+  cp .env.example "$ENV_FILE"
+fi

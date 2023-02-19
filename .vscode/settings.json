@@ -1,0 +1,16 @@
+{
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "editor.formatOnSave": true,
+  // Auto-fix issues with ESLint when you save code changes
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "eslint.run": "onSave",
+  "typescript.preferences.importModuleSpecifier": "non-relative",
+  "files.exclude": {
+    "**/.git": true, // this is a default value
+    "**/.DS_Store": true // this is a default value
+  },
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.parameterHints.enabled": false
+}

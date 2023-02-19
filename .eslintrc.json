@@ -1,0 +1,38 @@
+{
+  "overrides": [
+    {
+      "extends": [
+        "plugin:@typescript-eslint/recommended-requiring-type-checking",
+        "plugin:react-hooks/recommended"
+      ],
+      "files": ["*.ts", "*.tsx"],
+      "parserOptions": {
+        "project": "tsconfig.json"
+      },
+      "rules": {
+        "@typescript-eslint/no-misused-promises": [
+          "error",
+          { "checksVoidReturn": false }
+        ],
+        // TODO: Enable these rules again
+        "@typescript-eslint/no-floating-promises": "off",
+        "@typescript-eslint/no-unsafe-assignment": "off",
+        "@typescript-eslint/no-unsafe-member-access": "off",
+        "@typescript-eslint/no-unsafe-call": "off",
+        "@typescript-eslint/no-unsafe-return": "off",
+        "@typescript-eslint/restrict-template-expressions": "off",
+        "@typescript-eslint/require-await": "off",
+        "@typescript-eslint/no-unsafe-argument": "off"
+      }
+    }
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
+  "plugins": ["@typescript-eslint"],
+  "extends": ["next/core-web-vitals", "plugin:@typescript-eslint/recommended"],
+  "rules": {
+    "@typescript-eslint/consistent-type-imports": "warn"
+  }
+}

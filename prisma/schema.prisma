@@ -1,0 +1,142 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+  provider     = "mysql"
+  url          = env("PLANETSCALE_PRISMA_DATABASE_URL")
+  relationMode = "prisma"
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model User {
+  id               String               @id @default(cuid())
+  name             String?
+  email            String?              @unique
+  emailVerified    DateTime?
+  image            String?
+  role             Role                 @default(GUEST)
+  accounts         Account[]
+  sessions         Session[]
+  createdAt        DateTime             @default(now())
+  updatedAt        DateTime             @updatedAt
+  messages         Message_TownSquare[]
+  PushSubscription PushSubscription[]
+}
+
+enum Role {
+  USER
+  GUEST
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model InviteCode {
+  id    String  @id @default(cuid())
+  token String  @unique
+  valid Boolean @default(true)
+}
+
+model Invitee {
+  id    String @id @default(cuid())
+  email String @unique
+}
+
+model PushSubscription {
+  id                 String   @id @default(cuid())
+  subscriptionObject String   @db.Text
+  userId             String
+  user               User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt          DateTime @default(now())
+
+  @@index([userId])
+}
+
+model App {
+  id          String @id @default(cuid())
+  name        String @unique // PascalCase
+  description String
+}
+
+// *******************
+// APP SPECIFIC TABLES
+// NAMING PATTERN:
+// TableName_[AppName]
+// *******************
+
+// *******************
+// /apps/mini-blog
+// *******************
+model Post_MiniBlog {
+  id      String @id @default(cuid())
+  title   String
+  content String @db.Text
+  userId  String
+
+  @@index([userId])
+}
+
+// *******************
+// /apps/town-square
+// *******************
+model Message_TownSquare {
+  id              String             @id @default(cuid())
+  content         String             @db.Text
+  imageAttachment String?
+  thread          Thread_TownSquare? @relation(fields: [threadId], references: [id], onDelete: Cascade)
+  threadId        String?
+  user            User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId          String
+  mainMessage     Thread_TownSquare? @relation("main_message")
+  isReply         Boolean
+  createdAt       DateTime           @default(now())
+
+  @@index([threadId])
+  @@index([userId])
+}
+
+model Thread_TownSquare {
+  id          String               @id @default(cuid())
+  messages    Message_TownSquare[]
+  mainMessage Message_TownSquare   @relation("main_message", fields: [messageId], references: [id], onUpdate: NoAction, onDelete: NoAction)
+  messageId   String               @unique
+  createdAt   DateTime             @default(now())
+}

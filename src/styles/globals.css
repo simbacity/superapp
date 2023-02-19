@@ -1,0 +1,249 @@
+@tailwind base;
+@tailwind components;
+
+body {
+  @apply bg-gray-900;
+}
+
+.layout {
+  @apply mx-auto max-w-6xl px-3 lg:px-8;
+}
+
+.h1 {
+  @apply mt-2 mb-4 font-mono text-3xl font-extrabold text-white;
+}
+
+.h2 {
+  @apply mt-1 mb-2 font-mono text-2xl font-extrabold text-white;
+}
+
+.h3 {
+  @apply mt-1 mb-2 font-mono text-xl font-extrabold text-white;
+}
+
+.lead-paragraph {
+  @apply my-4 font-mono text-xl text-white;
+}
+
+.paragraph {
+  @apply my-4 text-lg text-white;
+}
+
+.link {
+  @apply cursor-pointer text-blue-300 hover:underline;
+}
+
+.default-button--small {
+  /* DEFAULT ATTRIBUTES */
+  @apply inline-block cursor-pointer appearance-none border-4 text-center font-mono font-medium uppercase text-white focus:outline-none focus:ring-2 focus:ring-offset-2;
+  /* SIZE ATTRIBUTES */
+  @apply my-4 mr-4 px-3 py-1 text-sm;
+  /* COLOR ATTRIBUTES */
+  @apply border-blue-800 bg-blue-900 hover:bg-blue-800 focus:ring-blue-900 focus:ring-offset-blue-500;
+}
+
+.default-button--medium {
+  /* DEFAULT ATTRIBUTES */
+  @apply inline-block cursor-pointer appearance-none border-4 text-center font-mono font-medium uppercase text-white focus:outline-none focus:ring-2 focus:ring-offset-2;
+  /* SIZE ATTRIBUTES */
+  @apply my-4 mr-4 px-4 py-2 text-base;
+  /* COLOR ATTRIBUTES */
+  @apply border-blue-800 bg-blue-900 hover:bg-blue-800 focus:ring-blue-900 focus:ring-offset-blue-500;
+}
+
+.default-button--large {
+  /* DEFAULT ATTRIBUTES */
+  @apply inline-block cursor-pointer appearance-none border-4 text-center font-mono font-medium uppercase text-white focus:outline-none focus:ring-2 focus:ring-offset-2;
+  /* SIZE ATTRIBUTES */
+  @apply my-4 mr-4 px-8 py-4 text-base;
+  /* COLOR ATTRIBUTES */
+  @apply border-blue-800 bg-blue-900 hover:bg-blue-800 focus:ring-blue-900 focus:ring-offset-blue-500;
+}
+
+.default-button--large--disabled {
+  /* DEFAULT ATTRIBUTES */
+  @apply default-button--large;
+  /* OVERWRITE ATTRIBUTES */
+  @apply cursor-default opacity-40 hover:bg-blue-900 focus:ring-0 focus:ring-offset-0;
+}
+
+.default-button--medium--disabled {
+  /* DEFAULT ATTRIBUTES */
+  @apply default-button--medium;
+  /* OVERWRITE ATTRIBUTES */
+  @apply cursor-default opacity-40 hover:bg-blue-900 focus:ring-0 focus:ring-offset-0;
+}
+
+.default-button--small--disabled {
+  /* DEFAULT ATTRIBUTES */
+  @apply default-button--small;
+  /* OVERWRITE ATTRIBUTES */
+  @apply cursor-default opacity-40 hover:bg-blue-900 focus:ring-0 focus:ring-offset-0;
+}
+
+.primary-button--small {
+  /* DEFAULT ATTRIBUTES */
+  @apply inline-block cursor-pointer appearance-none border-4 text-center font-mono font-medium uppercase text-white focus:outline-none focus:ring-2 focus:ring-offset-2;
+  /* SIZE ATTRIBUTES */
+  @apply my-4 mr-4 px-3 py-1 text-sm;
+  /* COLOR ATTRIBUTES */
+  @apply border-green-900 bg-green-600 hover:bg-green-700 focus:ring-green-900 focus:ring-offset-green-50;
+}
+
+.primary-button--medium {
+  /* DEFAULT ATTRIBUTES */
+  @apply inline-block cursor-pointer appearance-none border-4 text-center font-mono font-medium uppercase text-white focus:outline-none focus:ring-2 focus:ring-offset-2;
+  /* SIZE ATTRIBUTES */
+  @apply my-4 mr-4 px-4 py-2 text-base;
+  /* COLOR ATTRIBUTES */
+  @apply border-green-900 bg-green-600 hover:bg-green-700 focus:ring-green-900 focus:ring-offset-green-50;
+}
+
+.primary-button--large {
+  /* DEFAULT ATTRIBUTES */
+  @apply inline-block cursor-pointer appearance-none border-4 text-center font-mono font-medium uppercase text-white focus:outline-none focus:ring-2 focus:ring-offset-2;
+  /* SIZE ATTRIBUTES */
+  @apply my-4 mr-4 px-8 py-4 text-base;
+  /* COLOR ATTRIBUTES */
+  @apply border-green-900 bg-green-600 hover:bg-green-700 focus:ring-green-900 focus:ring-offset-green-50;
+}
+
+.primary-button--large--disabled {
+  /* DEFAULT ATTRIBUTES */
+  @apply primary-button--large;
+  /* OVERWRITE ATTRIBUTES */
+  @apply cursor-default opacity-40 hover:bg-green-600 focus:ring-0 focus:ring-offset-0;
+}
+
+.primary-button--medium--disabled {
+  /* DEFAULT ATTRIBUTES */
+  @apply primary-button--medium;
+  /* OVERWRITE ATTRIBUTES */
+  @apply cursor-default opacity-40 hover:bg-green-600 focus:ring-0 focus:ring-offset-0;
+}
+
+.primary-button--small--disabled {
+  /* DEFAULT ATTRIBUTES */
+  @apply primary-button--small;
+  /* OVERWRITE ATTRIBUTES */
+  @apply cursor-default opacity-40 hover:bg-green-600 focus:ring-0 focus:ring-offset-0;
+}
+
+.danger-button--small {
+  /* DEFAULT ATTRIBUTES */
+  @apply inline-block cursor-pointer appearance-none border-4 text-center font-mono font-medium uppercase text-white focus:outline-none focus:ring-2 focus:ring-offset-2;
+  /* SIZE ATTRIBUTES */
+  @apply my-4 mr-4 px-3 py-1 text-sm;
+  /* COLOR ATTRIBUTES */
+  @apply border-red-900 bg-red-600 hover:bg-red-700 focus:ring-red-900 focus:ring-offset-red-50;
+}
+
+.danger-button--medium {
+  /* DEFAULT ATTRIBUTES */
+  @apply inline-block cursor-pointer appearance-none border-4 text-center font-mono font-medium uppercase text-white focus:outline-none focus:ring-2 focus:ring-offset-2;
+  /* SIZE ATTRIBUTES */
+  @apply my-4 mr-4 px-4 py-2 text-base;
+  /* COLOR ATTRIBUTES */
+  @apply border-red-900 bg-red-600 hover:bg-red-700 focus:ring-red-900 focus:ring-offset-red-50;
+}
+
+.danger-button--large {
+  /* DEFAULT ATTRIBUTES */
+  @apply inline-block cursor-pointer appearance-none border-4 text-center font-mono font-medium uppercase text-white focus:outline-none focus:ring-2 focus:ring-offset-2;
+  /* SIZE ATTRIBUTES */
+  @apply my-4 mr-4 px-8 py-4 text-base;
+  /* COLOR ATTRIBUTES */
+  @apply border-red-900 bg-red-600 hover:bg-red-700 focus:ring-red-900 focus:ring-offset-red-50;
+}
+
+.danger-button--large--disabled {
+  /* DEFAULT ATTRIBUTES */
+  @apply danger-button--large;
+  /* OVERWRITE ATTRIBUTES */
+  @apply cursor-default opacity-40 hover:bg-red-600 focus:ring-0 focus:ring-offset-0;
+}
+
+.danger-button--medium--disabled {
+  /* DEFAULT ATTRIBUTES */
+  @apply danger-button--medium;
+  /* OVERWRITE ATTRIBUTES */
+  @apply cursor-default opacity-40 hover:bg-red-600 focus:ring-0 focus:ring-offset-0;
+}
+
+.danger-button--small--disabled {
+  /* DEFAULT ATTRIBUTES */
+  @apply danger-button--small;
+  /* OVERWRITE ATTRIBUTES */
+  @apply cursor-default opacity-40 hover:bg-red-600 focus:ring-0 focus:ring-offset-0;
+}
+
+.invisible-button--small {
+  /* DEFAULT ATTRIBUTES */
+  @apply inline-block cursor-pointer appearance-none border-4 text-center font-mono font-medium uppercase text-white focus:outline-none focus:ring-2 focus:ring-offset-2;
+  /* SIZE ATTRIBUTES */
+  @apply my-4 mr-4 px-3 py-1 text-sm;
+  /* COLOR ATTRIBUTES */
+  @apply border-transparent bg-transparent text-blue-300 hover:bg-gray-800 focus:ring-gray-800 focus:ring-offset-gray-500;
+}
+
+.invisible-button--medium {
+  /* DEFAULT ATTRIBUTES */
+  @apply inline-block cursor-pointer appearance-none border-4 text-center font-mono font-medium uppercase text-white focus:outline-none focus:ring-2 focus:ring-offset-2;
+  /* SIZE ATTRIBUTES */
+  @apply my-4 mr-4 px-4 py-2 text-base;
+  /* COLOR ATTRIBUTES */
+  @apply border-transparent bg-transparent text-blue-300 hover:bg-gray-800 focus:ring-gray-800 focus:ring-offset-gray-500;
+}
+
+.invisible-button--large {
+  /* DEFAULT ATTRIBUTES */
+  @apply inline-block cursor-pointer appearance-none border-4 text-center font-mono font-medium uppercase text-white focus:outline-none focus:ring-2 focus:ring-offset-2;
+  /* SIZE ATTRIBUTES */
+  @apply my-4 mr-4 px-8 py-4 text-base;
+  /* COLOR ATTRIBUTES */
+  @apply border-transparent bg-transparent text-blue-300 hover:bg-gray-800 focus:ring-gray-800 focus:ring-offset-gray-500;
+}
+
+.invisible-button--large--disabled {
+  /* DEFAULT ATTRIBUTES */
+  @apply invisible-button--large;
+  /* OVERWRITE ATTRIBUTES */
+  @apply cursor-default opacity-40 hover:bg-transparent focus:ring-0 focus:ring-offset-0;
+}
+
+.invisible-button--medium--disabled {
+  /* DEFAULT ATTRIBUTES */
+  @apply invisible-button--medium;
+  /* OVERWRITE ATTRIBUTES */
+  @apply cursor-default opacity-40 hover:bg-transparent focus:ring-0 focus:ring-offset-0;
+}
+
+.invisible-button--small--disabled {
+  /* DEFAULT ATTRIBUTES */
+  @apply invisible-button--small;
+  /* OVERWRITE ATTRIBUTES */
+  @apply cursor-default opacity-40 hover:bg-transparent focus:ring-0 focus:ring-offset-0;
+}
+
+.label {
+  @apply my-2 block font-mono text-lg text-white;
+}
+
+.input {
+  @apply w-full rounded-none border-4 border-gray-300 px-2 py-2 font-mono focus:border-gray-400 focus:ring-gray-400;
+}
+
+.textarea {
+  @apply w-full rounded-none border-4 border-gray-300 px-2 py-2 font-mono focus:border-gray-400 focus:ring-gray-400;
+}
+
+.error-text {
+  @apply label;
+  @apply text-red-600;
+}
+
+.select > div:first-of-type {
+  @apply w-full rounded-none border-4 border-gray-300 py-0.5 font-mono;
+}
+
+@tailwind utilities;
