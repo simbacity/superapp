@@ -47,7 +47,7 @@ export default class AppStoreFrontendFileGenerator {
   }
 
   private formatFilePath(file: string) {
-    // '/app/app-store/apps/mini-blog/pages/index.tsx'
+    // '/app/src/app-store/apps/mini-blog/pages/index.tsx'
     // becomes
     // 'mini-blog/pages/index'
     const relativePath = this.getRelativePathFromFile(file);
@@ -58,14 +58,18 @@ export default class AppStoreFrontendFileGenerator {
     // 'mini-blog/pages/index.tsx'
     // becomes
     // 'mini-blog/pages/index'
-    return file.split(".")[0];
+    const withoutFileEnding = file.split(".")[0];
+    if (!withoutFileEnding) throw new Error("removeFileEnding failed");
+    return withoutFileEnding;
   }
 
   private getRelativePathFromFile(file: string) {
-    // '/app/app-store/apps/mini-blog/pages/index.tsx'
+    // '/app/src/app-store/apps/mini-blog/pages/index.tsx'
     // becomes
     // 'mini-blog/pages/index.tsx'
-    return file.split("app-store/apps/")[1];
+    const relativePath = file.split("app-store/apps/")[1];
+    if (!relativePath) throw new Error("getRelativePathFromFile failed");
+    return relativePath;
   }
 
   private buildUrlPathFromFilePath(file: string) {
@@ -77,9 +81,9 @@ export default class AppStoreFrontendFileGenerator {
     return url;
   }
 
-  private generateFileErrorHandling(error: NodeJS.ErrnoException | null) {
+  private generateFileErrorHandling = (error: NodeJS.ErrnoException | null) => {
     if (error) console.error(error);
-  }
+  };
 
   private fileContent(appImportsContent: string) {
     return `// *********************************************************************

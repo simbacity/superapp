@@ -7,44 +7,10 @@
   },
   "eslint.run": "onSave",
   "typescript.preferences.importModuleSpecifier": "non-relative",
-  "spellright.language": ["en"],
-  "spellright.documentTypes": [
-    "markdown"
-  ],
   "files.exclude": {
-    "**/.git": true,         // this is a default value
-    "**/.DS_Store": true,    // this is a default value
-
-    "business-logic": true,
-    "api-contracts": true,
-    "cli": true,
-    "pages": true,
-    "components": true,
-    "utils": true,
-    "tests": true,
-    "styles": true,
-    "types": true,
-    "public": true,
-    ".next": true,
-    ".husky": true,
-    ".github": true,
-    "coverage": true,
-    "node_modules": true,
-    ".babelrc": true,
-    ".eslintignore": true,
-    ".eslintrc.json": true,
-    ".gitpod.yml": true,
-    ".gitignore": true,
-    ".prettierignore": true,
-    ".prettierrc.js": true,
-    "jest.config.js": true,
-    "LICENSE": true,
-    "next-env.d.ts": true,
-    "next.config.js": true,
-    "postcss.config.js": true,
-    "setup-dev-environment": true,
-    "tailwind.config.js": true,
-    "tsconfig.json": true,
+    "**/.git": true, // this is a default value
+    "**/.DS_Store": true // this is a default value
   },
-  "debug.javascript.autoAttachFilter": "onlyWithFlag"
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.parameterHints.enabled": false
 }

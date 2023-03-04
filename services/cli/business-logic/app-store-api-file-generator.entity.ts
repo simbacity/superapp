@@ -39,7 +39,7 @@ export default class AppStoreApiFileGenerator {
   }
 
   private formatFilePath(file: string) {
-    // '/app/app-store/apps/mini-blog/pages/api/create.ts'
+    // '/app/src/app-store/apps/mini-blog/pages/api/create.ts'
     // becomes
     // 'mini-blog/pages/api/create'
     const relativePath = this.getRelativePathFromFile(file);
@@ -50,14 +50,18 @@ export default class AppStoreApiFileGenerator {
     // 'mini-blog/pages/api/create.ts'
     // becomes
     // 'mini-blog/pages/api/create'
-    return file.split(".")[0];
+    const withoutFileEnding = file.split(".")[0];
+    if (!withoutFileEnding) throw new Error("removeFileEnding failed");
+    return withoutFileEnding;
   }
 
   private getRelativePathFromFile(file: string) {
-    // '/app/app-store/apps/mini-blog/pages/api/create.ts'
+    // '/app/src/app-store/apps/mini-blog/pages/api/create.ts'
     // becomes
     // 'mini-blog/pages/api/create.ts'
-    return file.split("app/app-store/apps/")[1];
+    const relativePath = file.split("app/src/app-store/apps/")[1];
+    if (!relativePath) throw new Error("getRelativePathFromFile failed");
+    return relativePath;
   }
 
   private buildApiPathFromFilePath(file: string) {
@@ -67,9 +71,9 @@ export default class AppStoreApiFileGenerator {
     return file.split("/pages/api/").join("/");
   }
 
-  private generateFileErrorHandling(error: NodeJS.ErrnoException | null) {
+  private generateFileErrorHandling = (error: NodeJS.ErrnoException | null) => {
     if (error) console.error(error);
-  }
+  };
 
   private fileContent(apiEndpointsContent: string) {
     return `// *********************************************************************
