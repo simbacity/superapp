@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import type { MessageResponse } from "../api-contracts/message.schema";
 import { messageDefaultSchema } from "../api-contracts/message.schema";
 import type { ThreadRequest } from "../api-contracts/thread.schema";
@@ -95,7 +96,7 @@ export default function MessagePage({
               className="mt-1 max-w-xs cursor-pointer"
               onClick={toggleImagePreview}
             >
-              <Image
+              <img
                 src={message.imageAttachment}
                 width="400"
                 height="400"
@@ -109,7 +110,7 @@ export default function MessagePage({
               show={imagePreviewVisible}
               size="xl"
             >
-              <Image
+              <img
                 src={message.imageAttachment}
                 className="w-full object-contain"
                 alt="Image attachment"
