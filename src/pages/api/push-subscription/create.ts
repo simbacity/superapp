@@ -1,6 +1,6 @@
 import type { PushSubscriptionResponse } from "@api-contracts/push-subscription.schema";
 import { pushSubscriptionRequestSchema } from "@api-contracts/push-subscription.schema";
-import HttpError from "@app-store/shared/utils/errors/HttpError";
+import HttpError from "../../../app-store/shared/utils/errors/HttpError";
 import PushSubscriptionEntity from "@business-logic/push-subscription.entity";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { getSession } from "next-auth/react";

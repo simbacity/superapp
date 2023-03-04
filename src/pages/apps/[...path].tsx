@@ -26,7 +26,7 @@ export default function Apps({ path, props }: Props) {
 }
 
 type ServerSideContext = { params: { path: string[] } };
-export async function getServerSideProps({ params }: ServerSideContext) {
+export function getServerSideProps({ params }: ServerSideContext) {
   const { path } = params;
 
   return { props: getImportPathAndProps(path) };
@@ -68,7 +68,7 @@ function getImportPathAndProps(path: string[]) {
 
       // 'mini-blog' === 'mini-blog'
       if (currentDynamicPathArrayItem === path[i]) {
-        result.path = `${result.path}/${path[i]}`;
+        result.path = `${result.path}/${path[i] || ""}`;
         // '[id]'.startsWith("[")
       } else if (currentDynamicPathArrayItem.startsWith("[")) {
         // remove first and last character: '[id]' becomes 'id'
@@ -77,7 +77,7 @@ function getImportPathAndProps(path: string[]) {
           currentDynamicPathArrayItem.length - 1
         );
 
-        result.path = `${result.path}/${dynamicPathArray[i]}`;
+        result.path = `${result.path}/${dynamicPathArray[i] || ""}`;
 
         const pathItem = path[i];
         if (!pathItem) throw new Error("No path item found");

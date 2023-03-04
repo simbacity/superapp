@@ -23,7 +23,7 @@ export default class AppStoreApiProxyEntity {
     const resourceName = requestQuery[1];
 
     // id123
-    const id = hasDynamicId ? requestQuery[2] : undefined;
+    const id = hasDynamicId ? (requestQuery[2] as string) : undefined;
 
     // update
     const actionName = hasDynamicId ? requestQuery[3] : requestQuery[2];

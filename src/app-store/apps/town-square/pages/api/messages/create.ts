@@ -19,8 +19,10 @@ export default async function handler(
 
   try {
     const data = {
-      content: req.body.content,
-      threadId: req.body.threadId,
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      content: req.body.content as string,
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      threadId: req.body.threadId as string,
       imageAttachment: req.files,
     };
 

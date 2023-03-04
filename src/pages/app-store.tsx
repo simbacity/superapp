@@ -5,7 +5,7 @@ import router from "next/router";
 
 export default function AppStore() {
   const signOutAndRedirectToHome = () => {
-    signOut().then(() => router.push("/"));
+    return signOut().then(() => router.push("/"));
   };
 
   return (

@@ -8,10 +8,6 @@ type Imports = { [key: string]: React.ElementType };
 
 export const AppImports: Imports = {
   "jobs": dynamic(() => import("@app-store/apps/jobs/pages/index")),
-  "mini-blog": dynamic(() => import("@app-store/apps/mini-blog/pages/index")),
-  "mini-blog/posts/[id]/edit": dynamic(() => import("@app-store/apps/mini-blog/pages/posts/[id]/edit")),
-  "mini-blog/posts/[id]": dynamic(() => import("@app-store/apps/mini-blog/pages/posts/[id]/index")),
-  "mini-blog/posts/new": dynamic(() => import("@app-store/apps/mini-blog/pages/posts/new")),
   "simba-design-system": dynamic(() => import("@app-store/apps/simba-design-system/pages/index")),
   "town-square": dynamic(() => import("@app-store/apps/town-square/pages/index")),
   "town-square/threads/[id]": dynamic(() => import("@app-store/apps/town-square/pages/threads/[id]/index")),

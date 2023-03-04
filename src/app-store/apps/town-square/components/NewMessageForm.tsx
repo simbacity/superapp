@@ -183,13 +183,19 @@ export function useCreateMessage() {
 
   return useMutation(createMessage, {
     onSuccess: (response) => {
-      queryClient.invalidateQueries(["town-square", "messages", "list"]);
-      queryClient.invalidateQueries([
+      const invalidateList = queryClient.invalidateQueries([
+        "town-square",
+        "messages",
+        "list",
+      ]);
+      const invalidateShow = queryClient.invalidateQueries([
         "town-square",
         "threads",
         "show",
         response.threadId,
       ]);
+
+      return Promise.all([invalidateList, invalidateShow]);
     },
   });
 }

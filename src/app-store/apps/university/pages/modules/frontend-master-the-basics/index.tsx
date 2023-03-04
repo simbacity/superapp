@@ -52,7 +52,7 @@ export default function Module() {
 
   return (
     <Shell>
-      <nav className="fixed w-full border-b border-gray-800 border-white bg-gray-900">
+      <nav className="fixed w-full border-b border-white bg-gray-900">
         <div className="mx-auto flex h-14 max-w-3xl items-center px-3 md:px-0">
           <Link href="/apps/university/">
             <button
@@ -70,7 +70,7 @@ export default function Module() {
             Frontend: Master the basics
           </h2>
           <div
-            className={`${markdownStyle["markdown-body"]} pb-8`}
+            className={`${markdownStyle["markdown-body"] || ""} pb-8`}
             dangerouslySetInnerHTML={{ __html: sanitizedHtmlContent }}
           />
           <div className="grid grid-cols-1 gap-4 gap-y-8 sm:grid-cols-2">

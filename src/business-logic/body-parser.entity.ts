@@ -18,7 +18,7 @@ export default class BodyParserEntity {
       req.body = fields;
       req.files = files;
     } else if (contentType && contentType.includes("application/json")) {
-      req.body = await this.parseRequestBufferData(req);
+      req.body = (await this.parseRequestBufferData(req)) as unknown;
     }
 
     return req;
@@ -64,6 +64,6 @@ export default class BodyParserEntity {
     const reqBuffer = Buffer.concat(chunks);
     const stringifiedReqBody = reqBuffer.toString();
 
-    return JSON.parse(stringifiedReqBody);
+    return JSON.parse(stringifiedReqBody) as { [key: string]: unknown };
   }
 }

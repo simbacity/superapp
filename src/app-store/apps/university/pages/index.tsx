@@ -5,6 +5,11 @@ import Shell from "../../../shared/components/Shell";
 import { ChartBarIcon } from "@heroicons/react/24/outline";
 import { Button, Card, Progress } from "flowbite-react";
 import Link from "next/link";
+import Image from "next/image";
+
+type Image = {
+  src: string;
+};
 
 const cards = [
   { title: "Frontend: Master the basics", imgSrc: CodingMoonImage.src },
@@ -23,7 +28,7 @@ export default function University() {
     <Shell>
       <nav className="border-b border-white">
         <div className="mx-auto flex h-16 max-w-3xl items-center px-3 md:px-0">
-          <img src={Logo.src} className="mr-3 h-8" />
+          <Image src={(Logo as Image).src} alt="Logo" className="mr-3 h-8" />
         </div>
       </nav>
       <div className="pb-12 text-white">

@@ -11,7 +11,7 @@ import { Modal } from "flowbite-react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useState } from "react";
-
+import Image from "next/image";
 import { formatDate } from "../utils/days";
 
 export default function MessagePage({
@@ -33,14 +33,14 @@ export default function MessagePage({
 
   const onNavigateToThreadsHandler = () => {
     if (message.threadId) {
-      router.push(`/apps/town-square/threads/${message.threadId}`);
+      return router.push(`/apps/town-square/threads/${message.threadId}`);
     } else {
       createThread.mutate(
         { messageId: message.id || "" },
         {
           onSuccess: (response) => {
             if (response) {
-              router.push(`/apps/town-square/threads/${response.id}`);
+              return router.push(`/apps/town-square/threads/${response.id}`);
             }
           },
         }
@@ -52,7 +52,7 @@ export default function MessagePage({
     if (!message.isReply && message.threadId) {
       deleteThread.mutate(message.threadId, {
         onSuccess: () => {
-          router.push("/apps/town-square");
+          return router.push("/apps/town-square");
         },
       });
     } else {
@@ -95,7 +95,12 @@ export default function MessagePage({
               className="mt-1 max-w-xs cursor-pointer"
               onClick={toggleImagePreview}
             >
-              <img src={message.imageAttachment} alt="Image attachment" />
+              <Image
+                src={message.imageAttachment}
+                width="400"
+                height="400"
+                alt="Image attachment"
+              />
             </div>
           )}
           {message.imageAttachment && (
@@ -104,9 +109,12 @@ export default function MessagePage({
               show={imagePreviewVisible}
               size="xl"
             >
-              <img
+              <Image
                 src={message.imageAttachment}
                 className="w-full object-contain"
+                alt="Image attachment"
+                width="400"
+                height="400"
                 onClick={(e) => e.stopPropagation()}
               />
             </Modal>

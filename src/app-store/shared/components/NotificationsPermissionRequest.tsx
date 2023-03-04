@@ -18,18 +18,30 @@ export default function NotificationsPermissionBox() {
       "workbox" in window;
     if (!isBrowser) return;
 
-    navigator.serviceWorker.ready.then((registration) => {
-      registration.pushManager.getSubscription().then((subscription) => {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        const expirationTime =
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-          subscription && (subscription as any)?.expirationTime;
-        if (!(expirationTime && Date.now() > expirationTime - 5 * 60 * 1000)) {
+    navigator.serviceWorker.ready
+      .then((registration) => {
+        return registration.pushManager.getSubscription();
+      })
+      .then((subscription) => {
+        const isSubscription =
+          subscription &&
+          typeof subscription === "object" &&
+          "endpoint" in subscription;
+        if (
+          !(
+            isSubscription &&
+            subscription.expirationTime &&
+            Date.now() > subscription.expirationTime - 5 * 60 * 1000
+          )
+        ) {
           setSubscription(subscription);
         }
+        setRegistration(registration);
+      })
+      .catch((error) => {
+        console.error(error);
       });
-      setRegistration(registration);
-    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onEnableNotificationsClick = async () => {
