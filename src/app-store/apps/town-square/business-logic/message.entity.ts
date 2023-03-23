@@ -11,6 +11,7 @@ import NotFoundError from "../../../shared/utils/errors/NotFoundError";
 import { prisma } from "@server/db";
 import type { User } from "@prisma/client";
 import { Prisma } from "@prisma/client";
+import { getBaseUrl } from "../../../../utils/api";
 
 type MessageListQuerySchema = {
   orderBy: {
@@ -66,7 +67,10 @@ export default class MessageEntity {
     await this.sendPushNotificationToAllOtherUsers(
       userId,
       messageTitle,
-      params.content
+      params.content,
+      response.threadId
+        ? `${getBaseUrl()}/apps/town-square/threads/${response.threadId}`
+        : `${getBaseUrl()}/apps/town-square`
     );
     return response;
   }
@@ -200,7 +204,8 @@ export default class MessageEntity {
   private async sendPushNotificationToAllOtherUsers(
     currentUserId: string,
     title: string,
-    body: string
+    body: string,
+    url: string
   ) {
     const users = await prisma.user.findMany();
     const userIds = users
@@ -208,7 +213,7 @@ export default class MessageEntity {
       .filter((id: string) => id !== currentUserId);
 
     const pushNotification = new PushNotificationEntity();
-    return pushNotification.send(userIds, title, body);
+    return pushNotification.send(userIds, title, body, url);
   }
 
   private async saveToObjectStorage(file: ServerSideImage) {
