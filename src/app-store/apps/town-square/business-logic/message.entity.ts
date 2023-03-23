@@ -63,14 +63,15 @@ export default class MessageEntity {
     const user = await prisma.user.findUnique({ where: { id: userId } });
     const messageTitle = user?.name || "New message";
 
+    const baseUrl = getBaseUrl();
     const response = await createMessage(params, userId);
     await this.sendPushNotificationToAllOtherUsers(
       userId,
       messageTitle,
       params.content,
       response.threadId
-        ? `${getBaseUrl()}/apps/town-square/threads/${response.threadId}`
-        : `${getBaseUrl()}/apps/town-square`
+        ? `${baseUrl}/apps/town-square/threads/${response.threadId}`
+        : `${baseUrl}/apps/town-square`
     );
     return response;
   }
