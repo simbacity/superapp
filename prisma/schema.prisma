@@ -125,7 +125,6 @@ model Message_TownSquare {
   threadId        String?
   user            User               @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId          String
-  mainMessage     Thread_TownSquare? @relation("main_message")
   isReply         Boolean
   createdAt       DateTime           @default(now())
 
@@ -136,7 +135,6 @@ model Message_TownSquare {
 model Thread_TownSquare {
   id          String               @id @default(cuid())
   messages    Message_TownSquare[]
-  mainMessage Message_TownSquare   @relation("main_message", fields: [messageId], references: [id], onUpdate: NoAction, onDelete: NoAction)
   messageId   String               @unique
   createdAt   DateTime             @default(now())
 }

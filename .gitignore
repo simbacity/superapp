@@ -46,7 +46,7 @@ yarn-error.log*
 **/public/worker-*.js.map
 
 # development
-/public/devModeImages
+/public/devModeFiles
 
 # services
 **/node_modules

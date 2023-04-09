@@ -6,22 +6,26 @@ import { prisma } from "@server/db";
 
 export default class ThreadEntity {
   async find(id: string) {
-    const thread = await prisma.thread_TownSquare.findUnique({
+    const _thread = await prisma.thread_TownSquare.findUnique({
       where: { id },
       include: {
         messages: {
-          include: { user: { select: { id: true, image: true, name: true } } },
-          where: { isReply: true },
-        },
-        mainMessage: {
           include: { user: { select: { id: true, image: true, name: true } } },
         },
       },
     });
 
-    if (!thread) {
+    if (!_thread) {
       throw new NotFoundError("Not found");
     }
+
+    const thread = {
+      ..._thread,
+      messages: _thread.messages.filter((message) => message.isReply),
+      mainMessage: _thread.messages.find(
+        (message) => _thread.messageId === message.id
+      ),
+    };
 
     return thread;
   }
@@ -47,17 +51,21 @@ export default class ThreadEntity {
   }
 
   async list() {
-    const threads = await prisma.thread_TownSquare.findMany({
+    const _threads = await prisma.thread_TownSquare.findMany({
       include: {
         messages: {
-          include: { user: { select: { id: true, image: true, name: true } } },
-          where: { isReply: true },
-        },
-        mainMessage: {
           include: { user: { select: { id: true, image: true, name: true } } },
         },
       },
     });
+
+    const threads = _threads.map((thread) => ({
+      ...thread,
+      messages: thread.messages.filter((message) => message.isReply),
+      mainMessage: thread.messages.find(
+        (message) => thread.messageId === message.id
+      ),
+    }));
 
     return threads;
   }
