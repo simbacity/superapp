@@ -13,7 +13,7 @@ webPush.setVapidDetails(
 );
 
 export default class PushNotificationEntity {
-  async send(userIds: string[], title: string, message: string) {
+  async send(userIds: string[], title: string, message: string, url: string) {
     const pushSubscriptions = await this.findPushSubscriptionsByUserIds(
       userIds
     );
@@ -24,7 +24,8 @@ export default class PushNotificationEntity {
         await this.sendNotification(
           pushSubscription.subscriptionObject,
           title,
-          message
+          message,
+          url
         );
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (error) {
@@ -46,12 +47,13 @@ export default class PushNotificationEntity {
   private async sendNotification(
     subscription: string,
     title: string,
-    message: string
+    message: string,
+    url: string
   ) {
     return webPush.sendNotification(
       // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       JSON.parse(subscription),
-      JSON.stringify({ title, message })
+      JSON.stringify({ title, message, url })
     );
   }
 
