@@ -1,5 +1,5 @@
 import { IS_PRODUCTION } from "../app-store/shared/utils/config/constants";
-import { IMAGE_FOLDER_PATH_FOR_DEV_MODE } from "../app-store/shared/utils/config/constants";
+import { FILE_FOLDER_PATH_FOR_DEV_MODE } from "../app-store/shared/utils/config/constants";
 import formidable from "formidable";
 import fs from "fs";
 import type { NextApiRequest } from "next";
@@ -36,11 +36,11 @@ export default class BodyParserEntity {
 
       if (!IS_PRODUCTION) {
         // save file to public folder in development
-        options.uploadDir = `public/${IMAGE_FOLDER_PATH_FOR_DEV_MODE}`;
+        options.uploadDir = `public/${FILE_FOLDER_PATH_FOR_DEV_MODE}`;
 
         // formidable throws error if uploadDir doesn't exist (when saving to local directory)
-        if (!fs.existsSync(`public/${IMAGE_FOLDER_PATH_FOR_DEV_MODE}`)) {
-          fs.mkdirSync(`public/${IMAGE_FOLDER_PATH_FOR_DEV_MODE}`);
+        if (!fs.existsSync(`public/${FILE_FOLDER_PATH_FOR_DEV_MODE}`)) {
+          fs.mkdirSync(`public/${FILE_FOLDER_PATH_FOR_DEV_MODE}`);
         }
       }
 

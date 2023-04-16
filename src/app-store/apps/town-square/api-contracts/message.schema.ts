@@ -1,7 +1,5 @@
 import { z } from "zod";
 
-export const isClientSide = typeof window !== "undefined";
-
 export const messageDefaultSchema = z.object({
   id: z.string(),
   threadId: z.string().nullable(),
@@ -30,24 +28,9 @@ export const messageListRequestSchema = z.object({
 
 export const messageListSchema = z.array(messageSchema);
 
-export const serverSideImageSchema = z.object({
-  imageFile: z
-    .object({
-      filepath: z.string(),
-      mimetype: z.string(),
-      newFilename: z.string(),
-      originalFilename: z.string(),
-      size: z.number(),
-      lastModifiedDate: z.date(),
-    })
-    .optional(),
-});
-
 export const messageRequestSchema = z.object({
   content: z.string().min(1),
-  imageAttachment: isClientSide
-    ? z.instanceof(File).or(z.instanceof(FileList))
-    : z.optional(serverSideImageSchema),
+  imageAttachment: z.string().optional(),
   threadId: z.string().optional(),
   userId: z.string().optional(),
   isReply: z.boolean().optional(),
@@ -58,4 +41,3 @@ export type MessageResponse = z.TypeOf<typeof messageSchema>;
 export type MessageListResponse = z.TypeOf<typeof messageListSchema>;
 export type MessageRequest = z.TypeOf<typeof messageRequestSchema>;
 export type MessageListRequest = z.TypeOf<typeof messageListRequestSchema>;
-export type ServerSideImage = z.TypeOf<typeof serverSideImageSchema>;

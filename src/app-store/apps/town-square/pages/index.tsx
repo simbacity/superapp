@@ -1,12 +1,11 @@
 import type { MessageResponse } from "../api-contracts/message.schema";
-import { messageListSchema } from "../api-contracts/message.schema";
 import Message from "../components/Message";
 import NewMessageForm from "../components/NewMessageForm";
-import NotificationsPermissionRequest from "../../../shared/components/NotificationsPermissionRequest";
-import Shell from "../../../shared/components/Shell";
-import { useInfiniteQuery } from "@tanstack/react-query";
-import axios from "axios";
+import NotificationsPermissionRequest from "@app-store/shared/components/NotificationsPermissionRequest";
+import Shell from "@app-store/shared/components/Shell";
+import LoadingSpinner from "@app-store/shared/components/Loading";
 import React from "react";
+import { api } from "../../../../utils/api";
 
 export default function TownSquare() {
   const {
@@ -17,15 +16,20 @@ export default function TownSquare() {
     isFetchingNextPage,
   } = useGetAllMessages();
 
-  if (!pagesData) return <div className="h1">Loading...</div>;
+  if (!pagesData)
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <LoadingSpinner />
+      </div>
+    );
 
   return (
     <Shell>
       <div className="layout overflow-auto py-8 pb-52">
         <NotificationsPermissionRequest />
-        {pagesData.pages.map((group, i) => (
+        {pagesData.pages.map((messages, i) => (
           <React.Fragment key={i}>
-            {group.data.map((message: MessageResponse) => {
+            {messages.map((message: MessageResponse) => {
               return <Message key={message.id} message={message} />;
             })}
           </React.Fragment>
@@ -44,24 +48,19 @@ export default function TownSquare() {
 }
 
 export function useGetAllMessages() {
-  const getAllMessages = async ({ pageParam = "" }) => {
-    const response = await axios.get(
-      `/api/apps/town-square/messages/list?cursor=${pageParam}&pageSize=20`
-    );
-    const parsedResponse = messageListSchema.parse(response.data);
-    /*
-      The fn returned data structure must conform to the Infinite Query returned data structure,
-      otherwise, your changes will be overwritten: https://tanstack.com/query/v4/docs/guides/infinite-queries
-     */
-    return { data: parsedResponse, pageParams: [] };
-  };
-
-  return useInfiniteQuery(["town-square", "messages", "list"], getAllMessages, {
-    getNextPageParam: (lastPage) => {
-      if (lastPage.data.length) {
-        return lastPage.data[lastPage.data.length - 1]?.id;
-      }
-      return undefined;
+  const getAllMessages = api.townSquare.messages.list.useInfiniteQuery(
+    {
+      pageSize: "20",
     },
-  });
+    {
+      getNextPageParam: (lastPage) => {
+        if (lastPage.length) {
+          return lastPage[lastPage.length - 1]?.id;
+        }
+        return undefined;
+      },
+    }
+  );
+
+  return getAllMessages;
 }

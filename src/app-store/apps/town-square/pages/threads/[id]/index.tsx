@@ -1,12 +1,11 @@
 import type { MessageResponse } from "../../../api-contracts/message.schema";
-import { threadSchema } from "../../../api-contracts/thread.schema";
 import MessageComponent from "../../../components/Message";
 import NewMessageForm from "../../../components/NewMessageForm";
 import Shell from "../../../../../shared/components/Shell";
 import { ArrowLeftIcon } from "@heroicons/react/24/solid";
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import { useRouter } from "next/router";
+import { api } from "../../../../../../utils/api";
+import LoadingSpinner from "@app-store/shared/components/Loading";
 
 interface ThreadParams {
   id: string;
@@ -14,9 +13,14 @@ interface ThreadParams {
 
 export default function Thread({ id }: ThreadParams) {
   const router = useRouter();
-  const { data: thread } = useThread(id);
+  const { data: thread, isLoading: threadIsLoading } = useGetThread(id);
 
-  if (!thread) return <div className="h1">Loading...</div>;
+  if (threadIsLoading)
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <LoadingSpinner />
+      </div>
+    );
 
   return (
     <Shell>
@@ -30,32 +34,33 @@ export default function Thread({ id }: ThreadParams) {
             <p className="text-white ">Thread</p>
           </div>
         </div>
-        <MessageComponent
-          message={thread.mainMessage}
-          hideGoToRepliesLink={true}
-        />
-        <div className="ml-4">
-          {thread.messages.map((message: MessageResponse) => (
+        {/* in the case where user clicks on notification for an already deleted thread message (comment to be removed) */}
+        {!thread || !thread.mainMessage ? (
+          <h3 className="h3 ml-4">Message has been deleted</h3>
+        ) : (
+          <>
             <MessageComponent
-              key={message.id}
-              message={message}
+              message={thread.mainMessage}
               hideGoToRepliesLink={true}
             />
-          ))}
-        </div>
-        <NewMessageForm threadId={thread.id} />
+            <div className="ml-4">
+              {thread.messages.map((message: MessageResponse) => (
+                <MessageComponent
+                  key={message.id}
+                  message={message}
+                  hideGoToRepliesLink={true}
+                />
+              ))}
+            </div>
+            <NewMessageForm threadId={thread.id} />
+          </>
+        )}
       </div>
     </Shell>
   );
 }
 
-export function useThread(id: string) {
-  const getThread = async (id: string) => {
-    const response = await axios.get(
-      `/api/apps/town-square/threads/${id}/show`
-    );
-    return threadSchema.parse(response.data);
-  };
-
-  return useQuery(["town-square", "threads", "show", id], () => getThread(id));
+export function useGetThread(id: string) {
+  const getThread = api.townSquare.threads.show.useQuery({ id });
+  return getThread;
 }

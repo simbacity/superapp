@@ -1,23 +1,24 @@
 import type { MessageRequest } from "../api-contracts/message.schema";
-import {
-  messageRequestSchema,
-  messageDefaultSchema,
-} from "../api-contracts/message.schema";
+import { messageRequestSchema } from "../api-contracts/message.schema";
 import {
   PaperAirplaneIcon,
   PlusIcon,
   XCircleIcon,
 } from "@heroicons/react/24/solid";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import { api } from "../../../../utils/api";
+import LoadingSpinner from "@app-store/shared/components/Loading";
 
 export default function MessageForm({ threadId }: { threadId?: string }) {
+  const [imageFile, setImageFile] = useState<File | FileList | undefined>(
+    undefined
+  );
   const [imagePreviewUrl, setImagePreviewUrl] = useState("");
   const router = useRouter();
   const form = useForm<MessageRequest>({
@@ -32,19 +33,25 @@ export default function MessageForm({ threadId }: { threadId?: string }) {
       if (newPreviewURL !== imagePreviewUrl) {
         setImagePreviewUrl(newPreviewURL);
       }
-      form.setValue("imageAttachment", e.target.files[0]);
+      setImageFile(e.target.files[0]);
     }
   }
 
   function onClearImageAttachment() {
     URL.revokeObjectURL(imagePreviewUrl);
     setImagePreviewUrl("");
-    form.resetField("imageAttachment");
+    setImageFile(undefined);
   }
 
-  function onSubmitHandler(data: MessageRequest) {
+  async function onSubmitHandler(data: MessageRequest) {
+    let imageUrl;
+    if (imageFile) {
+      const response = await saveImage(imageFile);
+      imageUrl = response.data as string;
+    }
+
     createMessage.mutate(
-      { ...data, threadId },
+      { ...data, imageAttachment: imageUrl, threadId },
       {
         onSuccess: (response) => {
           form.reset();
@@ -54,14 +61,23 @@ export default function MessageForm({ threadId }: { threadId?: string }) {
               `/apps/town-square/threads/${response.threadId}`
             );
           } else {
-            window.scrollTo(0, 0);
+            window.scrollTo({
+              top: 0,
+              left: 0,
+              behavior: "smooth",
+            });
           }
         },
       }
     );
   }
 
-  if (!currentSession) return <div className="h1">Loading...</div>;
+  if (!currentSession)
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <LoadingSpinner />
+      </div>
+    );
 
   const onTextareaKeydown = (
     event: React.KeyboardEvent<HTMLTextAreaElement>
@@ -124,7 +140,6 @@ export default function MessageForm({ threadId }: { threadId?: string }) {
             </label>
             <input
               id="file"
-              {...form.register("imageAttachment")}
               type="file"
               accept="image/*"
               className="hidden"
@@ -146,7 +161,7 @@ export default function MessageForm({ threadId }: { threadId?: string }) {
               disabled={createMessage.isLoading}
               className="flex h-10 w-10 items-center justify-center rounded-full bg-green-600 hover:bg-green-700"
             >
-              <PaperAirplaneIcon className="h-5 w-5 rotate-90 text-white" />
+              <PaperAirplaneIcon className="h-5 w-5 text-white" />
             </button>
           </div>
         </div>
@@ -156,46 +171,24 @@ export default function MessageForm({ threadId }: { threadId?: string }) {
 }
 
 export function useCreateMessage() {
-  const queryClient = useQueryClient();
+  const utils = api.useContext();
 
-  const createMessage = async (data: MessageRequest) => {
-    const formData = new FormData();
-    formData.append("content", data.content);
-
-    if (data.threadId) {
-      formData.append("threadId", data.threadId);
-    }
-
-    if (data.imageAttachment) {
-      formData.append("imageFile", data.imageAttachment as File);
-    }
-
-    const response = await axios.post(
-      "/api/apps/town-square/messages/create",
-      formData,
-      {
-        headers: { "Content-Type": "multipart/form-data" },
-      }
-    );
-
-    return messageDefaultSchema.parse(response.data);
-  };
-
-  return useMutation(createMessage, {
-    onSuccess: (response) => {
-      const invalidateList = queryClient.invalidateQueries([
-        "town-square",
-        "messages",
-        "list",
-      ]);
-      const invalidateShow = queryClient.invalidateQueries([
-        "town-square",
-        "threads",
-        "show",
-        response.threadId,
-      ]);
-
-      return Promise.all([invalidateList, invalidateShow]);
+  const createMessage = api.townSquare.messages.create.useMutation({
+    onSuccess: async (response) => {
+      await utils.townSquare.messages.list.invalidate();
+      await utils.townSquare.threads.show.invalidate({
+        id: response.threadId || "",
+      });
     },
+  });
+
+  return createMessage;
+}
+
+async function saveImage(imageFile: File | FileList) {
+  const formdata = new FormData();
+  formdata.append("file", imageFile as File);
+  return await axios.post("/api/file-upload/create", formdata, {
+    headers: { "Content-Type": "multipart/form-data" },
   });
 }
