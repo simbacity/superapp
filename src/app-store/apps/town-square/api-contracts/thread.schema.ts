@@ -8,7 +8,7 @@ export const threadDefaultSchema = z.object({
 export const threadSchema = z.object({
   id: z.string(),
   messageId: z.string(),
-  mainMessage: messageSchema,
+  mainMessage: messageSchema.optional(),
   messages: z.array(messageSchema),
   createdAt: z.date().or(z.string()),
 });

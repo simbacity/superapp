@@ -1,9 +1,7 @@
 import type {
   MessageRequest,
   MessageListRequest,
-  ServerSideImage,
 } from "../api-contracts/message.schema";
-import ImageStorageEntity from "./image-storage.entity";
 import sanitizeContent from "../utils/sanitize";
 import PushNotificationEntity from "../../../shared/business-logic/push-notification.entity";
 import ForbiddenError from "../../../shared/utils/errors/ForbiddenError";
@@ -147,17 +145,11 @@ export default class MessageEntity {
     const { content, isReply = true } = params;
 
     const sanitizedContent = sanitizeContent(content);
-    const imageAttachment = params.imageAttachment as
-      | ServerSideImage
-      | undefined;
-    const imageUrl = imageAttachment?.imageFile
-      ? await this.saveToObjectStorage(imageAttachment)
-      : undefined;
 
     const response = await prisma.message_TownSquare.create({
       data: {
         content: sanitizedContent,
-        imageAttachment: imageUrl,
+        imageAttachment: params.imageAttachment,
         isReply,
         user: {
           connect: {
@@ -179,17 +171,11 @@ export default class MessageEntity {
     const { content, isReply = false } = params;
 
     const sanitizedContent = sanitizeContent(content);
-    const imageAttachment = params.imageAttachment as
-      | ServerSideImage
-      | undefined;
-    const imageUrl = imageAttachment?.imageFile
-      ? await this.saveToObjectStorage(imageAttachment)
-      : undefined;
 
     const response = await prisma.message_TownSquare.create({
       data: {
         content: sanitizedContent,
-        imageAttachment: imageUrl,
+        imageAttachment: params.imageAttachment,
         isReply,
         user: {
           connect: {
@@ -215,12 +201,5 @@ export default class MessageEntity {
 
     const pushNotification = new PushNotificationEntity();
     return pushNotification.send(userIds, title, body, url);
-  }
-
-  private async saveToObjectStorage(file: ServerSideImage) {
-    const imageStorageEntity = new ImageStorageEntity();
-
-    const url = await imageStorageEntity.save(file);
-    return url;
   }
 }

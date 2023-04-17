@@ -1,19 +1,14 @@
 /* eslint-disable @next/next/no-img-element */
 import type { MessageResponse } from "../api-contracts/message.schema";
-import { messageDefaultSchema } from "../api-contracts/message.schema";
-import type { ThreadRequest } from "../api-contracts/thread.schema";
-import { threadDefaultSchema } from "../api-contracts/thread.schema";
 import Avatar from "./Avatar";
 import markdownStyle from "@app-store/apps/town-square/styles/Markdown.module.css";
 import sanitizeContent from "../utils/sanitize";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
 import { Modal } from "flowbite-react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import Image from "next/image";
 import { formatDate } from "../utils/days";
+import { api } from "../../../../utils/api";
 
 export default function MessagePage({
   message,
@@ -51,17 +46,23 @@ export default function MessagePage({
 
   const onDeleteHandler = () => {
     if (!message.isReply && message.threadId) {
-      deleteThread.mutate(message.threadId, {
-        onSuccess: () => {
-          return router.push("/apps/town-square");
-        },
-      });
+      deleteThread.mutate(
+        { id: message.threadId },
+        {
+          onSuccess: () => {
+            return router.push("/apps/town-square");
+          },
+        }
+      );
     } else {
-      deleteMessage.mutate(message.id || "", {
-        onSuccess: () => {
-          return router.push("/apps/town-square");
-        },
-      });
+      deleteMessage.mutate(
+        { id: message.id },
+        {
+          onSuccess: () => {
+            return router.push("/apps/town-square");
+          },
+        }
+      );
     }
   };
 
@@ -147,53 +148,38 @@ export default function MessagePage({
 }
 
 export function useCreateThread() {
-  const queryClient = useQueryClient();
+  const utils = api.useContext();
 
-  const createThread = async (data: ThreadRequest) => {
-    const response = await axios.post(
-      "/api/apps/town-square/threads/create",
-      data
-    );
-    return threadDefaultSchema.parse(response.data);
-  };
-
-  return useMutation(createThread, {
-    onSuccess: () => {
-      return queryClient.invalidateQueries(["town-square", "messages", "list"]);
+  const createThread = api.townSquare.threads.create.useMutation({
+    onSuccess: async (response) => {
+      await utils.townSquare.messages.list.invalidate();
+      await utils.townSquare.threads.show.invalidate({ id: response.id });
     },
   });
+
+  return createThread;
 }
 
 export function useDeleteMessage() {
-  const queryClient = useQueryClient();
+  const utils = api.useContext();
 
-  const deleteMessage = async (id: string) => {
-    const response = await axios.delete(
-      `/api/apps/town-square/messages/${id}/delete`
-    );
-    return messageDefaultSchema.parse(response.data);
-  };
-
-  return useMutation((id: string) => deleteMessage(id), {
-    onSuccess: () => {
-      return queryClient.invalidateQueries(["town-square", "messages", "list"]);
+  const deleteMessage = api.townSquare.messages.delete.useMutation({
+    onSuccess: async () => {
+      await utils.townSquare.messages.list.invalidate();
     },
   });
+
+  return deleteMessage;
 }
 
 export function useDeleteThread() {
-  const queryClient = useQueryClient();
+  const utils = api.useContext();
 
-  const deleteThread = async (id: string) => {
-    const response = await axios.delete(
-      `/api/apps/town-square/threads/${id}/delete`
-    );
-    return threadDefaultSchema.parse(response.data);
-  };
-
-  return useMutation((id: string) => deleteThread(id), {
-    onSuccess: () => {
-      return queryClient.invalidateQueries(["town-square", "messages", "list"]);
+  const deleteThread = api.townSquare.threads.delete.useMutation({
+    onSuccess: async () => {
+      await utils.townSquare.messages.list.invalidate();
     },
   });
+
+  return deleteThread;
 }
