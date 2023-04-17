@@ -1,7 +1,7 @@
 import { type PushSubscriptionRequest } from "@api-contracts/push-subscription.schema";
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { env } from "../../../env.mjs";
+import { api } from "../../../utils/api";
 
 export default function NotificationsPermissionBox() {
   const [buttonIsLoading, setButtonIsLoading] = useState(false);
@@ -10,6 +10,7 @@ export default function NotificationsPermissionBox() {
   );
   const [registration, setRegistration] =
     useState<ServiceWorkerRegistration | null>(null);
+  const createSubscription = api.pushSubscription.create.useMutation();
 
   useEffect(() => {
     const isBrowser =
@@ -55,7 +56,8 @@ export default function NotificationsPermissionBox() {
     const payload: PushSubscriptionRequest = {
       subscriptionObject: JSON.stringify(subscription),
     };
-    await axios.post("/api/push-subscription/create", payload);
+
+    createSubscription.mutate(payload);
 
     setSubscription(subscription);
     setButtonIsLoading(false);
