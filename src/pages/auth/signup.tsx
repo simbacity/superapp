@@ -1,5 +1,4 @@
 import type { InviteeRequest } from "@api-contracts/invitee.schema";
-import axios from "axios";
 import type { CtxOrReq } from "next-auth/client/_utils";
 import type { AppProviders } from "next-auth/providers";
 import {
@@ -11,6 +10,7 @@ import {
 import Link from "next/link";
 import { useState } from "react";
 import Confetti from "react-confetti";
+import { api } from "../../utils/api";
 
 import SignInWithGoogleButton from "@components/shared/SignInWithGoogleButton";
 
@@ -25,6 +25,7 @@ export default function SignIn({ providers }: SignInProps) {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [windowWidth, setWindowWidth] = useState(0);
   const [windowHeight, setWindowHeight] = useState(0);
+  const createInvitee = api.invitee.create.useMutation();
 
   async function handleSubmit(e: React.SyntheticEvent) {
     e.preventDefault();
@@ -35,7 +36,7 @@ export default function SignIn({ providers }: SignInProps) {
     };
 
     try {
-      await axios.post("/api/invitees/create", params);
+      createInvitee.mutate(params);
 
       setWindowWidth(document.documentElement.clientWidth);
       setWindowHeight(document.documentElement.clientHeight);
